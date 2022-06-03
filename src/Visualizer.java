@@ -99,4 +99,10 @@ public class Visualizer extends JFrame implements MouseMotionListener, MouseList
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
