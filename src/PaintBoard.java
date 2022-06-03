@@ -20,7 +20,6 @@ public class PaintBoard {
 			new Visualizer();
 		}
 
-		new Visualizer();
 	}
 
 }
