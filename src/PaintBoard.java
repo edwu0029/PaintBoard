@@ -1,8 +1,11 @@
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class PaintBoard {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		// TODO Auto-generated method stub
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 		new Menu();
 		
@@ -20,7 +23,6 @@ public class PaintBoard {
 			new Visualizer();
 		}
 
-		new Visualizer();
 	}
 
 }

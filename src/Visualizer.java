@@ -18,22 +18,22 @@ import javax.swing.JPanel;
 
 public class Visualizer extends JFrame implements MouseMotionListener, MouseListener, ActionListener{
     private paintBoardPanel panel;
+    private ToolSelectPanel toolPanel;
+
     private ArrayList<Point> points = new ArrayList<Point>();
     final int MAX_X = 1500;
     final int MAX_Y = 850;
     private BufferedImage board = new BufferedImage(1385, MAX_Y, BufferedImage.TYPE_INT_ARGB);
     private Graphics2D boardGraphics = board.createGraphics();
     
-    private ToolSelectPanel toolPanel;
-    
-	private FlowLayout toolLayout = new FlowLayout();
-    private JButton brushIcon = new JButton(new ImageIcon("ASSets/brushicon.png"));
     
     Point start;
     Point end;
     
-    Visualizer (){
+    Visualizer (){ //set up
         this.panel = new paintBoardPanel();
+        this.toolPanel = new ToolSelectPanel();
+        
         this.panel.setBackground(Color.WHITE);
         this.getContentPane().add(BorderLayout.CENTER, panel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,12 +44,7 @@ public class Visualizer extends JFrame implements MouseMotionListener, MouseList
     	panel.addMouseMotionListener(this);
     	panel.addMouseListener(this);
     	
-    	this.add(toolPanel, BorderLayout.EAST);
-    	
-    	panel.setLayout(toolLayout);
-    	panel.add(brushIcon);
-    	brushIcon.setEnabled(true);
-    	brushIcon.addActionListener(this);
+    	this.add(BorderLayout.WEST, toolPanel);
     }
     
     private class paintBoardPanel extends JPanel {
@@ -62,7 +57,7 @@ public class Visualizer extends JFrame implements MouseMotionListener, MouseList
     }
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(MouseEvent e) { //drawing
 		start = end;
 		end = e.getPoint();
 		boardGraphics.setColor(Color.BLACK);
