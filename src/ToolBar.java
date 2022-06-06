@@ -97,6 +97,7 @@ public class ToolBar extends JToolBar {
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
                 boardPanel.setColor(newColor);
+
                 //Update color icon
                 BufferedImage img = new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB);
                 Graphics2D g2d = img.createGraphics();
@@ -104,7 +105,9 @@ public class ToolBar extends JToolBar {
                 g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
                 colorIcon = new ImageIcon(img);
                 color.setIcon(colorIcon);
+
             }else if(e.getSource()==text){
+                System.out.println("text");
                 boardPanel.switchTool(4);
             }
         }

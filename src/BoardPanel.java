@@ -62,7 +62,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Anti-aliasing
 		for(Text text: texts){
-			g2.setColor(color);
+			g2.setColor(text.getColor());
 			g2.setFont(text.getFont());
 			g2.drawString(text.getTextString(), text.getX(), text.getY());
 		}
@@ -109,7 +109,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 	public void mouseClicked(MouseEvent e) {}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(currentStroke==null){
+		if((tool==1||tool==2)&&currentStroke==null){
+			System.out.println("New stroke");
 			strokes.push(new Stroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)));
 			currentStroke = strokes.peek();
 			if(tool==1){ //Brush
@@ -122,7 +123,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		if(tool==4){
 			int result = textDialog.showTextDialog();
 			if(result==1){
-				Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont());
+				Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
 				texts.add(newText);
 			}
 		}
