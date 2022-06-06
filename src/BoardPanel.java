@@ -17,8 +17,9 @@ import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel implements MouseMotionListener, MouseListener {
 	private BoardFrame frame;
+	private ToolBar toolBar;
 	private TextDialog textDialog;
-    private int tool = 1;
+    private int tool = Const.BRUSH;
 	private Stack<Integer>previousChange; //Log of previous changes done
 	private Stack<Integer>removedItems;
 	private Stack<Object>removedObjects;
@@ -56,6 +57,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		this.color = new Color(0, 0, 0);
 		this.textDialog = new TextDialog(frame);
     }
+    
+    public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
+    	this.toolBar = toolBar;
+    }
+    
 	public void undo(){
 		if(previousChange.size()==0){
 			return;
@@ -70,6 +76,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		}
 		this.repaint();
 	}
+	
 	public void redo(){
 		if(removedItems.size()==0){
 			return;
@@ -134,9 +141,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     	boardGraphics.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     	boardGraphics.drawLine((int)(start.getX()), (int)(start.getY()), (int)(end.getX()), (int)(end.getY()));
 		*/
-
-		currentStroke.addLine((int)(start.getX()), (int)(start.getY()), (int)(end.getX()), (int)(end.getY()));
-    	this.repaint();
+		if (tool==Const.BRUSH || tool==Const.ERASER) {
+			currentStroke.addLine((int)(start.getX()), (int)(start.getY()), (int)(end.getX()), (int)(end.getY()));
+	    	this.repaint();
+		}
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {}
@@ -149,26 +157,35 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		start = null;
 		end = null;
 		currentStroke = null;
-		if(tool==1){
+		if(tool==Const.BRUSH){
 			previousChange.push(1);
+		}else if (tool==Const.COLOR_PICKER) {
+			int xPixel = e.getX();
+			int yPixel = e.getY();
+			BufferedImage temp = new BufferedImage(1500, 850, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = temp.createGraphics();
+			this.paint(g2);
+			this.setColor(new Color(temp.getRGB(xPixel, yPixel)));
+			toolBar.updateColorIcon(new Color(temp.getRGB(xPixel, yPixel)));
+			g2.dispose();
 		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if((tool==1||tool==2)&&currentStroke==null){
+		if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
 			System.out.println("New stroke");
 			strokes.push(new Stroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)));
 			currentStroke = strokes.peek();
-			if(tool==1){ //Brush
+			if(tool==Const.BRUSH){ //Brush
 				currentStroke.setColor(color);
-			}else if(tool==2){ //Eraser
+			}else if(tool==Const.ERASER){ //Eraser
 				currentStroke.setColor(Color.WHITE);
 			}
 		}
 		end = e.getPoint();
-		if(tool==4){
+		if(tool==Const.TEXT){
 			int result = textDialog.showTextDialog();
 			if(result==1){
 				Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);

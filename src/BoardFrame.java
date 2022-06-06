@@ -11,8 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 
-import javafx.util.converter.BooleanStringConverter;
-
 public class BoardFrame extends JFrame {
     private BoardPanel boardPanel;
     private ToolBar toolBar;
@@ -23,7 +21,9 @@ public class BoardFrame extends JFrame {
     BoardFrame(){
         this.boardPanel = new BoardPanel(this);
         this.toolBar = new ToolBar(boardPanel);
-
+        
+        this.boardPanel.addToolBarReference(toolBar);
+        
         this.boardPanel.setBackground(Color.WHITE);
         this.getContentPane().add(BorderLayout.CENTER, boardPanel);
         this.add(BorderLayout.WEST, toolBar);

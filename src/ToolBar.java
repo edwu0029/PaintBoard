@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 public class ToolBar extends JToolBar {
     private BoardPanel boardPanel;
+    
     private JButton brush;
     private ImageIcon brushIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/brushicon.png"));
 
@@ -20,6 +21,9 @@ public class ToolBar extends JToolBar {
 
     private JButton color;
     private ImageIcon colorIcon;
+    
+    private JButton colorPicker;
+    private ImageIcon colorPickerIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/colorpickericon.png"));
 
     private JButton text;
     private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/texticon.png"));
@@ -38,7 +42,7 @@ public class ToolBar extends JToolBar {
 
         //Set up tool menu variables
         this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
-        this.setLayout(new GridLayout(8, 0)); //Make each button in tool bar smaller
+        this.setLayout(new GridLayout(9, 0)); //Make each button in tool bar smaller
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -66,7 +70,13 @@ public class ToolBar extends JToolBar {
         color.setIcon(colorIcon);
         color.addActionListener(buttonController);
         this.add(color);
-
+        
+        //Color picker button
+        colorPicker = new JButton("C.Picker");
+        colorPicker.setIcon(new ImageIcon(colorPickerIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        colorPicker.addActionListener(buttonController);
+        this.add(colorPicker);
+        
         //Text button
         text = new JButton("Text");
         text.setIcon(new ImageIcon(textIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -93,14 +103,25 @@ public class ToolBar extends JToolBar {
         redo.addActionListener(buttonController);
         this.add(redo);
     }
+    
+    //update color icon function
+    public void updateColorIcon(Color newColor) {
+    	BufferedImage img = new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = img.createGraphics();
+        g2d.setPaint(newColor);
+        g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+        colorIcon = new ImageIcon(img);
+        color.setIcon(colorIcon);
+    }
+    
     private class ButtonController implements ActionListener{
         public void actionPerformed(ActionEvent e){
             if(e.getSource()==brush){
                 System.out.println("brush");
-                boardPanel.switchTool(1);
+                boardPanel.switchTool(Const.BRUSH);
             }else if(e.getSource()==eraser){
                 System.out.println("eraser");
-                boardPanel.switchTool(2);
+                boardPanel.switchTool(Const.ERASER);
             }else if(e.getSource()==color){
                 System.out.println("color");
                 JColorChooser colorChooser = new JColorChooser();
@@ -108,16 +129,14 @@ public class ToolBar extends JToolBar {
                 boardPanel.setColor(newColor);
 
                 //Update color icon
-                BufferedImage img = new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB);
-                Graphics2D g2d = img.createGraphics();
-                g2d.setPaint(newColor);
-                g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
-                colorIcon = new ImageIcon(img);
-                color.setIcon(colorIcon);
+                updateColorIcon(newColor);
 
-            }else if(e.getSource()==text){
+            }else if (e.getSource()==colorPicker) {
+            	System.out.println("color picker");
+                boardPanel.switchTool(Const.COLOR_PICKER);
+        	}else if(e.getSource()==text){
                 System.out.println("text");
-                boardPanel.switchTool(4);
+                boardPanel.switchTool(Const.TEXT);
             }else if(e.getSource()==undo){
                 System.out.println("undo");
                 boardPanel.undo();
