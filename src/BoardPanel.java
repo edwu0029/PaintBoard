@@ -53,11 +53,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(board, 0, 0, null);
 		for(Text text: texts){
 			g.setFont(text.getFont());
 			g.drawString(text.getTextString(), text.getX(), text.getY());
 		}
+        g2.drawImage(board, 0, 0, null);
     }
 	@Override
 	public void mouseDragged(MouseEvent e) { //drawing
