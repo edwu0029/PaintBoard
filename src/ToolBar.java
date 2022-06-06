@@ -82,7 +82,6 @@ public class ToolBar extends JToolBar {
         redo.setIcon(new ImageIcon(redoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         redo.addActionListener(buttonController);
         this.add(redo);
-
     }
     private class ButtonController implements ActionListener{
         public void actionPerformed(ActionEvent e){
@@ -109,6 +108,9 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==text){
                 System.out.println("text");
                 boardPanel.switchTool(4);
+            }else if(e.getSource()==undo){
+                System.out.println("undo");
+                boardPanel.undo();
             }
         }
     }

@@ -19,6 +19,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 	private BoardFrame frame;
 	private TextDialog textDialog;
     private int tool = 1;
+	private Stack<Integer>previousChange; //Log of previous changes done
 
 	private Stroke currentStroke;
 	private Color color;
@@ -40,6 +41,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
 
+		previousChange = new Stack<Integer>();
+
 		texts = new Stack<Text>();
 		strokes = new Stack<Stroke>();
 
@@ -49,7 +52,18 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		this.color = new Color(0, 0, 0);
 		this.textDialog = new TextDialog(frame);
     }
-
+	public void undo(){
+		if(previousChange.size()==0){
+			return;
+		}
+		int x = previousChange.pop();
+		if(x==1||x==2){ //Brush or Eraser
+			strokes.pop();
+		}else if(x==3){ //Text
+			texts.pop();
+		}
+		this.repaint();
+	}
     public void switchTool(int newTool){
         tool = newTool;
     }
@@ -100,10 +114,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 	//MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		System.out.println("released");
 		//Reset
 		start = null;
 		end = null;
 		currentStroke = null;
+		if(tool==1){
+			previousChange.push(1);
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {}
@@ -125,6 +143,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 			if(result==1){
 				Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
 				texts.add(newText);
+				previousChange.add(3);
 			}
 		}
 		this.repaint();
