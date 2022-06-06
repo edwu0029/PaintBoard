@@ -86,6 +86,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		}
 		this.repaint();
 	}
+	public void clear(){
+		previousChange.clear();
+		removedItems.clear();
+		removedObjects.clear();
+		texts.clear();
+		strokes.clear();
+		this.repaint();
+	}
     public void switchTool(int newTool){
         tool = newTool;
     }

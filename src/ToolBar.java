@@ -4,6 +4,7 @@ import javax.swing.JToolBar;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.awt.*;
@@ -23,6 +24,9 @@ public class ToolBar extends JToolBar {
     private JButton text;
     private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/texticon.png"));
 
+    private JButton clear;
+    private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/clearicon.jpg"));
+
     private JButton undo;
     private ImageIcon undoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/undoicon.png"));
 
@@ -34,7 +38,7 @@ public class ToolBar extends JToolBar {
 
         //Set up tool menu variables
         this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
-        this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
+        this.setLayout(new GridLayout(8, 0)); //Make each button in tool bar smaller
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -69,8 +73,14 @@ public class ToolBar extends JToolBar {
         text.addActionListener(buttonController);
         this.add(text);
 
-        this.addSeparator();
+        //Clear button
+        clear = new JButton("Clear");
+        clear.setIcon(new ImageIcon(clearIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        clear.addActionListener(buttonController);
+        this.add(clear);
 
+        this.addSeparator();
+        
         //Undo button
         undo = new JButton("Undo");
         undo.setIcon(new ImageIcon(undoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -113,6 +123,8 @@ public class ToolBar extends JToolBar {
                 boardPanel.undo();
             }else if(e.getSource()==redo){
                 boardPanel.redo();
+            }else if(e.getSource()==clear){
+                boardPanel.clear();
             }
         }
     }
