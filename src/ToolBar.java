@@ -111,6 +111,8 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==undo){
                 System.out.println("undo");
                 boardPanel.undo();
+            }else if(e.getSource()==redo){
+                boardPanel.redo();
             }
         }
     }

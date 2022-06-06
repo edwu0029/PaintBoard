@@ -20,6 +20,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 	private TextDialog textDialog;
     private int tool = 1;
 	private Stack<Integer>previousChange; //Log of previous changes done
+	private Stack<Integer>removedItems;
+	private Stack<Object>removedObjects;
 
 	private Stroke currentStroke;
 	private Color color;
@@ -42,6 +44,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         this.addMouseListener(this);
 
 		previousChange = new Stack<Integer>();
+		removedItems = new Stack<Integer>();
+		removedObjects = new Stack<Object>();
 
 		texts = new Stack<Text>();
 		strokes = new Stack<Stroke>();
@@ -58,9 +62,27 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 		}
 		int x = previousChange.pop();
 		if(x==1||x==2){ //Brush or Eraser
-			strokes.pop();
+			removedItems.push(1);
+			removedObjects.push(strokes.pop());
 		}else if(x==3){ //Text
-			texts.pop();
+			removedItems.push(3);
+			removedObjects.push(texts.pop());
+		}
+		this.repaint();
+	}
+	public void redo(){
+		if(removedItems.size()==0){
+			return;
+		}
+		int x = removedItems.pop();
+		if(x==1||x==2){ //Brush or Eraser
+			Stroke recoveredStroke = (Stroke)removedObjects.pop();
+			previousChange.push(1);
+			strokes.push(recoveredStroke);
+		}else if(x==3){ //Text
+			Text recoveredText = (Text)removedObjects.pop();
+			previousChange.push(3);
+			texts.push(recoveredText);
 		}
 		this.repaint();
 	}
