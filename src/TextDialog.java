@@ -44,32 +44,32 @@ public class TextDialog extends JDialog implements ActionListener{
         cancel.addActionListener(this);
 
         JPanel p = new JPanel();
-		p.add(text);
-		p.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Text"));
+        p.add(text);
+        p.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Text"));
 
-		JPanel p1 = new JPanel();
-		p1.add(fonts);
-		p1.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Family"));
+        JPanel p1 = new JPanel();
+        p1.add(fonts);
+        p1.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Family"));
 
-		JPanel p2 = new JPanel();
-		p2.add(sizes);
-		p2.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Size"));
+        JPanel p2 = new JPanel();
+        p2.add(sizes);
+        p2.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Size"));
 
         JPanel p3 = new JPanel();
-		p3.add(ok);
-		p3.add(cancel);
+        p3.add(ok);
+        p3.add(cancel);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(p);
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel.add(p1);
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel.add(p2);
-		panel.add(Box.createRigidArea(new Dimension(0, 5)));
-		panel.add(p3);
-		panel.add(Box.createRigidArea(new Dimension(0, 10)));
-		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.add(p);
+        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        panel.add(p1);
+        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        panel.add(p2);
+        panel.add(Box.createRigidArea(new Dimension(0, 5)));
+        panel.add(p3);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         this.setContentPane(panel);
         this.pack();
