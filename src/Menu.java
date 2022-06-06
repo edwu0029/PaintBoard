@@ -9,8 +9,8 @@ public class Menu extends JFrame implements ActionListener {
 	static boolean serverJoin = false;
 	static boolean exit = false;
 	
-	public final int WIDTH = 1400;
-	public final int HEIGHT = 800;
+	public final int WIDTH = 1500;
+	public final int HEIGHT = 850;
 
 	private JLabel title;
 	private JButton createServer, joinServer, quit;
@@ -73,6 +73,7 @@ public class Menu extends JFrame implements ActionListener {
 			buttonPressed = true;
 			exit = true;
 			frame.dispose();
+			System.exit(0);
 		}
 
 	}
