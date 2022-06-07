@@ -24,6 +24,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     private Stack<Integer>removedItems;
     private Stack<Object>removedObjects;
 
+    private int thickness = 4;
     private Stroke currentStroke;
     private Color color;
 
@@ -107,6 +108,9 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void setColor(Color newColor){
         color = newColor;
     }
+    public void setThickness(int newThickness){
+        thickness = newThickness;
+    }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -176,7 +180,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void mousePressed(MouseEvent e) {
         if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
             System.out.println("New stroke");
-            strokes.push(new Stroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)));
+            strokes.push(new Stroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)));
             currentStroke = strokes.peek();
             if(tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);

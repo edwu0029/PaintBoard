@@ -1,14 +1,18 @@
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.JPanel;
 
 import java.awt.event.ActionEvent;
+import javax.swing.event.ChangeEvent;
 
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.event.ChangeListener;
 
 public class ToolBar extends JToolBar {
     private BoardPanel boardPanel;
@@ -28,6 +32,10 @@ public class ToolBar extends JToolBar {
     private JButton text;
     private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/texticon.png"));
 
+    private JSlider thickness;
+    private JPanel thicknessPanel;
+    private JLabel thicknessLabel;
+
     private JButton clear;
     private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/clearicon.jpg"));
 
@@ -42,7 +50,7 @@ public class ToolBar extends JToolBar {
 
         //Set up tool menu variables
         this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
-        this.setLayout(new GridLayout(9, 0)); //Make each button in tool bar smaller
+        this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -83,13 +91,24 @@ public class ToolBar extends JToolBar {
         text.addActionListener(buttonController);
         this.add(text);
 
+        //Thickness slider
+        thickness = new JSlider(1, 30, 4);
+        thickness.addChangeListener(buttonController);
+        thicknessPanel = new JPanel();
+        thicknessLabel = new JLabel("Brush Thickness: 4");
+        thicknessLabel.setHorizontalAlignment(JLabel.CENTER);
+        thicknessPanel.setLayout(new GridLayout(2,0));
+        thicknessPanel.add(thicknessLabel, BorderLayout.CENTER);
+        thicknessPanel.add(thickness);
+        this.add(thicknessPanel);
+
+        this.addSeparator();
+
         //Clear button
         clear = new JButton("Clear");
         clear.setIcon(new ImageIcon(clearIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         clear.addActionListener(buttonController);
         this.add(clear);
-
-        this.addSeparator();
         
         //Undo button
         undo = new JButton("Undo");
@@ -114,7 +133,7 @@ public class ToolBar extends JToolBar {
         color.setIcon(colorIcon);
     }
     
-    private class ButtonController implements ActionListener{
+    private class ButtonController implements ActionListener, ChangeListener{
         public void actionPerformed(ActionEvent e){
             if(e.getSource()==brush){
                 System.out.println("brush");
@@ -144,6 +163,14 @@ public class ToolBar extends JToolBar {
                 boardPanel.redo();
             }else if(e.getSource()==clear){
                 boardPanel.clear();
+            }
+        }
+
+        public void stateChanged(ChangeEvent e) {
+            if(e.getSource()==thickness){
+                int newThickness = thickness.getValue();
+                boardPanel.setThickness(newThickness);
+                thicknessLabel.setText("Brush Thickness: "+Integer.toString(newThickness));
             }
         }
     }
