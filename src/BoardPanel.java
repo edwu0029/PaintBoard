@@ -11,11 +11,14 @@ import java.awt.image.BufferedImage;
 import java.awt.RenderingHints;
 import java.util.Stack;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel implements MouseMotionListener, MouseListener {
+    private Client client;
+
     private BoardFrame frame;
     private ToolBar toolBar;
     private TextDialog textDialog;
@@ -30,6 +33,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     private JColorChooser colorChooser;
 
+    //TODO change names for hashsets
+    private HashSet<Stroke>otherStrokes;
     private Stack<Text>texts;
     private Stack<Stroke>strokes;
 
@@ -39,7 +44,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     Point start;
     Point end;
 
-    BoardPanel(BoardFrame frame){
+    BoardPanel(BoardFrame frame) throws Exception{
         this.frame = frame;
         this.colorChooser = new JColorChooser();
         this.addMouseMotionListener(this);
@@ -51,18 +56,31 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
         texts = new Stack<Text>();
         strokes = new Stack<Stroke>();
+        otherStrokes = new HashSet<Stroke>();
 
         start = null;
         end = null;
 
         this.color = new Color(0, 0, 0);
         this.textDialog = new TextDialog(frame);
+
+        //TODO move client out of BoardPanel
+        //TODO hardcode ip adress of server
+        client = new Client("server ip", this);
+        client.start();
     }
     
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
-    
+    public void addOtherStroke(Stroke stroke){
+        otherStrokes.add(stroke);
+        this.repaint();
+    }
+    public void removeOtherStroke(Stroke stroke){
+        otherStrokes.remove(stroke);
+        this.repaint();
+    }
     public void undo(){
         if(previousChange.size()==0){
             return;
@@ -70,7 +88,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         int x = previousChange.pop();
         if(x==1||x==2){ //Brush or Eraser
             removedItems.push(1);
-            removedObjects.push(strokes.pop());
+            Stroke removedStroke = strokes.pop();
+            try{
+                client.removeStroke(removedStroke);
+            }catch(Exception e){
+
+            }
+            removedObjects.push(removedStroke);
+            
         }else if(x==3){ //Text
             removedItems.push(3);
             removedObjects.push(texts.pop());
@@ -121,9 +146,17 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             g2.setFont(text.getFont());
             g2.drawString(text.getTextString(), text.getX(), text.getY());
         }
+        for(Stroke stroke: otherStrokes){
+            g2.setColor(stroke.getColor());
+            g2.setStroke(new BasicStroke(stroke.getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            ArrayList<int[]>lines = stroke.getLines();
+            for(int[]x: lines){
+                g2.drawLine(x[0], x[1], x[2], x[3]);
+            }
+        }
         for(Stroke stroke: strokes){
             g2.setColor(stroke.getColor());
-            g2.setStroke(stroke.getStrokeType());
+            g2.setStroke(new BasicStroke(stroke.getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             ArrayList<int[]>lines = stroke.getLines();
             for(int[]x: lines){
                 g2.drawLine(x[0], x[1], x[2], x[3]);
@@ -160,7 +193,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         //Reset
         start = null;
         end = null;
-        currentStroke = null;
+        if(tool==Const.BRUSH||tool==Const.ERASER){
+            try{
+                client.addStroke(currentStroke);
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+            currentStroke = null;
+        }
         if(tool==Const.BRUSH){
             previousChange.push(1);
         }else if (tool==Const.COLOR_PICKER) {
@@ -180,7 +220,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void mousePressed(MouseEvent e) {
         if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
             System.out.println("New stroke");
-            strokes.push(new Stroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)));
+            strokes.push(new Stroke(thickness));
             currentStroke = strokes.peek();
             if(tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);

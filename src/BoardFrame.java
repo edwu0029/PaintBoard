@@ -18,7 +18,7 @@ public class BoardFrame extends JFrame {
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
-    BoardFrame(){
+    BoardFrame() throws Exception{
         this.boardPanel = new BoardPanel(this);
         this.toolBar = new ToolBar(boardPanel);
         
@@ -27,6 +27,7 @@ public class BoardFrame extends JFrame {
         this.boardPanel.setBackground(Color.WHITE);
         this.getContentPane().add(BorderLayout.CENTER, boardPanel);
         this.add(BorderLayout.WEST, toolBar);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(MAX_X, MAX_Y);
         this.setVisible(true);

@@ -98,7 +98,7 @@ public class ToolBar extends JToolBar {
         thicknessLabel = new JLabel("Brush Thickness: 4");
         thicknessLabel.setHorizontalAlignment(JLabel.CENTER);
         thicknessPanel.setLayout(new GridLayout(2,0));
-        thicknessPanel.add(thicknessLabel, BorderLayout.CENTER);
+        thicknessPanel.add(thicknessLabel);
         thicknessPanel.add(thickness);
         this.add(thicknessPanel);
 

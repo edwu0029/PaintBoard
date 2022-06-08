@@ -1,5 +1,6 @@
+import java.util.Scanner;
 public class Launcher {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Menu menu = new Menu();
         
         // stalls until a button is pressed
@@ -11,7 +12,11 @@ public class Launcher {
         
         // add server functions later
         if (Menu.serverCreate == true) {
-            new BoardFrame();
+            //Temporary
+            //Scanner input = new Scanner(System.in);
+            //System.out.println("Type in your name: ");
+            //String name = input.next();
+            new User("name");
         } else if (Menu.serverJoin == true) {
             
             new JoinServerPanel();

@@ -1,14 +1,15 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Stroke {
+public class Stroke implements Serializable{
     private ArrayList<int[]>lines;
-    private BasicStroke strokeType;
+    private int thickness;
     private Color color;
-    Stroke(BasicStroke strokeType){
+    Stroke(int thickness){
         this.lines = new ArrayList<int[]>();
-        this.strokeType = strokeType;
+        this.thickness = thickness;
     }
     public void addLine(int startX, int startY, int endX, int endY){
         int[]x = {startX, startY, endX, endY};
@@ -23,7 +24,7 @@ public class Stroke {
     public Color getColor(){
         return color;
     }
-    public BasicStroke getStrokeType(){
-        return strokeType;
+    public int getThickness(){
+        return thickness;
     }
 }
