@@ -63,19 +63,19 @@ public class Client {
                     int command = input.readInt();
                     if(command==1){
                         Stroke stroke = (Stroke)input.readObject();
-                        boardPanel.addOtherStroke(stroke);
+                        boardPanel.addStroke(stroke);
                         System.out.println("Recevied stroke to be added");
                     }else if(command==-1){
                         Stroke stroke = (Stroke)input.readObject();
-                        boardPanel.removeOtherStroke(stroke);
+                        boardPanel.removeStroke(stroke);
                         System.out.println("Recevied stroke to be removed");
                     }else if(command==3){
                         Text text = (Text)input.readObject();
-                        boardPanel.addOtherText(text);
+                        boardPanel.addText(text);
                         System.out.println("Recevied text to be added");
                     }else if(command==-3){
                         Text text = (Text)input.readObject();
-                        boardPanel.removedOtherText(text);
+                        boardPanel.removeText(text);
                         System.out.println("Recieved text to be removed");
                     }
                 }catch(Exception e){
