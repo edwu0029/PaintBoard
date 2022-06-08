@@ -47,7 +47,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     Point end;
     private boolean online;
 
-    BoardPanel(BoardFrame frame, boolean online) throws Exception{
+    BoardPanel(String serverIP, BoardFrame frame, boolean online) throws Exception{
         this.frame = frame;
         this.online = online;
         this.colorChooser = new JColorChooser();
@@ -72,7 +72,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         //TODO move client out of BoardPanel
         //TODO hardcode ip adress of server
         if(online){
-            client = new Client("127.0.0.1", this);
+            client = new Client(serverIP, this);
             client.start();
         }
     }

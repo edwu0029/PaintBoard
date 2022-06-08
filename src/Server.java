@@ -8,31 +8,34 @@ public class Server {
     private ArrayList<ConnectionHandler>connections;
     private ServerSocket serverSocket;
     final int PORT = 5000;
-    public static void main(String[]args) throws Exception{
-        Server server = new Server();
-        server.start();
-    }
     Server() throws Exception{
         String localHost = InetAddress.getLocalHost().toString();
         ip = localHost.substring(localHost.indexOf('/')+1);
         System.out.println(ip);
 
-        this.connections = new ArrayList<ConnectionHandler>();
-    }
-    public void start() throws Exception{
         this.serverSocket = new ServerSocket(PORT);
-        System.out.println("Waiting for client...");
-        while(true){
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("New Connection");
-            ConnectionHandler t = new ConnectionHandler(clientSocket);
-            Thread connectionThread = new Thread(t);
-            connections.add(t);
-            connectionThread.start();
+        this.connections = new ArrayList<ConnectionHandler>();
+        Thread serverThread = new Thread(new ServerThread());
+        serverThread.start();
+    }
+    public String getServerIP(){
+        return ip;
+    }
+    class ServerThread implements Runnable{
+        public void run(){
+            while(true){
+                try{
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("New Connection");
+                    ConnectionHandler t = new ConnectionHandler(clientSocket);
+                    Thread connectionThread = new Thread(t);
+                    connections.add(t);
+                    connectionThread.start();
+                }catch(Exception e){}
+            }
         }
     }
- 
- 
+
     class ConnectionHandler extends Thread{
         private Socket socket;
         private ObjectInputStream input;

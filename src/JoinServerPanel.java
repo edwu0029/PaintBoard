@@ -8,8 +8,8 @@ import java.awt.FlowLayout;
 
 public class JoinServerPanel extends JFrame implements ActionListener {
     
-    static boolean buttonPressed = false;
-    public static String ipAddress;
+    public boolean buttonPressed = false;
+    public String ipAddress;
     JButton button;
     JTextField textField;
     
@@ -20,7 +20,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         
         textField = new JTextField();
         textField.setPreferredSize(new Dimension(800, 40)); 
-        textField.setText("Input IP Address");
+        textField.setText("Input Server IP Address");
         button = new JButton("Enter IP Address");
         button.addActionListener(this);
         
@@ -30,7 +30,9 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         this.setVisible(true);
         
     }
-    
+    public String getServerIPAdress(){
+        return ipAddress;
+    }
     public void actionPerformed(ActionEvent e) {
         
         if (e.getSource() == button) {

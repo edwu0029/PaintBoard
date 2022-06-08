@@ -18,8 +18,8 @@ public class BoardFrame extends JFrame {
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
-    BoardFrame(boolean online) throws Exception{
-        this.boardPanel = new BoardPanel(this, online);
+    BoardFrame(String serverIP, boolean online) throws Exception{
+        this.boardPanel = new BoardPanel(serverIP, this, online);
         this.toolBar = new ToolBar(boardPanel);
         
         this.boardPanel.addToolBarReference(toolBar);
