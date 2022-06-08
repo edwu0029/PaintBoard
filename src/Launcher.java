@@ -11,12 +11,14 @@ public class Launcher {
         }
         
         // add server functions later
-        if (Menu.serverCreate == true) {
+        if (Menu.single == true) {
             //Temporary
             //Scanner input = new Scanner(System.in);
             //System.out.println("Type in your name: ");
             //String name = input.next();
             new BoardFrame(false);
+        } else if (Menu.serverCreate == true) {
+        	
         } else if (Menu.serverJoin == true) {
             
             new JoinServerPanel();
