@@ -16,7 +16,7 @@ public class Launcher {
             //Scanner input = new Scanner(System.in);
             //System.out.println("Type in your name: ");
             //String name = input.next();
-            new User("name");
+            new BoardFrame(false);
         } else if (Menu.serverJoin == true) {
             
             new JoinServerPanel();
@@ -27,7 +27,7 @@ public class Launcher {
                 } catch (InterruptedException e) {}
             }
             
-            BoardFrame paintBoard = new BoardFrame();
+            new BoardFrame(true);
             
         }
 

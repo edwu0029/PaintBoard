@@ -45,9 +45,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     Point start;
     Point end;
+    private boolean online;
 
-    BoardPanel(BoardFrame frame) throws Exception{
+    BoardPanel(BoardFrame frame, boolean online) throws Exception{
         this.frame = frame;
+        this.online = online;
         this.colorChooser = new JColorChooser();
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
@@ -69,13 +71,16 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
         //TODO move client out of BoardPanel
         //TODO hardcode ip adress of server
-        client = new Client("127.0.0.1", this);
-        client.start();
+        if(online){
+            client = new Client("127.0.0.1", this);
+            client.start();
+        }
     }
     
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
+    //Networking methods
     public void addStroke(Stroke stroke){
         strokes.add(stroke);
         this.repaint();
@@ -101,18 +106,22 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             removedItems.push(1);
             Stroke removedStroke = ownStrokes.pop();
             strokes.remove(removedStroke);
-            try{
-                client.removeStroke(removedStroke);
-            }catch(Exception e){}
+            if(online){
+                try{
+                    client.removeStroke(removedStroke);
+                }catch(Exception e){}
+            }
             removedObjects.push(removedStroke);
             
         }else if(x==3){ //Text
             removedItems.push(3);
             Text removedText = ownTexts.pop();
             texts.remove(removedText);
-            try{
-                client.removeText(removedText);
-            }catch(Exception e){}
+            if(online){
+                try{
+                    client.removeText(removedText);
+                }catch(Exception e){}
+            }
             removedObjects.push(removedText);
         }
         this.repaint();
@@ -126,16 +135,20 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         if(x==1||x==2){ //Brush or Eraser
             Stroke recoveredStroke = (Stroke)removedObjects.pop();
             strokes.add(recoveredStroke);
-            try{
-                client.addStroke(recoveredStroke);
-            }catch(Exception e){}
+            if(online){
+                try{
+                    client.addStroke(recoveredStroke);
+                }catch(Exception e){}
+            }
             previousChange.push(1);
         }else if(x==3){ //Text
             Text recoveredText = (Text)removedObjects.pop();
             texts.add(recoveredText);
-            try{
-                client.addText(recoveredText);
-            }catch(Exception e){}
+            if(online){
+                try{
+                    client.addText(recoveredText);
+                }catch(Exception e){}
+            }
             previousChange.push(3);
         }
         this.repaint();
@@ -207,10 +220,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         start = null;
         end = null;
         if(tool==Const.BRUSH||tool==Const.ERASER){
-            try{
-                client.addStroke(currentStroke);
-            }catch(Exception ex){
-                ex.printStackTrace();
+            if(online){
+                try{
+                    client.addStroke(currentStroke);
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
             }
             currentStroke = null;
         }
@@ -249,9 +264,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 texts.add(newText);
                 previousChange.add(3);
-                try{
-                    client.addText(newText);
-                }catch(Exception ex){}
+                if(online){
+                    try{
+                        client.addText(newText);
+                    }catch(Exception ex){}
+                }
             }
         }
         this.repaint();
