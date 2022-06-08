@@ -5,6 +5,7 @@ import java.awt.event.*;
 public class Menu extends JFrame implements ActionListener {
     
     static boolean buttonPressed = false;
+    static boolean single = false;
     static boolean serverCreate = false;
     static boolean serverJoin = false;
     static boolean exit = false;
@@ -13,7 +14,7 @@ public class Menu extends JFrame implements ActionListener {
     public final int HEIGHT = 850;
 
     private JLabel title;
-    private JButton createServer, joinServer, quit;
+    private JButton offline, createServer, joinServer, quit;
 
     static JFrame frame = new JFrame();
 
@@ -25,26 +26,32 @@ public class Menu extends JFrame implements ActionListener {
         mainP.setLayout(null);
 
         title = new JLabel("PaintBoard");
+        offline = new JButton("Offline");
         createServer = new JButton("Create Server");
         joinServer = new JButton("Join Server");
         quit = new JButton("Quit");
 
         mainP.add(title);
-        title.setFont(new Font("Chiller", Font.BOLD, 50));
-        title.setBounds(WIDTH/2 - 125, HEIGHT/2 - 300, 500, 50);
+        title.setFont(new Font("Arial", Font.BOLD, 50));
+        title.setBounds(WIDTH/2 - 111, HEIGHT/2 - 375, 500, 50);
 
+        mainP.add(offline);
+        offline.setFont(new Font("Arial", Font.BOLD, 25));
+        offline.setBounds(WIDTH/2 - 390, HEIGHT/2 - 285, 800, 150);
+        
         mainP.add(createServer);
-        createServer.setFont(new Font("Chiller", Font.BOLD, 25));
-        createServer.setBounds(WIDTH/2 - 390, HEIGHT/2 - 210, 800, 150);
+        createServer.setFont(new Font("Arial", Font.BOLD, 25));
+        createServer.setBounds(WIDTH/2 - 390, HEIGHT/2 - 135, 800, 150);
 
         mainP.add(joinServer);
-        joinServer.setFont(new Font("Chiller", Font.BOLD, 25));
-        joinServer.setBounds(WIDTH/2 - 390, HEIGHT/2 - 60, 800, 150);
+        joinServer.setFont(new Font("Arial", Font.BOLD, 25));
+        joinServer.setBounds(WIDTH/2 - 390, HEIGHT/2 + 15, 800, 150);
 
         mainP.add(quit);
-        quit.setFont(new Font("Chiller", Font.BOLD, 25));
-        quit.setBounds(WIDTH/2 - 390, HEIGHT/2 + 90, 800, 150);
+        quit.setFont(new Font("Arial", Font.BOLD, 25));
+        quit.setBounds(WIDTH/2 - 390, HEIGHT/2 + 165, 800, 150);
 
+        offline.addActionListener(this);
         createServer.addActionListener(this);
         joinServer.addActionListener(this);
         quit.addActionListener(this);
@@ -57,7 +64,13 @@ public class Menu extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String key = e.getActionCommand();
 
-        if (key == "Create Server") {
+        if (key == "Offline") {
+            buttonPressed = true;
+            single = true;
+            frame.dispose();
+        }
+        
+        else if (key == "Create Server") {
             buttonPressed = true;
             serverCreate = true;
             frame.dispose();
