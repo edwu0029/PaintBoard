@@ -35,6 +35,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     //TODO change names for hashsets
     private HashSet<Stroke>otherStrokes;
+    private HashSet<Text>otherTexts;
     private Stack<Text>texts;
     private Stack<Stroke>strokes;
 
@@ -57,6 +58,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         texts = new Stack<Text>();
         strokes = new Stack<Stroke>();
         otherStrokes = new HashSet<Stroke>();
+        otherTexts = new HashSet<Text>();
 
         start = null;
         end = null;
@@ -66,7 +68,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
         //TODO move client out of BoardPanel
         //TODO hardcode ip adress of server
-        client = new Client("server ip", this);
+        client = new Client("192.168.4.52", this);
         client.start();
     }
     
@@ -81,6 +83,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         otherStrokes.remove(stroke);
         this.repaint();
     }
+    public void addOtherText(Text text){
+        otherTexts.add(text);
+        this.repaint();
+    }
+    public void removedOtherText(Text text){
+        otherTexts.remove(text);
+        this.repaint();
+    }
     public void undo(){
         if(previousChange.size()==0){
             return;
@@ -91,14 +101,16 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             Stroke removedStroke = strokes.pop();
             try{
                 client.removeStroke(removedStroke);
-            }catch(Exception e){
-
-            }
+            }catch(Exception e){}
             removedObjects.push(removedStroke);
             
         }else if(x==3){ //Text
             removedItems.push(3);
-            removedObjects.push(texts.pop());
+            Text removedText = texts.pop();
+            try{
+                client.removeText(removedText);
+            }catch(Exception e){}
+            removedObjects.push(removedText);
         }
         this.repaint();
     }
@@ -112,13 +124,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             Stroke recoveredStroke = (Stroke)removedObjects.pop();
             try{
                 client.addStroke(recoveredStroke);
-            }catch(Exception e){
-                
-            }
+            }catch(Exception e){}
             previousChange.push(1);
             strokes.push(recoveredStroke);
         }else if(x==3){ //Text
             Text recoveredText = (Text)removedObjects.pop();
+            try{
+                client.addText(recoveredText);
+            }catch(Exception e){}
             previousChange.push(3);
             texts.push(recoveredText);
         }
@@ -146,6 +159,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Anti-aliasing
+        for(Text text: otherTexts){
+            g2.setColor(text.getColor());
+            g2.setFont(text.getFont());
+            g2.drawString(text.getTextString(), text.getX(), text.getY());
+        }
         for(Text text: texts){
             g2.setColor(text.getColor());
             g2.setFont(text.getFont());
@@ -240,6 +258,9 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 texts.add(newText);
                 previousChange.add(3);
+                try{
+                    client.addText(newText);
+                }catch(Exception ex){}
             }
         }
         this.repaint();

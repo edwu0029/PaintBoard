@@ -4,9 +4,6 @@ import java.net.*;
 import java.io.*;
  
 public class Server {
-    private HashSet<Stroke>strokes;
-    private HashSet<Text>texts;
- 
     private String ip;
     private ArrayList<ConnectionHandler>connections;
     private ServerSocket serverSocket;
@@ -21,8 +18,6 @@ public class Server {
         System.out.println(ip);
 
         this.connections = new ArrayList<ConnectionHandler>();
-        this.strokes = new HashSet<Stroke>();
-        this.texts = new HashSet<Text>();
     }
     public void start() throws Exception{
         this.serverSocket = new ServerSocket(PORT);
@@ -54,7 +49,6 @@ public class Server {
                     int command = input.readInt();
                     if(command==1){
                         Stroke stroke = (Stroke)input.readObject();
-                        strokes.add(stroke);
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
@@ -64,12 +58,29 @@ public class Server {
                         }
                     }else if(command==-1){
                         Stroke stroke = (Stroke)input.readObject();
-                        strokes.add(stroke);
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this){
                                 i.removeStroke(stroke);
+                            }
+                        }
+                    }else if(command==3){
+                        Text text = (Text)input.readObject();
+
+                        //Update in other clients
+                        for(ConnectionHandler i: connections){
+                            if(i!=this){
+                                i.addText(text);
+                            }
+                        }
+                    }else if(command==-3){
+                        Text text = (Text)input.readObject();
+
+                        //Update in other clients
+                        for(ConnectionHandler i: connections){
+                            if(i!=this){
+                                i.removeText(text);
                             }
                         }
                     }
@@ -88,10 +99,26 @@ public class Server {
 
             }
         }
+        public void addText(Text text){
+            try{
+                output.writeInt(3);
+                output.writeObject(text);
+                output.flush();
+            }catch(Exception exp){}
+        }
         public void removeStroke(Stroke stroke){
             try{
                 output.writeInt(-1);
                 output.writeObject(stroke);
+                output.flush();
+            }catch(Exception exp){
+
+            }
+        }
+        public void removeText(Text text){
+            try{
+                output.writeInt(-3);
+                output.writeObject(text);
                 output.flush();
             }catch(Exception exp){
 

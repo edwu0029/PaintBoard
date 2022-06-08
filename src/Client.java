@@ -28,11 +28,23 @@ public class Client {
         output.flush();
         System.out.println("Sent stroke");
     }
+    public void addText(Text text) throws Exception{
+        output.writeInt(3);
+        output.writeObject(text);
+        output.flush();
+        System.out.println("Sent text");
+    }
     public void removeStroke(Stroke stroke) throws Exception{
         output.writeInt(-1);
         output.writeObject(stroke);
         output.flush();
         System.out.println("Sent stroke");
+    }
+    public void removeText(Text text) throws Exception{
+        output.writeInt(-3);
+        output.writeObject(text);
+        output.flush();
+        System.out.println("Sent text");
     }
     public void stop() throws Exception{
         input.close();
@@ -57,6 +69,14 @@ public class Client {
                         Stroke stroke = (Stroke)input.readObject();
                         boardPanel.removeOtherStroke(stroke);
                         System.out.println("Recevied stroke to be removed");
+                    }else if(command==3){
+                        Text text = (Text)input.readObject();
+                        boardPanel.addOtherText(text);
+                        System.out.println("Recevied text to be added");
+                    }else if(command==-3){
+                        Text text = (Text)input.readObject();
+                        boardPanel.removedOtherText(text);
+                        System.out.println("Recieved text to be removed");
                     }
                 }catch(Exception e){
                     System.out.println("Error");

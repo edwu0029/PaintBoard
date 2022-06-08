@@ -1,7 +1,8 @@
 import java.awt.Font;
+import java.io.Serializable;
 import java.awt.Color;
 
-public class Text {
+public class Text implements Serializable{
     private int x;
     private int y;
     private String textString;
