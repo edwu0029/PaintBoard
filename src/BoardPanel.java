@@ -110,6 +110,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         int x = removedItems.pop();
         if(x==1||x==2){ //Brush or Eraser
             Stroke recoveredStroke = (Stroke)removedObjects.pop();
+            try{
+                client.addStroke(recoveredStroke);
+            }catch(Exception e){
+                
+            }
             previousChange.push(1);
             strokes.push(recoveredStroke);
         }else if(x==3){ //Text
