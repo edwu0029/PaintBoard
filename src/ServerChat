@@ -1,0 +1,35 @@
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.HeadlessException;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class ServerChat extends JFrame {
+	JTextArea txaDisplay;
+	JScrollPane scrdisplay;
+	JTextField txtInput;
+	
+	public ServerChat() throws HeadlessException {
+		setTitle("Server");
+		setLayout(new FlowLayout());
+		
+		txaDisplay = new JTextArea();
+		txaDisplay.setEditable(false);
+		scrdisplay = new JScrollPane(txaDisplay);
+		scrdisplay.setPreferredSize(new Dimension(450, 200));
+		getContentPane().add(scrdisplay);
+		
+		txtInput = new JTextField();
+		txtInput.setPreferredSize(new Dimension(450, 30));
+		getContentPane().add(txtInput);
+		
+		setSize(500, 300);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+	}
+	
+}
