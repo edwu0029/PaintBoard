@@ -22,4 +22,7 @@ public class User {
             server.quit();
         }
     }
+    public boolean isHost() {
+    	return hasServer;
+    }
 }

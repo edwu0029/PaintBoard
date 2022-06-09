@@ -1,7 +1,10 @@
-import java.util.HashSet;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
-import java.net.*;
-import java.io.*;
+import java.util.LinkedHashSet;
  
 public class Server {
     private String ip;
@@ -9,7 +12,8 @@ public class Server {
     private ServerSocket serverSocket;
     private ServerThread serverThread;
     private boolean running = true;
-
+    private LinkedHashSet<Object> elements = new LinkedHashSet<Object>();
+    
     final int PORT = 5000;
     Server() throws Exception{
         String localHost = InetAddress.getLocalHost().toString();
@@ -76,48 +80,55 @@ public class Server {
             while(running){
                 try{
                     int command = input.readInt();
-                    if(command==1){
+                    if(command==Const.ADD_STROKE){
                         Stroke stroke = (Stroke)input.readObject();
-
+                        elements.add(stroke);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.addStroke(stroke);
                             }
                         }
-                    }else if(command==-1){
+                    }else if(command==Const.REMOVE_STROKE){
                         Stroke stroke = (Stroke)input.readObject();
-
+                        elements.remove(stroke);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.removeStroke(stroke);
                             }
                         }
-                    }else if(command==3){
+                    }else if(command==Const.ADD_TEXT){
                         Text text = (Text)input.readObject();
-
+                        elements.add(text);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.addText(text);
                             }
                         }
-                    }else if(command==-3){
+                    }else if(command==Const.REMOVE_TEXT){
                         Text text = (Text)input.readObject();
-
+                        elements.remove(text);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.removeText(text);
                             }
                         }
-                    } else if(command==4) {
+                    }else if(command==Const.CLEAR) {
+                    	elements.clear();
                     	for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.clear();
                             }
                         }
+                    }else if(command==Const.GET_ELEMENTS) {
+                    	for(ConnectionHandler i: connections) {
+                    		if (i==this&&i.getRunning()) {
+                    			i.sendElements();
+                    		}
+                    	}
                     }
                 }catch(Exception e){
                     System.out.println("Error inputing from socket. Socket thread stopped");
@@ -125,25 +136,30 @@ public class Server {
                 }
             }
         }
+        public void sendElements() {
+        	try {
+        		output.writeInt(Const.SEND_ELEMENTS);
+        		output.writeObject(elements);
+        		output.flush();
+        	}catch(Exception e) {}
+        }
         public void addStroke(Stroke stroke){
             try{
-                output.writeInt(1);
+                output.writeInt(Const.ADD_STROKE);
                 output.writeObject(stroke);
                 output.flush();
-            }catch(Exception exp){
-
-            }
+            }catch(Exception exp){}
         }
         public void addText(Text text){
             try{
-                output.writeInt(3);
+                output.writeInt(Const.ADD_TEXT);
                 output.writeObject(text);
                 output.flush();
             }catch(Exception exp){}
         }
         public void removeStroke(Stroke stroke){
             try{
-                output.writeInt(-1);
+                output.writeInt(Const.REMOVE_STROKE);
                 output.writeObject(stroke);
                 output.flush();
             }catch(Exception exp){
@@ -152,7 +168,7 @@ public class Server {
         }
         public void removeText(Text text){
             try{
-                output.writeInt(-3);
+                output.writeInt(Const.REMOVE_TEXT);
                 output.writeObject(text);
                 output.flush();
             }catch(Exception exp){
@@ -161,7 +177,7 @@ public class Server {
         }
         public void clear() {
             try{
-                output.writeInt(4);
+                output.writeInt(Const.CLEAR);
                 output.flush();
             }catch(Exception exp){
 

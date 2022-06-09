@@ -12,7 +12,6 @@ import java.awt.RenderingHints;
 import java.util.Stack;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.LinkedHashMap;
 
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
@@ -75,6 +74,11 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         if(online){
             client = new Client(serverIP, this);
             client.start();
+            if (user.isHost()) {
+        		elements = new LinkedHashSet<Object>();
+        	} else {
+        		client.requestElements();
+        	}
         }
     }
     public void quit() throws Exception{
@@ -88,6 +92,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         this.toolBar = toolBar;
     }
     //Networking methods
+    public void syncBoard(LinkedHashSet<Object> elements) {
+    	this.elements = elements;
+    	this.repaint();
+    }
     public void addStroke(Stroke stroke){
         elements.add(stroke);
         this.repaint();
