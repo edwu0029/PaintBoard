@@ -9,9 +9,17 @@ public class User {
             this.server = new Server();
         }
         this.online = online;
-        this.boardFrame = new BoardFrame(server.getServerIP(), online);
+        this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
     }
     User(String serverIP, boolean online) throws Exception{
-        this.boardFrame = new BoardFrame(serverIP, online);
+        this.boardFrame = new BoardFrame(this, serverIP, online);
+    }
+    User() throws Exception{
+        this.boardFrame = new BoardFrame(this, "", online);
+    }
+    public void quit() throws Exception{
+        if(hasServer){
+            server.quit();
+        }
     }
 }

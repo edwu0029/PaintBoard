@@ -44,13 +44,16 @@ public class ToolBar extends JToolBar {
 
     private JButton redo;
     private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/redoicon.png"));
+
+    private JButton quit;
+    private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
     
     ToolBar(BoardPanel boardPanel){
         this.boardPanel = boardPanel;
 
         //Set up tool menu variables
         this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
-        this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
+        this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -121,6 +124,12 @@ public class ToolBar extends JToolBar {
         redo.setIcon(new ImageIcon(redoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         redo.addActionListener(buttonController);
         this.add(redo);
+
+        //Quit button
+        quit = new JButton("Quit");
+        quit.setIcon(new ImageIcon(quitIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        quit.addActionListener(buttonController);
+        this.add(quit);
     }
     
     //update color icon function
@@ -164,6 +173,10 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==clear){
                 boardPanel.clear();
                 boardPanel.clearServer();
+            }else if(e.getSource()==quit){
+                try{
+                    boardPanel.quit();
+                }catch(Exception ex){}
             }
         }
 

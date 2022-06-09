@@ -16,7 +16,7 @@ public class Launcher {
             //Scanner input = new Scanner(System.in);
             //System.out.println("Type in your name: ");
             //String name = input.next();
-            new User("", false);
+            new User();
         } else if (Menu.serverCreate == true) {
         	new User(true, true);
         } else if (Menu.serverJoin == true) {

@@ -7,6 +7,8 @@ public class Client {
     private String serverIP;
     private ObjectInputStream input;
     private ObjectOutputStream output;
+    private ConnectionHandler connectionHandler;
+    private boolean closed;
 
     private final int PORT = 5000;
 
@@ -18,9 +20,22 @@ public class Client {
     public void start() throws Exception{
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
-        Thread t = new Thread(new ConnectionHandler());
-        t.start();
+        this.connectionHandler = new ConnectionHandler();
+        connectionHandler.start();
+        this.closed = false;
         System.out.println("Socket started");
+    }
+    public boolean getClosed(){
+        return closed;
+    }
+    public void quit() throws Exception{
+        connectionHandler.quit();
+        connectionHandler.interrupt();
+        input.close();
+        output.close();
+        socket.close();
+        System.out.println("Closed client");
+        closed = true;
     }
     public void addStroke(Stroke stroke) throws Exception{
         output.writeInt(1);
@@ -50,19 +65,18 @@ public class Client {
     	output.writeInt(4);
     	output.flush();
     }
-    public void stop() throws Exception{
-        input.close();
-        output.close();
-        socket.close();
-    }
 
     class ConnectionHandler extends Thread{
- 
+        private boolean running = true;
         ConnectionHandler() throws Exception{
             
         }
+        public void quit() throws Exception{
+            running = false;
+            closed = true;
+        }
         public void run(){
-            while(true){
+            while(running){
                 try{
                     int command = input.readInt();
                     System.out.println(command);
@@ -86,8 +100,8 @@ public class Client {
                     	boardPanel.clear();
                     }
                 }catch(Exception e){
-                    System.out.println("Error");
-                    e.printStackTrace();
+                    running = false;
+                    closed = true;
                 }
             }
         }

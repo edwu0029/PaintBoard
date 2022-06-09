@@ -7,6 +7,9 @@ public class Server {
     private String ip;
     private ArrayList<ConnectionHandler>connections;
     private ServerSocket serverSocket;
+    private ServerThread serverThread;
+    private boolean running = true;
+
     final int PORT = 5000;
     Server() throws Exception{
         String localHost = InetAddress.getLocalHost().toString();
@@ -15,15 +18,25 @@ public class Server {
 
         this.serverSocket = new ServerSocket(PORT);
         this.connections = new ArrayList<ConnectionHandler>();
-        Thread serverThread = new Thread(new ServerThread());
+        this.serverThread = new ServerThread();
         serverThread.start();
     }
     public String getServerIP(){
         return ip;
     }
-    class ServerThread implements Runnable{
+    public void quit() throws Exception{
+        System.out.println("Server quit");
+        running = false;
+        serverThread.interrupt();
+        for(ConnectionHandler connectionHandler: connections){
+            connectionHandler.quit();
+            connectionHandler.interrupt();
+        }
+        serverSocket.close();
+    }
+    class ServerThread extends Thread{
         public void run(){
-            while(true){
+            while(running){
                 try{
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New Connection");
@@ -31,7 +44,9 @@ public class Server {
                     Thread connectionThread = new Thread(t);
                     connections.add(t);
                     connectionThread.start();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    running = false;
+                }
             }
         }
     }
@@ -40,14 +55,25 @@ public class Server {
         private Socket socket;
         private ObjectInputStream input;
         private ObjectOutputStream output;
+        private boolean running = true;
  
         ConnectionHandler(Socket socket) throws Exception{
             this.socket = socket;
             this.output = new ObjectOutputStream(socket.getOutputStream());
             this.input = new ObjectInputStream(socket.getInputStream());
         }
+        public boolean getRunning(){
+            return running;
+        }
+        public void quit() throws Exception{
+            System.out.println("intiated server connection quit");
+            running = false;
+            input.close();
+            output.close();
+            socket.close();
+        }
         public void run(){
-            while(true){
+            while(running){
                 try{
                     int command = input.readInt();
                     if(command==1){
@@ -55,7 +81,7 @@ public class Server {
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
-                            if(i!=this){
+                            if(i!=this&&i.getRunning()){
                                 i.addStroke(stroke);
                             }
                         }
@@ -64,7 +90,7 @@ public class Server {
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
-                            if(i!=this){
+                            if(i!=this&&i.getRunning()){
                                 i.removeStroke(stroke);
                             }
                         }
@@ -73,7 +99,7 @@ public class Server {
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
-                            if(i!=this){
+                            if(i!=this&&i.getRunning()){
                                 i.addText(text);
                             }
                         }
@@ -82,20 +108,20 @@ public class Server {
 
                         //Update in other clients
                         for(ConnectionHandler i: connections){
-                            if(i!=this){
+                            if(i!=this&&i.getRunning()){
                                 i.removeText(text);
                             }
                         }
                     } else if(command==4) {
                     	for(ConnectionHandler i: connections){
-                            if(i!=this){
+                            if(i!=this&&i.getRunning()){
                                 i.clear();
                             }
                         }
                     }
                 }catch(Exception e){
-                    System.out.println("Error");
-                    e.printStackTrace();
+                    System.out.println("Error inputing from socket. Socket thread stopped");
+                    running = false;
                 }
             }
         }
@@ -134,7 +160,7 @@ public class Server {
             }
         }
         public void clear() {
-        	try{
+            try{
                 output.writeInt(4);
                 output.flush();
             }catch(Exception exp){

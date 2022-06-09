@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Client client;
+    private User user;
 
     private BoardFrame frame;
     private ToolBar toolBar;
@@ -45,7 +46,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     
     private LinkedHashSet<Object> elements;
     
-    BoardPanel(String serverIP, BoardFrame frame, boolean online) throws Exception{
+    BoardPanel(User user, String serverIP, BoardFrame frame, boolean online) throws Exception{
+        this.user = user;
         this.frame = frame;
         this.online = online;
         this.colorChooser = new JColorChooser();
@@ -75,7 +77,13 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             client.start();
         }
     }
-    
+    public void quit() throws Exception{
+        if(online){
+            client.quit();
+        }
+        user.quit();
+        frame.quit();
+    }
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
@@ -103,7 +111,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         Object previous = undo.pop();
         if(previous instanceof Stroke){ //Brush or Eraser
             elements.remove(previous);
-            if(online){
+            if(online&&!client.getClosed()){
                 try{
                     client.removeStroke((Stroke)previous);
                 }catch(Exception e){}
@@ -112,7 +120,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             
         }else if(previous instanceof Text){ //Text
             elements.remove(previous);
-            if(online){
+            if(online&&!client.getClosed()){
                 try{
                     client.removeText((Text)previous);
                 }catch(Exception e){}
@@ -129,7 +137,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         Object future = redo.pop();
         if(future instanceof Stroke){ //Brush or Eraser
             elements.add(future);
-            if(online){
+            if(online&&!client.getClosed()){
                 try{
                     client.addStroke((Stroke)future);
                 }catch(Exception e){}
@@ -137,7 +145,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             undo.push(future);
         }else if(future instanceof Text){ //Text
             elements.add(future);
-            if(online){
+            if(online&&!client.getClosed()){
                 try{
                     client.addText((Text)future);
                 }catch(Exception e){}
@@ -155,7 +163,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     }
     
     public void clearServer() { //Tell other clients to clear their board
-        if(online){
+        if(online&&!client.getClosed()){
             try{
                 client.clear();
             }catch(Exception ex){
@@ -220,7 +228,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         if(tool==Const.BRUSH||tool==Const.ERASER){
         	redo.clear();
         	undo.push(currentStroke);
-            if(online){
+            if(online&&!client.getClosed()){
                 try{
                     client.addStroke(currentStroke);
                 }catch(Exception ex){
@@ -261,7 +269,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                 elements.add(newText);
                 redo.clear();
                 undo.push(newText);
-                if(online){
+                if(online&&!client.getClosed()){
                     try{
                         client.addText(newText);
                     }catch(Exception ex){}
