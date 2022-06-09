@@ -272,7 +272,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         end = e.getPoint();
         if(tool==Const.TEXT){
             int result = textDialog.showTextDialog();
-            if(result==1){
+            if(result==Const.SUCCESS){
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 elements.add(newText);
                 redo.clear();
