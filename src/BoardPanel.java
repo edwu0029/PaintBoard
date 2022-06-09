@@ -27,26 +27,24 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     private Stack<Integer>previousChange; //Log of previous changes done
     private Stack<Integer>removedItems;
     private Stack<Object>removedObjects;
-
+    private Stack<Object> undo;
+    private Stack<Object> redo;
     private int thickness = 4;
     private Stroke currentStroke;
     private Color color;
-
+    
     private JColorChooser colorChooser;
 
     //TODO change names for hashsets
-    private LinkedHashSet<Stroke>strokes;
-    private LinkedHashSet<Text>texts;
     private Stack<Text>ownTexts;
     private Stack<Stroke>ownStrokes;
-
-    private BufferedImage board = new BufferedImage(1385, 850, BufferedImage.TYPE_INT_ARGB);
-    private Graphics2D boardGraphics = board.createGraphics();
 
     Point start;
     Point end;
     private boolean online;
-
+    
+    private LinkedHashSet<Object> elements;
+    
     BoardPanel(String serverIP, BoardFrame frame, boolean online) throws Exception{
         this.frame = frame;
         this.online = online;
@@ -57,11 +55,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         previousChange = new Stack<Integer>();
         removedItems = new Stack<Integer>();
         removedObjects = new Stack<Object>();
-
+        undo = new Stack<Object>();
+        redo = new Stack<Object>();
+        
         ownTexts = new Stack<Text>();
         ownStrokes = new Stack<Stroke>();
-        strokes = new LinkedHashSet<Stroke>();
-        texts = new LinkedHashSet<Text>();
+        elements = new LinkedHashSet<Object>();
 
         start = null;
         end = null;
@@ -82,135 +81,134 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     }
     //Networking methods
     public void addStroke(Stroke stroke){
-        strokes.add(stroke);
+        elements.add(stroke);
         this.repaint();
     }
     public void removeStroke(Stroke stroke){
-        strokes.remove(stroke);
+        elements.remove(stroke);
         this.repaint();
     }
     public void addText(Text text){
-        texts.add(text);
+        elements.add(text);
         this.repaint();
     }
     public void removeText(Text text){
-        texts.remove(text);
+        elements.remove(text);
         this.repaint();
     }
     public void undo(){
-        if(previousChange.size()==0){
+        if(undo.size()==0){
             return;
         }
-        int x = previousChange.pop();
-        if(x==1||x==2){ //Brush or Eraser
-            removedItems.push(1);
-            Stroke removedStroke = ownStrokes.pop();
-            strokes.remove(removedStroke);
+        Object previous = undo.pop();
+        if(previous instanceof Stroke){ //Brush or Eraser
+            elements.remove(previous);
             if(online){
                 try{
-                    client.removeStroke(removedStroke);
+                    client.removeStroke((Stroke)previous);
                 }catch(Exception e){}
             }
-            removedObjects.push(removedStroke);
+            redo.push(previous);
             
-        }else if(x==3){ //Text
-            removedItems.push(3);
-            Text removedText = ownTexts.pop();
-            texts.remove(removedText);
+        }else if(previous instanceof Text){ //Text
+            elements.remove(previous);
             if(online){
                 try{
-                    client.removeText(removedText);
+                    client.removeText((Text)previous);
                 }catch(Exception e){}
             }
-            removedObjects.push(removedText);
+            redo.push(previous);
         }
         this.repaint();
     }
     
     public void redo(){
-        if(removedItems.size()==0){
+        if(redo.size()==0){
             return;
         }
-        int x = removedItems.pop();
-        if(x==1||x==2){ //Brush or Eraser
-            Stroke recoveredStroke = (Stroke)removedObjects.pop();
-            strokes.add(recoveredStroke);
+        Object future = redo.pop();
+        if(future instanceof Stroke){ //Brush or Eraser
+            elements.add(future);
             if(online){
                 try{
-                    client.addStroke(recoveredStroke);
+                    client.addStroke((Stroke)future);
                 }catch(Exception e){}
             }
-            previousChange.push(1);
-        }else if(x==3){ //Text
-            Text recoveredText = (Text)removedObjects.pop();
-            texts.add(recoveredText);
+            undo.push(future);
+        }else if(future instanceof Text){ //Text
+            elements.add(future);
             if(online){
                 try{
-                    client.addText(recoveredText);
+                    client.addText((Text)future);
                 }catch(Exception e){}
             }
-            previousChange.push(3);
+            undo.push(future);
         }
         this.repaint();
     }
+    
     public void clear(){
-        previousChange.clear();
-        removedItems.clear();
-        removedObjects.clear();
-        texts.clear();
-        strokes.clear();
+        undo.clear();
+        redo.clear();
+        elements.clear();
         this.repaint();
     }
+    
+    public void clearServer() { //Tell other clients to clear their board
+        if(online){
+            try{
+                client.clear();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+    
     public void switchTool(int newTool){
         tool = newTool;
     }
+    
     public void setColor(Color newColor){
         color = newColor;
     }
+    
     public void setThickness(int newThickness){
         thickness = newThickness;
     }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Anti-aliasing
-        for(Text text: texts){
-            g2.setColor(text.getColor());
-            g2.setFont(text.getFont());
-            g2.drawString(text.getTextString(), text.getX(), text.getY());
+        for (Object element: elements) {
+        	if (element instanceof Stroke) {
+        		Stroke stroke = (Stroke)element;
+        		g2.setColor(stroke.getColor());
+                g2.setStroke(new BasicStroke(stroke.getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+                ArrayList<int[]>lines = stroke.getLines();
+                for(int[]x: lines){
+                    g2.drawLine(x[0], x[1], x[2], x[3]);
+                }
+        	} else if (element instanceof Text) {
+        		Text text = (Text)element;
+                g2.setColor(text.getColor());
+                g2.setFont(text.getFont());
+                g2.drawString(text.getTextString(), text.getX(), text.getY());
+        	}
         }
-        for(Stroke stroke: strokes){
-            g2.setColor(stroke.getColor());
-            g2.setStroke(new BasicStroke(stroke.getThickness(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-            ArrayList<int[]>lines = stroke.getLines();
-            for(int[]x: lines){
-                g2.drawLine(x[0], x[1], x[2], x[3]);
-            }
-        }
-        //g2.drawImage(board, 0, 0, null); Old drawing using BufferedImage
     }
+    
     @Override
     public void mouseDragged(MouseEvent e) { //drawing
         start = end;
         end = e.getPoint();
-
-        /* Old Drawing using BufferedImage
-        if(tool==1){ //Brush
-            boardGraphics.setColor(color);
-        }else if(tool==2){ //Eraser
-            boardGraphics.setColor(Color.WHITE);
-        }
-        boardGraphics.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        boardGraphics.drawLine((int)(start.getX()), (int)(start.getY()), (int)(end.getX()), (int)(end.getY()));
-        */
+        
         if (tool==Const.BRUSH || tool==Const.ERASER) {
             currentStroke.addLine((int)(start.getX()), (int)(start.getY()), (int)(end.getX()), (int)(end.getY()));
             this.repaint();
         }
     }
-    @Override
-    public void mouseMoved(MouseEvent e) {}
 
     //MouseListener
     @Override
@@ -220,6 +218,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         start = null;
         end = null;
         if(tool==Const.BRUSH||tool==Const.ERASER){
+        	redo.clear();
+        	undo.push(currentStroke);
             if(online){
                 try{
                     client.addStroke(currentStroke);
@@ -228,10 +228,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                 }
             }
             currentStroke = null;
-        }
-        if(tool==Const.BRUSH){
-            previousChange.push(1);
-        }else if (tool==Const.COLOR_PICKER) {
+        } else if (tool==Const.COLOR_PICKER) {
             int xPixel = e.getX();
             int yPixel = e.getY();
             BufferedImage temp = new BufferedImage(1500, 850, BufferedImage.TYPE_INT_ARGB);
@@ -242,15 +239,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             g2.dispose();
         }
     }
-    @Override
-    public void mouseClicked(MouseEvent e) {}
+
     @Override
     public void mousePressed(MouseEvent e) {
         if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
             System.out.println("New stroke");
             ownStrokes.push(new Stroke(thickness));
             currentStroke = ownStrokes.peek();
-            strokes.add(currentStroke);
+            elements.add(currentStroke);
             if(tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);
             }else if(tool==Const.ERASER){ //Eraser
@@ -262,8 +258,9 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             int result = textDialog.showTextDialog();
             if(result==1){
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
-                texts.add(newText);
-                previousChange.add(3);
+                elements.add(newText);
+                redo.clear();
+                undo.push(newText);
                 if(online){
                     try{
                         client.addText(newText);
@@ -273,9 +270,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
         this.repaint();
     }
+    
+    @Override
+    public void mouseMoved(MouseEvent e) {}
+    @Override
+    public void mouseClicked(MouseEvent e) {}
     @Override
     public void mouseEntered(MouseEvent e) {}
     @Override
     public void mouseExited(MouseEvent e) {}
-    
+
 }

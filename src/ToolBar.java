@@ -163,6 +163,7 @@ public class ToolBar extends JToolBar {
                 boardPanel.redo();
             }else if(e.getSource()==clear){
                 boardPanel.clear();
+                boardPanel.clearServer();
             }
         }
 

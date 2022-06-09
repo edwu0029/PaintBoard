@@ -86,6 +86,12 @@ public class Server {
                                 i.removeText(text);
                             }
                         }
+                    } else if(command==4) {
+                    	for(ConnectionHandler i: connections){
+                            if(i!=this){
+                                i.clear();
+                            }
+                        }
                     }
                 }catch(Exception e){
                     System.out.println("Error");
@@ -122,6 +128,14 @@ public class Server {
             try{
                 output.writeInt(-3);
                 output.writeObject(text);
+                output.flush();
+            }catch(Exception exp){
+
+            }
+        }
+        public void clear() {
+        	try{
+                output.writeInt(4);
                 output.flush();
             }catch(Exception exp){
 

@@ -46,6 +46,10 @@ public class Client {
         output.flush();
         System.out.println("Sent text");
     }
+    public void clear() throws Exception{
+    	output.writeInt(4);
+    	output.flush();
+    }
     public void stop() throws Exception{
         input.close();
         output.close();
@@ -61,6 +65,7 @@ public class Client {
             while(true){
                 try{
                     int command = input.readInt();
+                    System.out.println(command);
                     if(command==1){
                         Stroke stroke = (Stroke)input.readObject();
                         boardPanel.addStroke(stroke);
@@ -77,6 +82,8 @@ public class Client {
                         Text text = (Text)input.readObject();
                         boardPanel.removeText(text);
                         System.out.println("Recieved text to be removed");
+                    } else if (command==4) {
+                    	boardPanel.clear();
                     }
                 }catch(Exception e){
                     System.out.println("Error");
