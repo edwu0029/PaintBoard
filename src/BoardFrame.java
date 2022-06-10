@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 public class BoardFrame extends JFrame {
     private BoardPanel boardPanel;
     private ToolBar toolBar;
+    private ServerChat serverChat;
 
     final int MAX_X = 1500;
     final int MAX_Y = 850;
@@ -21,8 +22,10 @@ public class BoardFrame extends JFrame {
     BoardFrame(User user, String serverIP, boolean online) throws Exception{
         this.boardPanel = new BoardPanel(user, serverIP, this, online);
         this.toolBar = new ToolBar(boardPanel);
+        this.serverChat = new ServerChat(boardPanel);
         
         this.boardPanel.addToolBarReference(toolBar);
+        this.boardPanel.addServerChatReference(serverChat);
         
         this.boardPanel.setBackground(Color.WHITE);
         this.getContentPane().add(BorderLayout.CENTER, boardPanel);
