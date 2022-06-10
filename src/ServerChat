@@ -1,19 +1,25 @@
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.HeadlessException;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class ServerChat extends JFrame {
+public class ServerChat extends JFrame implements ActionListener {
 	JTextArea txaDisplay;
 	JScrollPane scrdisplay;
 	JTextField txtInput;
+	JButton button;
+	String message;
 	
-	public ServerChat() throws HeadlessException {
-		setTitle("Server");
+	ServerChat() {
+		setTitle("Chat");
 		setLayout(new FlowLayout());
 		
 		txaDisplay = new JTextArea();
@@ -26,10 +32,23 @@ public class ServerChat extends JFrame {
 		txtInput.setPreferredSize(new Dimension(450, 30));
 		getContentPane().add(txtInput);
 		
+		button = new JButton("Send message");
+		button.addActionListener(this);
+		this.add(button);
+		
 		setSize(500, 300);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+        
+        if (e.getSource() == button) {
+        	message = txtInput.getText();
+        	System.out.println(message);
+        	txaDisplay.append(message+"\n");
+        }
+        
+    }
+
 }
