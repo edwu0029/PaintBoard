@@ -22,6 +22,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     private BoardFrame frame;
     private ToolBar toolBar;
+    private ServerChat serverChat;
+    
     private TextDialog textDialog;
     private int tool = Const.BRUSH;
     private Stack<Integer>previousChange; //Log of previous changes done
@@ -91,6 +93,9 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
+    public void addServerChatReference(ServerChat serverChat) {
+    	this.serverChat = serverChat;
+    }
     //Networking methods
     public void syncBoard(LinkedHashSet<Object> elements) {
     	this.elements = elements;
@@ -112,6 +117,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         elements.remove(text);
         this.repaint();
     }
+    public void sendMessage(String message) {
+    	elements.add(message);
+    	serverChat.sendMessage(message);
+    }
+    
+    
     public void undo(){
         if(undo.size()==0){
             return;
@@ -292,7 +303,19 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     @Override
     public void mouseClicked(MouseEvent e) {}
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    	if(tool==Const.CHAT){
+    		System.out.println("Chattimal");
+        	serverChat.setVisible(true);
+        }
+    	if(tool==Const.SEND_MESSAGE){
+    		if(online&&!client.getClosed()){
+                try{
+                	client.sendMessage(serverChat.getMessage());
+                }catch(Exception ex){}
+            }
+    	}
+    }
     @Override
     public void mouseExited(MouseEvent e) {}
 
