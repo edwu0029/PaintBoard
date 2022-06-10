@@ -129,6 +129,13 @@ public class Server {
                     			i.sendElements();
                     		}
                     	}
+                    }else if(command==Const.SEND_MESSAGE) {
+                    	String message = (String)input.readObject();
+                    	for(ConnectionHandler i: connections) {
+                    		if (i!=this&&i.getRunning()) {
+                    			i.sendMessage(message);
+                    		}
+                    	}
                     }
                 }catch(Exception e){
                     System.out.println("Error inputing from socket. Socket thread stopped");
@@ -178,6 +185,15 @@ public class Server {
         public void clear() {
             try{
                 output.writeInt(Const.CLEAR);
+                output.flush();
+            }catch(Exception exp){
+
+            }
+        }
+        public void sendMessage(String message) {
+            try{
+                output.writeInt(Const.SEND_MESSAGE);
+                output.writeObject(message);
                 output.flush();
             }catch(Exception exp){
 
