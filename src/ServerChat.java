@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.LinkedHashSet;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -12,13 +14,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class ServerChat extends JFrame implements ActionListener {
-	JTextArea txaDisplay;
-	JScrollPane scrdisplay;
-	JTextField txtInput;
-	JButton button;
-	String message;
+	private BoardPanel boardPanel;
+	private JTextArea txaDisplay;
+	private JScrollPane scrdisplay;
+	private JTextField txtInput;
+	private JButton button;
+	private String message;
 	
-	ServerChat() {
+	ServerChat(BoardPanel boardPanel) {	
+		this.boardPanel = boardPanel;
 		setTitle("Chat");
 		setLayout(new FlowLayout());
 		
@@ -37,7 +41,7 @@ public class ServerChat extends JFrame implements ActionListener {
 		this.add(button);
 		
 		setSize(500, 300);
-		setVisible(true);
+		setVisible(false);
 		setLocationRelativeTo(null);
 	}
 	
@@ -47,8 +51,20 @@ public class ServerChat extends JFrame implements ActionListener {
         	message = txtInput.getText();
         	System.out.println(message);
         	txaDisplay.append(message+"\n");
+        	boardPanel.switchTool(Const.SEND_MESSAGE);
         }
         
     }
-
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void sendMessage(String message) {
+		System.out.println("Ultimate");
+		message = txtInput.getText();
+    	System.out.println(message);
+    	txaDisplay.append(message+"\n");
+	}
+	
 }
