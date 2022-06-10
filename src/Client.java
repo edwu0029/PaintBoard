@@ -7,7 +7,6 @@ public class Client {
     private BoardPanel boardPanel;
     private ServerChat serverChat;
     private Socket socket;
-    private String serverIP;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private ConnectionHandler connectionHandler;
@@ -16,9 +15,7 @@ public class Client {
     private final int PORT = 5000;
 
     Client(String serverIP, BoardPanel boardPanel) throws Exception{
-        this.serverIP = serverIP;
         this.boardPanel = boardPanel;
-        this.serverChat = serverChat;
         this.socket = new Socket(serverIP, PORT);
     }
     public void start() throws Exception{

@@ -2,16 +2,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.LinkedHashSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.text.DefaultCaret;
 
 public class ServerChat extends JFrame implements ActionListener {
 	private Client client;
@@ -29,6 +26,8 @@ public class ServerChat extends JFrame implements ActionListener {
 		setLayout(new FlowLayout());
 		
 		txaDisplay = new JTextArea();
+		DefaultCaret caret = (DefaultCaret)txaDisplay.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);//Forces chat to scroll down
 		txaDisplay.setEditable(false);
 		scrdisplay = new JScrollPane(txaDisplay);
 		scrdisplay.setPreferredSize(new Dimension(450, 200));
@@ -42,21 +41,20 @@ public class ServerChat extends JFrame implements ActionListener {
 		button.addActionListener(this);
 		this.add(button);
 		
-		setSize(500, 300);
+		setSize(500, 320);
 		setVisible(false);
+		setResizable(false);
 		setLocationRelativeTo(null);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-        
         if (e.getSource() == button) {
         	message = txtInput.getText();
         	txaDisplay.append(user.getName()+": "+message+"\n");
         	try {
 				client.sendMessage(user.getName()+": "+message);
 			} catch (Exception ex) {}
-        }
-        
+        } 
     }
 	
 	public String getMessage() {

@@ -21,21 +21,20 @@ public class BoardFrame extends JFrame {
 
     BoardFrame(User user, String serverIP, boolean online) throws Exception{
         this.boardPanel = new BoardPanel(user, serverIP, this, online);
-        this.toolBar = new ToolBar(boardPanel);
+        toolBar = new ToolBar(boardPanel);
+        boardPanel.addToolBarReference(toolBar);
         
-        this.boardPanel.addToolBarReference(toolBar);
-        
-        this.boardPanel.setBackground(Color.WHITE);
-        this.getContentPane().add(BorderLayout.CENTER, boardPanel);
-        this.add(BorderLayout.WEST, toolBar);
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(MAX_X, MAX_Y);
-        this.setVisible(true);
-        this.setResizable(false);
+        boardPanel.setBackground(Color.WHITE);
+        getContentPane().add(BorderLayout.CENTER, boardPanel);
+        add(BorderLayout.WEST, toolBar);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(MAX_X, MAX_Y);
+        setVisible(true);
     }
+    
     public void quit(){
         this.removeAll();
         this.dispose();
     }
+    
 }

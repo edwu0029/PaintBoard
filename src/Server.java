@@ -13,8 +13,8 @@ public class Server {
     private ServerThread serverThread;
     private boolean running = true;
     private LinkedHashSet<Object> elements = new LinkedHashSet<Object>();
-    
     final int PORT = 5000;
+    
     Server() throws Exception{
         String localHost = InetAddress.getLocalHost().toString();
         ip = localHost.substring(localHost.indexOf('/')+1);
@@ -25,9 +25,11 @@ public class Server {
         this.serverThread = new ServerThread();
         serverThread.start();
     }
+    
     public String getServerIP(){
         return ip;
     }
+    
     public void quit() throws Exception{
         System.out.println("Server quit");
         running = false;
@@ -38,6 +40,7 @@ public class Server {
         }
         serverSocket.close();
     }
+    
     class ServerThread extends Thread{
         public void run(){
             while(running){
@@ -66,9 +69,11 @@ public class Server {
             this.output = new ObjectOutputStream(socket.getOutputStream());
             this.input = new ObjectInputStream(socket.getInputStream());
         }
+        
         public boolean getRunning(){
             return running;
         }
+        
         public void quit() throws Exception{
             System.out.println("intiated server connection quit");
             running = false;
@@ -76,6 +81,7 @@ public class Server {
             output.close();
             socket.close();
         }
+        
         public void run(){
             while(running){
                 try{
@@ -143,6 +149,7 @@ public class Server {
                 }
             }
         }
+        
         public void sendElements() {
         	try {
         		output.writeInt(Const.SEND_ELEMENTS);
@@ -150,6 +157,7 @@ public class Server {
         		output.flush();
         	}catch(Exception e) {}
         }
+        
         public void addStroke(Stroke stroke){
             try{
                 output.writeInt(Const.ADD_STROKE);
@@ -157,6 +165,7 @@ public class Server {
                 output.flush();
             }catch(Exception exp){}
         }
+        
         public void addText(Text text){
             try{
                 output.writeInt(Const.ADD_TEXT);
@@ -164,6 +173,7 @@ public class Server {
                 output.flush();
             }catch(Exception exp){}
         }
+        
         public void removeStroke(Stroke stroke){
             try{
                 output.writeInt(Const.REMOVE_STROKE);
@@ -173,6 +183,7 @@ public class Server {
 
             }
         }
+        
         public void removeText(Text text){
             try{
                 output.writeInt(Const.REMOVE_TEXT);
@@ -182,6 +193,7 @@ public class Server {
 
             }
         }
+        
         public void clear() {
             try{
                 output.writeInt(Const.CLEAR);
@@ -190,6 +202,7 @@ public class Server {
 
             }
         }
+        
         public void sendMessage(String message) {
             try{
                 output.writeInt(Const.SEND_MESSAGE);
@@ -200,4 +213,5 @@ public class Server {
             }
         }
     }
+    
 }

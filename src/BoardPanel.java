@@ -19,31 +19,22 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel implements MouseMotionListener, MouseListener {
     private Client client;
     private User user;
+    private boolean online;
 
     private BoardFrame frame;
     private ToolBar toolBar;
     private ServerChat serverChat;
     
     private TextDialog textDialog;
-    private int tool = Const.BRUSH;
-    private Stack<Integer>previousChange; //Log of previous changes done
-    private Stack<Integer>removedItems;
-    private Stack<Object>removedObjects;
     private Stack<Object> undo;
     private Stack<Object> redo;
-    private int thickness = 4;
     private Stroke currentStroke;
     private Color color;
     
-    private JColorChooser colorChooser;
-
-    //TODO change names for hashsets
-    private Stack<Text>ownTexts;
-    private Stack<Stroke>ownStrokes;
-
-    Point start;
-    Point end;
-    private boolean online;
+    private Point start;
+    private Point end;
+    private int thickness = 4;
+    private int tool = Const.BRUSH;
     
     private LinkedHashSet<Object> elements;
     
@@ -51,25 +42,20 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         this.user = user;
         this.frame = frame;
         this.online = online;
-        this.colorChooser = new JColorChooser();
+        
         this.addMouseMotionListener(this);
         this.addMouseListener(this);
 
-        previousChange = new Stack<Integer>();
-        removedItems = new Stack<Integer>();
-        removedObjects = new Stack<Object>();
         undo = new Stack<Object>();
         redo = new Stack<Object>();
         
-        ownTexts = new Stack<Text>();
-        ownStrokes = new Stack<Stroke>();
         elements = new LinkedHashSet<Object>();
 
         start = null;
         end = null;
 
-        this.color = new Color(0, 0, 0);
-        this.textDialog = new TextDialog(frame);
+        color = new Color(0, 0, 0);
+        textDialog = new TextDialog(frame);
 
         //TODO move client out of BoardPanel
         //TODO hardcode ip adress of server
@@ -96,30 +82,30 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         this.toolBar = toolBar;
     }
     public void openChat() {
-    	this.serverChat.setVisible(true);
+    	serverChat.setVisible(true);
     }
+    
     //Networking methods
     public void syncBoard(LinkedHashSet<Object> elements) {
     	this.elements = elements;
-    	this.repaint();
+    	repaint();
     }
     public void addStroke(Stroke stroke){
         elements.add(stroke);
-        this.repaint();
+        repaint();
     }
     public void removeStroke(Stroke stroke){
         elements.remove(stroke);
-        this.repaint();
+        repaint();
     }
     public void addText(Text text){
         elements.add(text);
-        this.repaint();
+        repaint();
     }
     public void removeText(Text text){
         elements.remove(text);
-        this.repaint();
+        repaint();
     }
-    
     
     public void undo(){
         if(undo.size()==0){
@@ -133,8 +119,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                     client.removeStroke((Stroke)previous);
                 }catch(Exception e){}
             }
-            redo.push(previous);
-            
+            redo.push(previous);  
         }else if(previous instanceof Text){ //Text
             elements.remove(previous);
             if(online&&!client.getClosed()){
@@ -144,7 +129,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
             redo.push(previous);
         }
-        this.repaint();
+        repaint();
     }
     
     public void redo(){
@@ -169,14 +154,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
             undo.push(future);
         }
-        this.repaint();
+        repaint();
     }
     
     public void clear(){
         undo.clear();
         redo.clear();
         elements.clear();
-        this.repaint();
+        repaint();
     }
     
     public void clearServer() { //Tell other clients to clear their board
@@ -269,8 +254,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void mousePressed(MouseEvent e) {
         if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
             System.out.println("New stroke");
-            ownStrokes.push(new Stroke(thickness));
-            currentStroke = ownStrokes.peek();
+            currentStroke = new Stroke(thickness);
             elements.add(currentStroke);
             if(tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);
