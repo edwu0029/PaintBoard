@@ -3,15 +3,18 @@ public class User {
     private boolean online;
     private Server server;
     private BoardFrame boardFrame;
-    User(boolean hasServer, boolean online) throws Exception{
+    private String name;
+    User(boolean hasServer, String name, boolean online) throws Exception{
         this.hasServer = hasServer;
         if(hasServer){
             this.server = new Server();
         }
         this.online = online;
+        this.name = name;
         this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
     }
-    User(String serverIP, boolean online) throws Exception{
+    User(String serverIP, String name, boolean online) throws Exception{
+    	this.name = name;
         this.boardFrame = new BoardFrame(this, serverIP, online);
     }
     User() throws Exception{
@@ -24,5 +27,8 @@ public class User {
     }
     public boolean isHost() {
     	return hasServer;
+    }
+    public String getName() {
+    	return name;
     }
 }

@@ -12,38 +12,41 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     public String ipAddress;
     String name;
     JButton button;
-    JTextField textField;
-    JTextField textField1;
+    JTextField ipField;
+    JTextField nameField;
     
     JoinServerPanel() {
         
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        textField = new JTextField();
-        textField.setPreferredSize(new Dimension(800, 40)); 
-        textField.setText("Input Server IP Address");
-        textField1 = new JTextField();
-        textField1.setPreferredSize(new Dimension(800, 40)); 
-        textField1.setText("Input Nickname");
-        button = new JButton("Enter IP Address");
+        ipField = new JTextField();
+        ipField.setPreferredSize(new Dimension(800, 40)); 
+        ipField.setText("Input Server IP Address");
+        nameField = new JTextField();
+        nameField.setPreferredSize(new Dimension(800, 40)); 
+        nameField.setText("Input Nickname");
+        button = new JButton("Enter Server");
         button.addActionListener(this);
         
-        this.add(textField);
-        this.add(textField1);
+        this.add(ipField);
+        this.add(nameField);
         this.add(button);
-        this.setSize(800, 150);
+        this.setSize(850, 170);
         this.setVisible(true);
         
     }
     public String getServerIPAdress(){
         return ipAddress;
     }
+    public String getName() {
+    	return name;
+    }
     public void actionPerformed(ActionEvent e) {
         
         if (e.getSource() == button) {
-            ipAddress = textField.getText();
-            name = textField1.getText();    
+            ipAddress = ipField.getText();
+            name = nameField.getText();    
             buttonPressed = true;
             dispose();
         }

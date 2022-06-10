@@ -15,14 +15,16 @@ import javax.swing.JTextField;
 
 public class ServerChat extends JFrame implements ActionListener {
 	private Client client;
+	private User user;
 	private JTextArea txaDisplay;
 	private JScrollPane scrdisplay;
 	private JTextField txtInput;
 	private JButton button;
 	private String message;
 	
-	ServerChat(Client client) {	
+	ServerChat(Client client, User user) {	
 		this.client = client;
+		this.user = user;
 		setTitle("Chat");
 		setLayout(new FlowLayout());
 		
@@ -49,10 +51,9 @@ public class ServerChat extends JFrame implements ActionListener {
         
         if (e.getSource() == button) {
         	message = txtInput.getText();
-        	System.out.println(message);
-        	txaDisplay.append(message+"\n");
+        	txaDisplay.append(user.getName()+": "+message+"\n");
         	try {
-				client.sendMessage(message);
+				client.sendMessage(user.getName()+": "+message);
 			} catch (Exception ex) {}
         }
         

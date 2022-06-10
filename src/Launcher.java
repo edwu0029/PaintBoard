@@ -18,17 +18,17 @@ public class Launcher {
             //String name = input.next();
             new User();
         } else if (Menu.serverCreate == true) {
-        	new User(true, true);
+        	new User(true, "host", true);
         } else if (Menu.serverJoin == true) {
             
-            JoinServerPanel joinServePanel = new JoinServerPanel();
+            JoinServerPanel joinServerPanel = new JoinServerPanel();
             // stalls until the user inputs ID Address
-            while (joinServePanel.buttonPressed == false) {
+            while (joinServerPanel.buttonPressed == false) {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {}
             }
-            new User(joinServePanel.getServerIPAdress(), true);
+            new User(joinServerPanel.getServerIPAdress(), joinServerPanel.getName(), true);
             
         }
 

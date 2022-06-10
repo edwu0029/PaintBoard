@@ -76,7 +76,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         if(online){
             client = new Client(serverIP, this);
             client.start();
-            serverChat = new ServerChat(client);
+            serverChat = new ServerChat(client, user);
             client.addChatReference(serverChat);
             if (user.isHost()) {
         		elements = new LinkedHashSet<Object>();
