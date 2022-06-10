@@ -71,6 +71,11 @@ public class Client {
     	output.writeInt(Const.GET_ELEMENTS);
     	output.flush();
     }
+    public void sendMessage(String message) throws Exception{
+    	output.writeInt(Const.SEND_MESSAGE);
+    	output.writeObject(message);
+    	output.flush();
+    }
 
     class ConnectionHandler extends Thread{
         private boolean running = true;
@@ -107,6 +112,9 @@ public class Client {
                     }else if (command==Const.SEND_ELEMENTS) {
                     	LinkedHashSet<Object> elements = (LinkedHashSet<Object>)input.readObject();
                     	boardPanel.syncBoard(elements);
+                    }else if (command==Const.SEND_MESSAGE) {
+                    	String message = (String)input.readObject();
+                    	boardPanel.sendMessage(message);
                     }
                 }catch(Exception e){
                     running = false;
