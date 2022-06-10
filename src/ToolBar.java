@@ -48,6 +48,8 @@ public class ToolBar extends JToolBar {
     private JButton quit;
     private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
     
+    private JButton chat;
+    
     ToolBar(BoardPanel boardPanel){
         this.boardPanel = boardPanel;
 
@@ -105,7 +107,10 @@ public class ToolBar extends JToolBar {
         thicknessPanel.add(thickness);
         this.add(thicknessPanel);
 
-        this.addSeparator();
+        //Chat button
+        chat = new JButton("Chat");
+        chat.addActionListener(buttonController);
+        this.add(chat);
 
         //Clear button
         clear = new JButton("Clear");
@@ -165,6 +170,9 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==text){
                 System.out.println("text");
                 boardPanel.switchTool(Const.TEXT);
+            }else if(e.getSource()==chat) {
+            	System.out.println("chat");
+            	boardPanel.switchTool(Const.CHAT);
             }else if(e.getSource()==undo){
                 System.out.println("undo");
                 boardPanel.undo();
@@ -176,6 +184,7 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==quit){
                 try{
                     boardPanel.quit();
+                    System.exit(0);
                 }catch(Exception ex){}
             }
         }
