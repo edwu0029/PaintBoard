@@ -10,7 +10,7 @@ public class Const {
 	public static final int ADD_TEXT = 5;
 	public static final int REMOVE_TEXT = 6;
 	public static final int CLEAR = 7;
-	public static final int CHAT = 8;
+	public static final int RECEIVE_MESSAGE = 8;
 	public static final int SEND_MESSAGE = 9;
 	
 	//Tool Constants

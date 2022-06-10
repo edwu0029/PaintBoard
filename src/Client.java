@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 
 public class Client {
     private BoardPanel boardPanel;
+    private ServerChat serverChat;
     private Socket socket;
     private String serverIP;
     private ObjectInputStream input;
@@ -17,6 +18,7 @@ public class Client {
     Client(String serverIP, BoardPanel boardPanel) throws Exception{
         this.serverIP = serverIP;
         this.boardPanel = boardPanel;
+        this.serverChat = serverChat;
         this.socket = new Socket(serverIP, PORT);
     }
     public void start() throws Exception{
@@ -29,6 +31,9 @@ public class Client {
     }
     public boolean getClosed(){
         return closed;
+    }
+    public void addChatReference(ServerChat serverChat) {
+    	this.serverChat = serverChat;
     }
     public void quit() throws Exception{
         connectionHandler.quit();
@@ -114,7 +119,7 @@ public class Client {
                     	boardPanel.syncBoard(elements);
                     }else if (command==Const.SEND_MESSAGE) {
                     	String message = (String)input.readObject();
-                    	boardPanel.sendMessage(message);
+                    	serverChat.sendMessage(message);
                     }
                 }catch(Exception e){
                     running = false;

@@ -14,15 +14,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class ServerChat extends JFrame implements ActionListener {
-	private BoardPanel boardPanel;
+	private Client client;
 	private JTextArea txaDisplay;
 	private JScrollPane scrdisplay;
 	private JTextField txtInput;
 	private JButton button;
 	private String message;
 	
-	ServerChat(BoardPanel boardPanel) {	
-		this.boardPanel = boardPanel;
+	ServerChat(Client client) {	
+		this.client = client;
 		setTitle("Chat");
 		setLayout(new FlowLayout());
 		
@@ -51,7 +51,9 @@ public class ServerChat extends JFrame implements ActionListener {
         	message = txtInput.getText();
         	System.out.println(message);
         	txaDisplay.append(message+"\n");
-        	boardPanel.switchTool(Const.SEND_MESSAGE);
+        	try {
+				client.sendMessage(message);
+			} catch (Exception ex) {}
         }
         
     }
@@ -61,9 +63,6 @@ public class ServerChat extends JFrame implements ActionListener {
 	}
 	
 	public void sendMessage(String message) {
-		System.out.println("Ultimate");
-		message = txtInput.getText();
-    	System.out.println(message);
     	txaDisplay.append(message+"\n");
 	}
 	

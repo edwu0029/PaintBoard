@@ -52,7 +52,6 @@ public class ToolBar extends JToolBar {
     
     ToolBar(BoardPanel boardPanel){
         this.boardPanel = boardPanel;
-
         //Set up tool menu variables
         this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
         this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
@@ -160,10 +159,8 @@ public class ToolBar extends JToolBar {
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
                 boardPanel.setColor(newColor);
-
                 //Update color icon
                 updateColorIcon(newColor);
-
             }else if (e.getSource()==colorPicker) {
                 System.out.println("color picker");
                 boardPanel.switchTool(Const.COLOR_PICKER);
@@ -172,7 +169,7 @@ public class ToolBar extends JToolBar {
                 boardPanel.switchTool(Const.TEXT);
             }else if(e.getSource()==chat) {
             	System.out.println("chat");
-            	boardPanel.switchTool(Const.CHAT);
+                boardPanel.openChat();
             }else if(e.getSource()==undo){
                 System.out.println("undo");
                 boardPanel.undo();
