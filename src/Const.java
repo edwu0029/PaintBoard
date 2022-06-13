@@ -5,12 +5,10 @@ public class Const {
 	//Network Constants
 	public static final int SEND_ELEMENTS = 1;
 	public static final int GET_ELEMENTS = 2;
-	public static final int ADD_STROKE = 3;
-	public static final int REMOVE_STROKE = 4;
-	public static final int ADD_TEXT = 5;
-	public static final int REMOVE_TEXT = 6;
-	public static final int CLEAR = 7;
-	public static final int SEND_MESSAGE = 8;
+	public static final int ADD_ELEMENT = 3;
+	public static final int REMOVE_ELEMENT = 4;
+	public static final int CLEAR = 5;
+	public static final int SEND_MESSAGE = 6;
 	
 	//Tool Constants
     public static final int BRUSH = 1;

@@ -1,21 +1,24 @@
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import javax.swing.JFrame;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class BoardFrame extends JFrame {
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class BoardFrame extends JFrame implements ActionListener {
     private BoardPanel boardPanel;
     private ToolBar toolBar;
     private ServerChat serverChat;
-
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenuItem Save;
+    private JMenuItem Open;
+    private JMenuItem Exit;
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
@@ -23,13 +26,45 @@ public class BoardFrame extends JFrame {
         this.boardPanel = new BoardPanel(user, serverIP, this, online);
         toolBar = new ToolBar(boardPanel);
         boardPanel.addToolBarReference(toolBar);
+
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+        menuBar.add(fileMenu);
+        Save = new JMenuItem("Save");
+        Save.addActionListener(this);
+        Exit = new JMenuItem("Exit");
+        Exit.addActionListener(this);
+        Open = new JMenuItem("Open");
+        Open.addActionListener(this);
+        fileMenu.add(Save);
+        fileMenu.add(Open);
+        fileMenu.add(Exit);
+        this.setJMenuBar(menuBar);
         
         boardPanel.setBackground(Color.WHITE);
         getContentPane().add(BorderLayout.CENTER, boardPanel);
         add(BorderLayout.WEST, toolBar);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(MAX_X, MAX_Y);
+        setTitle(serverIP);
         setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+    	if (e.getSource() == Exit) {
+    		try {
+				boardPanel.quit();
+                System.exit(0);
+			} catch (Exception e1) {}
+    	} else if (e.getSource() == Save) {
+    		try {
+				boardPanel.saveBoard();
+			} catch (Exception e1) {}
+    	} else if (e.getSource() == Open) {
+    		try {
+    			boardPanel.openBoard();
+    		} catch (Exception e1) {}
+    	}
     }
     
     public void quit(){

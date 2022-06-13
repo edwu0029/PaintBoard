@@ -45,16 +45,15 @@ public class ToolBar extends JToolBar {
     private JButton redo;
     private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/redoicon.png"));
 
-    private JButton quit;
-    private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
+    //private JButton quit;
+    //private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
     
     private JButton chat;
     
     ToolBar(BoardPanel boardPanel){
         this.boardPanel = boardPanel;
         //Set up tool menu variables
-        this.setOrientation(JToolBar.VERTICAL); //Set toolbar as vertical
-        this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
+        this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -84,7 +83,7 @@ public class ToolBar extends JToolBar {
         this.add(color);
         
         //Color picker button
-        colorPicker = new JButton("C.Picker");
+        colorPicker = new JButton("Color Picker");
         colorPicker.setIcon(new ImageIcon(colorPickerIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         colorPicker.addActionListener(buttonController);
         this.add(colorPicker);
@@ -130,10 +129,10 @@ public class ToolBar extends JToolBar {
         this.add(redo);
 
         //Quit button
-        quit = new JButton("Quit");
-        quit.setIcon(new ImageIcon(quitIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-        quit.addActionListener(buttonController);
-        this.add(quit);
+//        quit = new JButton("Quit");
+//        quit.setIcon(new ImageIcon(quitIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+//        quit.addActionListener(buttonController);
+//        this.add(quit);
     }
     
     //update color icon function
@@ -159,7 +158,6 @@ public class ToolBar extends JToolBar {
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
                 boardPanel.setColor(newColor);
-                //Update color icon
                 updateColorIcon(newColor);
             }else if (e.getSource()==colorPicker) {
                 System.out.println("color picker");
@@ -178,12 +176,12 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==clear){
                 boardPanel.clear();
                 boardPanel.clearServer();
-            }else if(e.getSource()==quit){
-                try{
-                    boardPanel.quit();
-                    System.exit(0);
-                }catch(Exception ex){}
-            }
+            }//else if(e.getSource()==quit){
+//                try{
+//                    boardPanel.quit();
+//                    System.exit(0);
+//                }catch(Exception ex){}
+//            }
         }
 
         public void stateChanged(ChangeEvent e) {

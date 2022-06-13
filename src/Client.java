@@ -41,29 +41,19 @@ public class Client {
         System.out.println("Closed client");
         closed = true;
     }
-    public void addStroke(Stroke stroke) throws Exception{
-        output.writeInt(Const.ADD_STROKE);
-        output.writeObject(stroke);
-        output.flush();
-        System.out.println("Sent stroke");
+    public void addElement(Object element) {
+    	try {
+	        output.writeInt(Const.ADD_ELEMENT);
+	        output.writeObject(element);
+	        output.flush();
+    	} catch (Exception e) {e.printStackTrace();}
+        System.out.println("Sent element");
     }
-    public void addText(Text text) throws Exception{
-        output.writeInt(Const.ADD_TEXT);
-        output.writeObject(text);
+    public void removeElement(Object element) throws Exception{
+        output.writeInt(Const.REMOVE_ELEMENT);
+        output.writeObject(element);
         output.flush();
-        System.out.println("Sent text");
-    }
-    public void removeStroke(Stroke stroke) throws Exception{
-        output.writeInt(Const.REMOVE_STROKE);
-        output.writeObject(stroke);
-        output.flush();
-        System.out.println("Sent stroke");
-    }
-    public void removeText(Text text) throws Exception{
-        output.writeInt(Const.REMOVE_TEXT);
-        output.writeObject(text);
-        output.flush();
-        System.out.println("Sent text");
+        System.out.println("Sent element");
     }
     public void clear() throws Exception{
     	output.writeInt(Const.CLEAR);
@@ -93,22 +83,14 @@ public class Client {
                 try{
                     int command = input.readInt();
                     System.out.println(command);
-                    if(command==Const.ADD_STROKE){
-                        Stroke stroke = (Stroke)input.readObject();
-                        boardPanel.addStroke(stroke);
-                        System.out.println("Recevied stroke to be added");
-                    }else if(command==Const.REMOVE_STROKE){
-                        Stroke stroke = (Stroke)input.readObject();
-                        boardPanel.removeStroke(stroke);
-                        System.out.println("Recevied stroke to be removed");
-                    }else if(command==Const.ADD_TEXT){
-                        Text text = (Text)input.readObject();
-                        boardPanel.addText(text);
-                        System.out.println("Recevied text to be added");
-                    }else if(command==Const.REMOVE_TEXT){
-                        Text text = (Text)input.readObject();
-                        boardPanel.removeText(text);
-                        System.out.println("Recieved text to be removed");
+                    if(command==Const.ADD_ELEMENT){
+                        Object element = input.readObject();
+                        boardPanel.addElement(element);
+                        System.out.println("Recevied element to be added");
+                    }else if(command==Const.REMOVE_ELEMENT){
+                        Object element = input.readObject();
+                        boardPanel.removeElement(element);
+                        System.out.println("Recevied element to be removed");
                     }else if (command==Const.CLEAR) {
                     	boardPanel.clear();
                     }else if (command==Const.SEND_ELEMENTS) {

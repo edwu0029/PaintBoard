@@ -86,40 +86,22 @@ public class Server {
             while(running){
                 try{
                     int command = input.readInt();
-                    if(command==Const.ADD_STROKE){
-                        Stroke stroke = (Stroke)input.readObject();
-                        elements.add(stroke);
+                    if(command==Const.ADD_ELEMENT){
+                        Object element = input.readObject();
+                        elements.add(element);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
-                                i.addStroke(stroke);
+                                i.addElement(element);
                             }
                         }
-                    }else if(command==Const.REMOVE_STROKE){
-                        Stroke stroke = (Stroke)input.readObject();
-                        elements.remove(stroke);
+                    }else if(command==Const.REMOVE_ELEMENT){
+                        Object element = input.readObject();
+                        elements.remove(element);
                         //Update in other clients
                         for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
-                                i.removeStroke(stroke);
-                            }
-                        }
-                    }else if(command==Const.ADD_TEXT){
-                        Text text = (Text)input.readObject();
-                        elements.add(text);
-                        //Update in other clients
-                        for(ConnectionHandler i: connections){
-                            if(i!=this&&i.getRunning()){
-                                i.addText(text);
-                            }
-                        }
-                    }else if(command==Const.REMOVE_TEXT){
-                        Text text = (Text)input.readObject();
-                        elements.remove(text);
-                        //Update in other clients
-                        for(ConnectionHandler i: connections){
-                            if(i!=this&&i.getRunning()){
-                                i.removeText(text);
+                                i.removeElement(element);
                             }
                         }
                     }else if(command==Const.CLEAR) {
@@ -158,40 +140,20 @@ public class Server {
         	}catch(Exception e) {}
         }
         
-        public void addStroke(Stroke stroke){
+        public void addElement(Object element){
             try{
-                output.writeInt(Const.ADD_STROKE);
-                output.writeObject(stroke);
+                output.writeInt(Const.ADD_ELEMENT);
+                output.writeObject(element);
                 output.flush();
             }catch(Exception exp){}
         }
         
-        public void addText(Text text){
+        public void removeElement(Object element){
             try{
-                output.writeInt(Const.ADD_TEXT);
-                output.writeObject(text);
+                output.writeInt(Const.REMOVE_ELEMENT);
+                output.writeObject(element);
                 output.flush();
-            }catch(Exception exp){}
-        }
-        
-        public void removeStroke(Stroke stroke){
-            try{
-                output.writeInt(Const.REMOVE_STROKE);
-                output.writeObject(stroke);
-                output.flush();
-            }catch(Exception exp){
-
-            }
-        }
-        
-        public void removeText(Text text){
-            try{
-                output.writeInt(Const.REMOVE_TEXT);
-                output.writeObject(text);
-                output.flush();
-            }catch(Exception exp){
-
-            }
+            }catch(Exception exp) {}
         }
         
         public void clear() {

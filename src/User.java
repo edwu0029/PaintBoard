@@ -4,6 +4,7 @@ public class User {
     private Server server;
     private BoardFrame boardFrame;
     private String name;
+    
     User(boolean hasServer, String name, boolean online) throws Exception{
         this.hasServer = hasServer;
         if(hasServer){
