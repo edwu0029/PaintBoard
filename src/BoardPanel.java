@@ -60,8 +60,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         color = new Color(0, 0, 0);
         textDialog = new TextDialog(frame);
 
-        //TODO move client out of BoardPanel
-        //TODO hardcode ip adress of server
         if(online){
             client = new Client(serverIP, this);
             client.start();

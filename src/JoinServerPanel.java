@@ -8,49 +8,62 @@ import java.awt.FlowLayout;
 
 public class JoinServerPanel extends JFrame implements ActionListener {
     
-    public boolean buttonPressed = false;
-    public String ipAddress;
-    String name;
-    JButton button;
-    JTextField ipField;
-    JTextField nameField;
+    private boolean buttonPressed = false;
+    private boolean host;
+    private String ipAddress;
+    private String name;
+    private JButton button;
+    private JTextField ipField;
+    private JTextField nameField;
     
-    JoinServerPanel() {
-        
+    JoinServerPanel(boolean host) {
+    	this.host = host;
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        ipField = new JTextField();
-        ipField.setPreferredSize(new Dimension(800, 40)); 
-        ipField.setText("Input Server IP Address");
         nameField = new JTextField();
         nameField.setPreferredSize(new Dimension(800, 40)); 
         nameField.setText("Input Nickname");
-        button = new JButton("Enter Server");
-        button.addActionListener(this);
-        
-        this.add(ipField);
         this.add(nameField);
-        this.add(button);
-        this.setSize(850, 170);
-        this.setVisible(true);
+        button = new JButton("Create Server");
+        button.addActionListener(this);  
+        this.setSize(850, 120);
+
+        if (!host) {
+            button.setText("Enter Server");
+  	        ipField = new JTextField();
+	        ipField.setPreferredSize(new Dimension(800, 40)); 
+	        ipField.setText("Input Server IP Address");
+	        this.add(ipField);
+	        this.setSize(850, 170);
+        }
         
+        this.add(button);
+        this.setVisible(true);  
     }
+    
+    
     public String getServerIPAdress(){
         return ipAddress;
     }
+    
     public String getName() {
     	return name;
     }
+    
+    public boolean buttonPressed() {
+    	return buttonPressed;
+    }
+    
     public void actionPerformed(ActionEvent e) {
-        
         if (e.getSource() == button) {
-            ipAddress = ipField.getText();
+        	if (!host) {
+	            ipAddress = ipField.getText();
+        	}
             name = nameField.getText();    
             buttonPressed = true;
             dispose();
         }
-        
     }
 
 }

@@ -101,6 +101,7 @@ public class Client {
                     	serverChat.sendMessage(message);
                     }
                 }catch(Exception e){
+                	System.out.println("server disconnected");
                     running = false;
                     closed = true;
                 }

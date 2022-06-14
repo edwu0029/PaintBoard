@@ -1,37 +1,35 @@
-import java.util.Scanner;
 public class Launcher {
     public static void main(String[] args) throws Exception{
         Menu menu = new Menu();
         
         // stalls until a button is pressed
-        while(Menu.buttonPressed == false) {
+        while(menu.buttonPressed() == false) {
             try { 
                 Thread.sleep(200);
             } catch (InterruptedException e) {}
         }
         
-        // add server functions later
-        if (Menu.single == true) {
-            //Temporary
-            //Scanner input = new Scanner(System.in);
-            //System.out.println("Type in your name: ");
-            //String name = input.next();
+        if (menu.offline() == true) {
             new User();
-        } else if (Menu.serverCreate == true) {
-        	new User(true, "host", true);
-        } else if (Menu.serverJoin == true) {
-            
-            JoinServerPanel joinServerPanel = new JoinServerPanel();
+        } else if (menu.createServer() == true) {
+        	JoinServerPanel joinServerPanel = new JoinServerPanel(true);
+            // stalls until the user inputs nickname
+        	while (joinServerPanel.buttonPressed() == false) {
+        		try {
+        			Thread.sleep(200);
+        		} catch (InterruptedException e) {}
+        	}
+        	new User(true, joinServerPanel.getName(), true);
+        } else if (menu.joinServer() == true) {
+            JoinServerPanel joinServerPanel = new JoinServerPanel(false);
             // stalls until the user inputs ID Address
-            while (joinServerPanel.buttonPressed == false) {
+            while (joinServerPanel.buttonPressed() == false) {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {}
             }
-            new User(joinServerPanel.getServerIPAdress(), joinServerPanel.getName(), true);
-            
+            System.out.println("test");
+            new User(joinServerPanel.getServerIPAdress(), joinServerPanel.getName(), true);   
         }
-
     }
-
 }

@@ -24,7 +24,7 @@ public class BoardFrame extends JFrame implements ActionListener {
 
     BoardFrame(User user, String serverIP, boolean online) throws Exception{
         this.boardPanel = new BoardPanel(user, serverIP, this, online);
-        toolBar = new ToolBar(boardPanel);
+        toolBar = new ToolBar(boardPanel, online);
         boardPanel.addToolBarReference(toolBar);
 
         menuBar = new JMenuBar();

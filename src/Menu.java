@@ -4,14 +4,14 @@ import java.awt.event.*;
 
 public class Menu extends JFrame implements ActionListener {
     
-    static boolean buttonPressed = false;
-    static boolean single = false;
-    static boolean serverCreate = false;
-    static boolean serverJoin = false;
-    static boolean exit = false;
+    private static boolean buttonPressed = false;
+    private static boolean single = false;
+    private static boolean serverCreate = false;
+    private static boolean serverJoin = false;
+    private static boolean exit = false;
     
-    public final int WIDTH = 1500;
-    public final int HEIGHT = 850;
+    private final int WIDTH = 1500;
+    private final int HEIGHT = 850;
 
     private JLabel title;
     private JButton offline, createServer, joinServer, quit;
@@ -58,9 +58,28 @@ public class Menu extends JFrame implements ActionListener {
 
         frame.setVisible(true);
         frame.setResizable(false);
-
     }
-
+    
+    public boolean buttonPressed() {
+    	return buttonPressed;
+    }
+    
+    public boolean offline() {
+    	return single;
+    }
+    
+    public boolean createServer() {
+    	return serverCreate;
+    }
+    
+    public boolean joinServer() {
+    	return serverJoin;
+    }
+    
+    public boolean exit() {
+    	return exit;
+    }
+    
     public void actionPerformed(ActionEvent e) {
         String key = e.getActionCommand();
 

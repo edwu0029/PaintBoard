@@ -35,7 +35,7 @@ public class ToolBar extends JToolBar {
     private JSlider thickness;
     private JPanel thicknessPanel;
     private JLabel thicknessLabel;
-
+    
     private JButton clear;
     private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/clearicon.jpg"));
 
@@ -49,11 +49,16 @@ public class ToolBar extends JToolBar {
     //private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
     
     private JButton chat;
+    private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
     
-    ToolBar(BoardPanel boardPanel){
+    ToolBar(BoardPanel boardPanel, boolean online){
         this.boardPanel = boardPanel;
         //Set up tool menu variables
-        this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
+        if (online) {
+        	this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
+        } else {
+            this.setLayout(new GridLayout(9, 0)); //Make each button in tool bar smaller
+        }
         this.setFloatable(false);
 
         ButtonController buttonController = new ButtonController();
@@ -95,7 +100,7 @@ public class ToolBar extends JToolBar {
         this.add(text);
 
         //Thickness slider
-        thickness = new JSlider(1, 30, 4);
+        thickness = new JSlider(1, 100, 4);
         thickness.addChangeListener(buttonController);
         thicknessPanel = new JPanel();
         thicknessLabel = new JLabel("Brush Thickness: 4");
@@ -106,10 +111,12 @@ public class ToolBar extends JToolBar {
         this.add(thicknessPanel);
 
         //Chat button
-        chat = new JButton("Chat");
-        chat.addActionListener(buttonController);
-        this.add(chat);
-
+        if (online) {
+	        chat = new JButton("Chat");
+	        chat.setIcon(new ImageIcon(chatIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+	        chat.addActionListener(buttonController);
+	        this.add(chat);
+        }
         //Clear button
         clear = new JButton("Clear");
         clear.setIcon(new ImageIcon(clearIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));

@@ -5,7 +5,7 @@ public class User {
     private BoardFrame boardFrame;
     private String name;
     
-    User(boolean hasServer, String name, boolean online) throws Exception{
+    User(boolean hasServer, String name, boolean online) throws Exception{ //host
         this.hasServer = hasServer;
         if(hasServer){
             this.server = new Server();
@@ -14,21 +14,26 @@ public class User {
         this.name = name;
         this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
     }
-    User(String serverIP, String name, boolean online) throws Exception{
+    
+    User(String serverIP, String name, boolean online) throws Exception{ //client
     	this.name = name;
         this.boardFrame = new BoardFrame(this, serverIP, online);
     }
-    User() throws Exception{
+    
+    User() throws Exception{ //offline
         this.boardFrame = new BoardFrame(this, "", online);
     }
+    
     public void quit() throws Exception{
         if(hasServer){
             server.quit();
         }
     }
+    
     public boolean isHost() {
     	return hasServer;
     }
+    
     public String getName() {
     	return name;
     }
