@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class BoardFrame extends JFrame implements ActionListener {
     private BoardPanel boardPanel;
@@ -16,29 +17,37 @@ public class BoardFrame extends JFrame implements ActionListener {
     private ServerChat serverChat;
     private JMenuBar menuBar;
     private JMenu fileMenu;
-    private JMenuItem Save;
-    private JMenuItem Open;
-    private JMenuItem Exit;
+    private JMenuItem save;
+    private JMenuItem open;
+    private JMenuItem exit;
+    private JMenuItem getIP;
+    private String serverIP;
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
     BoardFrame(User user, String serverIP, boolean online) throws Exception{
-        this.boardPanel = new BoardPanel(user, serverIP, this, online);
+        this.serverIP = serverIP;
+    	this.boardPanel = new BoardPanel(user, serverIP, this, online);
         toolBar = new ToolBar(boardPanel, online);
         boardPanel.addToolBarReference(toolBar);
 
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
-        Save = new JMenuItem("Save");
-        Save.addActionListener(this);
-        Exit = new JMenuItem("Exit");
-        Exit.addActionListener(this);
-        Open = new JMenuItem("Open");
-        Open.addActionListener(this);
-        fileMenu.add(Save);
-        fileMenu.add(Open);
-        fileMenu.add(Exit);
+        if (online) {
+	        getIP = new JMenuItem("ServerIP");
+	        getIP.addActionListener(this);
+	        fileMenu.add(getIP);
+        }
+        save = new JMenuItem("Save");
+        save.addActionListener(this);
+        exit = new JMenuItem("Exit");
+        exit.addActionListener(this);
+        open = new JMenuItem("Open");
+        open.addActionListener(this);
+        fileMenu.add(save);
+        fileMenu.add(open);
+        fileMenu.add(exit);
         this.setJMenuBar(menuBar);
         
         boardPanel.setBackground(Color.WHITE);
@@ -46,24 +55,28 @@ public class BoardFrame extends JFrame implements ActionListener {
         add(BorderLayout.WEST, toolBar);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(MAX_X, MAX_Y);
-        setTitle(serverIP);
+        setTitle(user.getName());
         setVisible(true);
     }
     
     public void actionPerformed(ActionEvent e) {
-    	if (e.getSource() == Exit) {
+    	if (e.getSource() == exit) {
     		try {
 				boardPanel.quit();
                 System.exit(0);
 			} catch (Exception e1) {}
-    	} else if (e.getSource() == Save) {
+    	} else if (e.getSource() == save) {
     		try {
 				boardPanel.saveBoard();
 			} catch (Exception e1) {}
-    	} else if (e.getSource() == Open) {
+    	} else if (e.getSource() == open) {
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}
+    	} else if (e.getSource() == getIP) {
+    		try {
+    			JOptionPane.showMessageDialog(this, serverIP);
+    		} catch (Exception ex) {}
     	}
     }
     

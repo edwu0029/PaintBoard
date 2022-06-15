@@ -134,6 +134,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     }
     
     public void clear(){
+    	this.setBackground(Color.WHITE);
         undo.clear();
         redo.clear();
         elements.clear();
@@ -209,6 +210,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
                 g2.drawString(text.getTextString(), text.getX(), text.getY());
         	} else if (element instanceof ImageIcon) {
                 ((ImageIcon)element).paintIcon(this, g2, 0, 0);
+        	} else if (element instanceof Color) {
+        		this.setBackground((Color)element);
         	}
         }
     }
@@ -251,6 +254,15 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             this.setColor(new Color(temp.getRGB(xPixel, yPixel)));
             toolBar.updateColorIcon(new Color(temp.getRGB(xPixel, yPixel)));
             g2.dispose();
+        } else if (tool==Const.FILL) {
+        	clear();
+        	clearServer();
+        	elements.add(color);
+        	if (online&&!client.getClosed()) {
+        		try {
+        			client.addElement(color);
+        		}catch(Exception ex) {}
+        	}
         }
     }
 

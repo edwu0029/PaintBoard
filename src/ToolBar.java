@@ -45,8 +45,8 @@ public class ToolBar extends JToolBar {
     private JButton redo;
     private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/redoicon.png"));
 
-    //private JButton quit;
-    //private ImageIcon quitIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/quiticon.png"));
+    private JButton fill;
+    private ImageIcon fillIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/fillicon.jpg"));
     
     private JButton chat;
     private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
@@ -55,9 +55,9 @@ public class ToolBar extends JToolBar {
         this.boardPanel = boardPanel;
         //Set up tool menu variables
         if (online) {
-        	this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
+        	this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
         } else {
-            this.setLayout(new GridLayout(9, 0)); //Make each button in tool bar smaller
+            this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
         }
         this.setFloatable(false);
 
@@ -123,6 +123,12 @@ public class ToolBar extends JToolBar {
         clear.addActionListener(buttonController);
         this.add(clear);
         
+        //Fill button
+        fill = new JButton("Fill");
+        fill.setIcon(new ImageIcon(fillIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+        fill.addActionListener(buttonController);
+        this.add(fill);
+        
         //Undo button
         undo = new JButton("Undo");
         undo.setIcon(new ImageIcon(undoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -183,12 +189,9 @@ public class ToolBar extends JToolBar {
             }else if(e.getSource()==clear){
                 boardPanel.clear();
                 boardPanel.clearServer();
-            }//else if(e.getSource()==quit){
-//                try{
-//                    boardPanel.quit();
-//                    System.exit(0);
-//                }catch(Exception ex){}
-//            }
+            }else if(e.getSource()==fill){
+                boardPanel.switchTool(Const.FILL);
+            }
         }
 
         public void stateChanged(ChangeEvent e) {
