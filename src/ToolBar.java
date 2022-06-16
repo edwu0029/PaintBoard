@@ -166,8 +166,10 @@ public class ToolBar extends JToolBar {
                 System.out.println("color");
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
-                boardPanel.setColor(newColor);
-                updateColorIcon(newColor);
+                if (newColor!=null) {
+                    boardPanel.setColor(newColor);
+                    updateColorIcon(newColor);
+                }
             } else if (e.getSource().equals(colorPicker)) {
                 System.out.println("color picker");
                 boardPanel.switchTool(Const.COLOR_PICKER);
