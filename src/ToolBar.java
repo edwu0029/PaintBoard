@@ -1,17 +1,19 @@
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.JPanel;
-
-import java.awt.event.ActionEvent;
-import javax.swing.event.ChangeEvent;
-
+import javax.swing.JColorChooser;
 import javax.swing.ImageIcon;
-import java.awt.image.BufferedImage;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class ToolBar extends JToolBar {
@@ -140,12 +142,6 @@ public class ToolBar extends JToolBar {
         redo.setIcon(new ImageIcon(redoIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
         redo.addActionListener(buttonController);
         this.add(redo);
-
-        //Quit button
-//        quit = new JButton("Quit");
-//        quit.setIcon(new ImageIcon(quitIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-//        quit.addActionListener(buttonController);
-//        this.add(quit);
     }
     
     //update color icon function

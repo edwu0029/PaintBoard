@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Stack;
+import java.io.File;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,11 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.awt.FileDialog;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;

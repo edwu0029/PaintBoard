@@ -1,7 +1,7 @@
+import java.util.LinkedHashSet;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.LinkedHashSet;
 
 public class Client {
     private BoardPanel boardPanel;

@@ -1,4 +1,7 @@
 import java.awt.Font;
+import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
@@ -8,7 +11,6 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import java.awt.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.DimensionUIResource;
 import java.awt.event.ActionListener;

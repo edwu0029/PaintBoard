@@ -1,7 +1,6 @@
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.io.Serializable;
+import java.awt.Color;
 
 public class Stroke implements Serializable{
     private ArrayList<int[]>lines;
