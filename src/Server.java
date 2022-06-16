@@ -18,12 +18,15 @@ public class Server {
     final int PORT = 5000;
     
     Server() throws Exception {
+        //Get server IP address
         String localHost = InetAddress.getLocalHost().toString();
         ip = localHost.substring(localHost.indexOf('/')+1);
         System.out.println(ip);
 
         this.serverSocket = new ServerSocket(PORT);
         this.connections = new ArrayList<ConnectionHandler>();
+
+        //Create and start server thread
         this.serverThread = new ServerThread();
         serverThread.start();
     }
@@ -34,12 +37,15 @@ public class Server {
     
     public void quit() throws Exception {
         System.out.println("Server quit");
+        //Stop server thread
         running = false;
         serverThread.interrupt();
+        //Stop all connection handler threads
         for (ConnectionHandler connectionHandler: connections) {
             connectionHandler.quit();
             connectionHandler.interrupt();
         }
+        //Close the server socket
         serverSocket.close();
     }
     
@@ -49,6 +55,8 @@ public class Server {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New Connection");
+
+                    //Create new connection handler thread for new client
                     ConnectionHandler t = new ConnectionHandler(clientSocket);
                     Thread connectionThread = new Thread(t);
                     connections.add(t);
@@ -88,39 +96,42 @@ public class Server {
             while (running) {
                 try {
                     int command = input.readInt();
-                    if (command==Const.ADD_ELEMENT) {
+                    if (command==Const.ADD_ELEMENT) { //Add element command
                         Object element = input.readObject();
                         elements.add(element);
-                        //Update in other clients
+                        //Update in all other clients
                         for (ConnectionHandler i: connections) {
                             if (i!=this && i.getRunning()) {
                                 i.addElement(element);
                             }
                         }
-                    } else if (command==Const.REMOVE_ELEMENT) {
+                    } else if (command==Const.REMOVE_ELEMENT) { //Remove element command
                         Object element = input.readObject();
                         elements.remove(element);
-                        //Update in other clients
+                        //Update in all other clients
                         for (ConnectionHandler i: connections) {
                             if (i!=this && i.getRunning()) {
                                 i.removeElement(element);
                             }
                         }
-                    } else if (command==Const.CLEAR) {
+                    } else if (command==Const.CLEAR) { //Clear command
                         elements.clear();
+                        //Update in all other clients
                         for (ConnectionHandler i: connections) {
                             if (i!=this && i.getRunning()) {
                                 i.clear();
                             }
                         }
-                    } else if(command==Const.GET_ELEMENTS) {
+                    } else if(command==Const.GET_ELEMENTS) { //Get elements command
+                        //Update in all other clients
                         for(ConnectionHandler i: connections) {
                             if (i==this&&i.getRunning()) {
                                 i.sendElements();
                             }
                         }
-                    } else if(command==Const.SEND_MESSAGE) {
+                    } else if(command==Const.SEND_MESSAGE) { //Send message command
                         String message = (String)input.readObject();
+                        //Update in all other clients
                         for (ConnectionHandler i: connections) {
                             if (i!=this && i.getRunning()) {
                                 i.sendMessage(message);

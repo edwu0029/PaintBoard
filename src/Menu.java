@@ -25,13 +25,16 @@ public class Menu extends JFrame implements ActionListener {
     static JFrame frame = new JFrame();
 
     public Menu() {
-
-        frame.setSize(WIDTH, HEIGHT);
-
+        //Set up Menu Frame properties
         Container mainP = frame.getContentPane();
         mainP.setLayout(null);
+        frame.setSize(WIDTH, HEIGHT);
+        frame.setVisible(true);
+        frame.setResizable(false);
 
         title = new JLabel("PaintBoard");
+
+        //Set up Button options
         offline = new JButton("Offline");
         createServer = new JButton("Create Server");
         joinServer = new JButton("Join Server");
@@ -61,9 +64,6 @@ public class Menu extends JFrame implements ActionListener {
         createServer.addActionListener(this);
         joinServer.addActionListener(this);
         quit.addActionListener(this);
-
-        frame.setVisible(true);
-        frame.setResizable(false);
     }
     
     public boolean buttonPressed() {
@@ -85,29 +85,30 @@ public class Menu extends JFrame implements ActionListener {
     public boolean exit() {
         return exit;
     }
-    
+
+    /*----- Overriden methods from ActionListener -----*/
+    @Override
     public void actionPerformed(ActionEvent e) {
         String key = e.getActionCommand();
-        if (key.equals("Offline")) {
+        if (key.equals("Offline")) { //Offline button
             buttonPressed = true;
             single = true;
             frame.dispose();
         }
-        else if (key.equals("Create Server")) {
+        else if (key.equals("Create Server")) { //Create Server button
             buttonPressed = true;
             serverCreate = true;
             frame.dispose();
-        } else if (key.equals("Join Server")) {
+        } else if (key.equals("Join Server")) { //Join Server button
             buttonPressed = true;
             serverJoin = true;
             frame.dispose();
-        } else if (key.equals("Quit")) {
+        } else if (key.equals("Quit")) { //Quit button
             buttonPressed = true;
             exit = true;
             frame.dispose();
             System.exit(0);
         }
-
     }
 
 }

@@ -12,7 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.DimensionUIResource;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -31,6 +31,7 @@ public class TextDialog extends JDialog implements ActionListener {
     TextDialog(BoardFrame frame) {
         super(frame, "Create Text", true); //True makes the JDialog modal
 
+        //Create text input fields
         this.text = new JTextField("Example");
         text.setColumns(27);
         text.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -45,22 +46,24 @@ public class TextDialog extends JDialog implements ActionListener {
         this.cancel = new JButton("Cancel");
         cancel.addActionListener(this);
 
+        //Create inputted text section
         JPanel p = new JPanel();
         p.add(text);
         p.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Text"));
-
+        //Create font family section
         JPanel p1 = new JPanel();
         p1.add(fonts);
         p1.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Family"));
-
+        //Create font size section
         JPanel p2 = new JPanel();
         p2.add(sizes);
         p2.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Font Size"));
-
+        //Create ok and cancel button section
         JPanel p3 = new JPanel();
         p3.add(ok);
         p3.add(cancel);
 
+        //Combine all panels
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(p);
@@ -76,12 +79,12 @@ public class TextDialog extends JDialog implements ActionListener {
         this.setContentPane(panel);
         this.pack();
         this.setResizable(false);
-        this.setSize(new DimensionUIResource(500, 400));
+        this.setSize(new Dimension(500, 400));
         this.setVisible(false);
     }
     public int showTextDialog() {
         this.setVisible(true);
-        return result;
+        return result; //Return result of this response, either Const.SUCCESS or Const.FAILURE
     }
     public String getInputtedText() {
         return inputtedText;
@@ -90,15 +93,17 @@ public class TextDialog extends JDialog implements ActionListener {
         return inputtedFont;
     }
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource().equals(ok)) {
+        if (e.getSource().equals(ok)) { //Ok button
             result = Const.SUCCESS;
             inputtedText = text.getText();
+            //Convert number from string to int
             int inputtedSize = Integer.parseInt((String)sizes.getSelectedItem());
+            //Create new font
             inputtedFont = new Font((String)fonts.getSelectedItem(), Font.PLAIN, inputtedSize);
-            this.setVisible(false);
-        } else if(e.getSource().equals(cancel)) {
+            this.setVisible(false); //Once submitted, make text dialog invisible
+        } else if(e.getSource().equals(cancel)) { //Cancel button
             result = Const.FAILURE;
-            this.setVisible(false);
+            this.setVisible(false); //Once submitted, make text dialog invisible
         }
     }
 }

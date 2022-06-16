@@ -23,9 +23,12 @@ public class BoardFrame extends JFrame implements ActionListener {
 
     BoardFrame(User user, String serverIP, boolean online) throws Exception {
     	this.boardPanel = new BoardPanel(user, serverIP, this, online);
+
+        //Set up Tool Bar
         toolBar = new ToolBar(boardPanel, online);
         boardPanel.addToolBarReference(toolBar);
 
+        //Set up Menu Bar
         menuBar = new JMenuBar();
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
@@ -33,6 +36,7 @@ public class BoardFrame extends JFrame implements ActionListener {
             menuBar.add(Box.createHorizontalGlue());
 	        menuBar.add(new JLabel("Server IP:  "+serverIP+" "));
         }
+        //Set up Menu Bar items
         save = new JMenuItem("Save");
         save.addActionListener(this);
         exit = new JMenuItem("Exit");
@@ -44,33 +48,34 @@ public class BoardFrame extends JFrame implements ActionListener {
         fileMenu.add(exit);
         this.setJMenuBar(menuBar);
         
+        //Board Panel set up
         boardPanel.setBackground(Color.WHITE);
-        getContentPane().add(BorderLayout.CENTER, boardPanel);
-        add(BorderLayout.WEST, toolBar);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(MAX_X, MAX_Y);
-        setTitle(user.getName());
-        setVisible(true);
+        this.getContentPane().add(BorderLayout.CENTER, boardPanel);
+        this.add(BorderLayout.WEST, toolBar);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(MAX_X, MAX_Y);
+        this.setTitle(user.getName());
+        this.setVisible(true);
     }
     
     public void actionPerformed(ActionEvent e) {
-    	if (e.getSource().equals(exit)) {
+    	if (e.getSource().equals(exit)) { //Exit
     		try {
 				boardPanel.quit();
                 System.exit(0);
 			} catch (Exception e1) {}
-    	} else if (e.getSource().equals(save)) {
+    	} else if (e.getSource().equals(save)) { //Save to image
     		try {
 				boardPanel.saveBoard();
 			} catch (Exception e1) {}
-    	} else if (e.getSource().equals(open)) {
+    	} else if (e.getSource().equals(open)) { //Open image
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}
     	} 
     }
     
-    public void quit() {
+    public void quit() { //Quit BoardFrame
         this.removeAll();
         this.dispose();
     }

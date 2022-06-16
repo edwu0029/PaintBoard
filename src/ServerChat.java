@@ -22,9 +22,16 @@ public class ServerChat extends JFrame implements ActionListener {
     ServerChat(Client client, User user) {    
         this.client = client;
         this.user = user;
-        setTitle("Chat");
-        setLayout(new FlowLayout());
+
+        //Set up server chat frame properties
+        this.setTitle("Chat");
+        this.setLayout(new FlowLayout());
+        setSize(500, 320);
+        setVisible(false);
+        setResizable(false);
+        setLocationRelativeTo(null);
         
+        //Create message display area
         txaDisplay = new JTextArea();
         DefaultCaret caret = (DefaultCaret)txaDisplay.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);//Forces chat to scroll down
@@ -33,20 +40,27 @@ public class ServerChat extends JFrame implements ActionListener {
         scrdisplay.setPreferredSize(new Dimension(450, 200));
         getContentPane().add(scrdisplay);
         
+        //Create message input
         txtInput = new JTextField();
         txtInput.setPreferredSize(new Dimension(450, 30));
         getContentPane().add(txtInput);
         
+        //Create send message
         button = new JButton("Send message");
         button.addActionListener(this);
         this.add(button);
-        
-        setSize(500, 320);
-        setVisible(false);
-        setResizable(false);
-        setLocationRelativeTo(null);
+    }
+
+    public String getMessage() {
+        return message;
     }
     
+    public void sendMessage(String message) {
+        txaDisplay.append(message+"\n");
+    }
+    
+    /*----- Overriden methods from ActionListener -----*/
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(button)) {
             message = txtInput.getText();
@@ -55,14 +69,6 @@ public class ServerChat extends JFrame implements ActionListener {
                 client.sendMessage(user.getName()+": "+message);
             } catch (Exception ex) {}
         } 
-    }
-    
-    public String getMessage() {
-        return message;
-    }
-    
-    public void sendMessage(String message) {
-        txaDisplay.append(message+"\n");
     }
     
 }

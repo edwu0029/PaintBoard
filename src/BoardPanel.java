@@ -52,15 +52,15 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
         undo = new Stack<Object>();
         redo = new Stack<Object>();
-        
         elements = new LinkedHashSet<Object>();
 
+        //Intial setup
         start = null;
         end = null;
+        color = new Color(0, 0, 0); //Default color is black
+        textDialog = new TextDialog(frame); //Create text dialog
 
-        color = new Color(0, 0, 0);
-        textDialog = new TextDialog(frame);
-
+        //If online, set up client
         if (online) {
             client = new Client(serverIP, this);
             client.start();
@@ -73,6 +73,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
         }
     }
+
     public void quit() throws Exception {
         if (online) {
             client.quit();
@@ -80,14 +81,16 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
         frame.quit();
     }
+
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
+
     public void openChat() {
         serverChat.setVisible(true);
     }
     
-    //Networking methods
+    //----- Networking Methods -----*/
     public void syncBoard(LinkedHashSet<Object> elements) {
         this.elements = elements;
         repaint();
@@ -95,15 +98,14 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     
     public void addElement(Object element) {
         elements.add(element);
-        repaint();
-        System.out.println("size: "+elements.size());
+        this.repaint();
     }
     
     public void removeElement(Object element) {
         elements.remove(element);
         repaint();
     }
-    
+    /*----- Tool Bar actions -----*/
     public void undo() {
         if (undo.size()==0) {
             return;
@@ -161,7 +163,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void setThickness(int newThickness) {
         thickness = newThickness;
     }
-    
+
+    /*----- Menu Bar actions -----*/
     public void saveBoard() throws Exception {
         BufferedImage temp = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = temp.createGraphics();
@@ -214,7 +217,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
         }
     }
-    
+    /*----- Overriden methods from MouseMotionListener -----*/
     @Override
     public void mouseDragged(MouseEvent e) { //drawing
         start = end;
@@ -226,16 +229,21 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
 
-    //MouseListener
+    @Override
+    public void mouseMoved(MouseEvent e) {}
+
+    /*----- Overriden methods from MouseListener -----*/
     @Override
     public void mouseReleased(MouseEvent e) {
         System.out.println("released");
-        //Reset
+        //Reset coordinates
         start = null;
         end = null;
+
         if (tool==Const.BRUSH || tool==Const.ERASER) {
-            redo.clear();
+            redo.clear(); //Reset redo when new stroke is made
             undo.push(currentStroke);
+            //If online, send new stroke to the server
             if (online && !client.getClosed()) {
                 try {
                     client.addElement(currentStroke);
@@ -245,20 +253,23 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         } else if (tool==Const.COLOR_PICKER) {
             int xPixel = e.getX();
             int yPixel = e.getY();
+            //Render board as an image
             BufferedImage temp = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = temp.createGraphics();
             this.paint(g2);
+            //Get the color of the specified pixel
             this.setColor(new Color(temp.getRGB(xPixel, yPixel)));
             toolBar.updateColorIcon(new Color(temp.getRGB(xPixel, yPixel)));
-            g2.dispose();
+            g2.dispose(); //Destroy temporary variable
         } else if (tool==Const.FILL) {
             clear();
             clearServer();
             elements.add(color);
+            //If online, send change to the server
             if (online && !client.getClosed()) {
                 try {
                     client.addElement(color);
-                }catch(Exception ex) {}
+                } catch(Exception ex) {}
             }
         }
     }
@@ -269,6 +280,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             System.out.println("New stroke");
             currentStroke = new Stroke(thickness);
             elements.add(currentStroke);
+
+            //Set stroke color based on brush or eraser
             if (tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);
             } else if(tool==Const.ERASER){ //Eraser
@@ -277,24 +290,23 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
         end = e.getPoint();
         if (tool==Const.TEXT) {
+            //Get result from text dialog
             int result = textDialog.showTextDialog();
-            if (result==Const.SUCCESS) {
+            if (result==Const.SUCCESS) { //If successful, display new text
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 elements.add(newText);
                 redo.clear();
                 undo.push(newText);
+                //If online, send the new text to the server
                 if (online && !client.getClosed()) {
                     try {
                         client.addElement(newText);
-                    } catch(Exception ex) {}
+                    } catch (Exception ex) {}
                 }
             }
         }
         this.repaint();
     }
-    
-    @Override
-    public void mouseMoved(MouseEvent e) {}
     @Override
     public void mouseClicked(MouseEvent e) {}
     @Override

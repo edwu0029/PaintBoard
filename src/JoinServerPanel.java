@@ -18,17 +18,26 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     
     JoinServerPanel(boolean host) {
         this.host = host;
+        
+        //Set up panel properties
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(850, 130);
+        this.setVisible(true);  
+        this.setResizable(false);
         
+        //Create name text field
         nameField = new JTextField();
         nameField.setPreferredSize(new Dimension(800, 40)); 
         nameField.setText("Input Nickname");
         this.add(nameField);
+
+        //Create Submit button (Displayed as "Create Server:)
         button = new JButton("Create Server");
         button.addActionListener(this);  
-        this.setSize(850, 130);
+        this.add(button);
 
+        //If online, set up server IP address text field
         if (!host) {
             button.setText("Enter Server");
             ipField = new JTextField();
@@ -37,9 +46,6 @@ public class JoinServerPanel extends JFrame implements ActionListener {
             this.add(ipField);
             this.setSize(850, 180);
         }
-        this.add(button);
-        this.setVisible(true);  
-        this.setResizable(false);
     }
     
     public String getServerIPAdress(){
@@ -53,15 +59,18 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     public boolean buttonPressed() {
         return buttonPressed;
     }
-    
+    /*----- Overriden methods from ACtionListener -----*/
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(button)) {
+            //If a server is created, get ip address from the ip address text field
             if (!host) {
                 ipAddress = ipField.getText();
             }
+            //Get name from name text field
             name = nameField.getText();    
             buttonPressed = true;
-            dispose();
+            this.dispose();
         }
     }
 

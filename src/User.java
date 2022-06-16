@@ -5,7 +5,7 @@ public class User {
     private BoardFrame boardFrame;
     private String name;
     
-    User(boolean hasServer, String name, boolean online) { //host
+    User(boolean hasServer, String name, boolean online) { //host user
         this.hasServer = hasServer;
         this.online = online;
         this.name = name;
@@ -19,7 +19,7 @@ public class User {
         }
     }
     
-    User(String serverIP, String name, boolean online) { //client
+    User(String serverIP, String name, boolean online) { //client user
         this.name = name;
         try {
             this.boardFrame = new BoardFrame(this, serverIP, online);
@@ -28,7 +28,7 @@ public class User {
         }
     }
     
-    User() { //offline
+    User() { //offline user
         try {
             this.boardFrame = new BoardFrame(this, "", online);
         } catch(Exception e) {

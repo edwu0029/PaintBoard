@@ -2,7 +2,7 @@ public class Launcher {
     public static void main(String[] args) {
         Menu menu = new Menu();
         
-        // stalls until a button is pressed
+        //Stalls until a button is pressed
         while(menu.buttonPressed()==false) {
             try { 
                 Thread.sleep(200);
@@ -17,7 +17,7 @@ public class Launcher {
             }
         } else if (menu.createServer()==true) {
             JoinServerPanel joinServerPanel = new JoinServerPanel(true);
-            // stalls until the user inputs nickname
+            //Stalls until the user inputs nickname
             while (joinServerPanel.buttonPressed() == false) {
                 try {
                     Thread.sleep(200);
@@ -30,7 +30,7 @@ public class Launcher {
             } 
         } else if (menu.joinServer()==true) {
             JoinServerPanel joinServerPanel = new JoinServerPanel(false);
-            // stalls until the user inputs ID Address
+            //Stalls until the user inputs ID Address
             while (joinServerPanel.buttonPressed() == false) {
                 try {
                     Thread.sleep(200);

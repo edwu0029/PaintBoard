@@ -18,38 +18,38 @@ import javax.swing.event.ChangeListener;
 
 public class ToolBar extends JToolBar {
     private BoardPanel boardPanel;
-    
+    //Brush button
     private JButton brush;
     private ImageIcon brushIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/brushicon.png"));
-
+    //Eraser button
     private JButton eraser;
     private ImageIcon eraserIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/erasericon.png"));
-
+    //Color button
     private JButton color;
     private ImageIcon colorIcon;
-    
+    //Color Picker button
     private JButton colorPicker;
     private ImageIcon colorPickerIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/colorpickericon.png"));
-
+    //Text button
     private JButton text;
     private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/texticon.png"));
-
+    //Thickness Slider
     private JSlider thickness;
     private JPanel thicknessPanel;
     private JLabel thicknessLabel;
-    
+    //Clear button
     private JButton clear;
     private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/clearicon.jpg"));
-
+    //Undo button
     private JButton undo;
     private ImageIcon undoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/undoicon.png"));
-
+    //Redo button
     private JButton redo;
     private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/redoicon.png"));
-
+    //Fill button
     private JButton fill;
     private ImageIcon fillIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/fillicon.jpg"));
-    
+    //Chat button
     private JButton chat;
     private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
     
@@ -112,7 +112,7 @@ public class ToolBar extends JToolBar {
         thicknessPanel.add(thickness);
         this.add(thicknessPanel);
 
-        //Chat button
+        //Chat button, only include if it is online
         if (online) {
             chat = new JButton("Chat");
             chat.setIcon(new ImageIcon(chatIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
@@ -146,52 +146,60 @@ public class ToolBar extends JToolBar {
     
     //update color icon function
     public void updateColorIcon(Color newColor) {
+        //Create 50 by 50 image
         BufferedImage img = new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = img.createGraphics();
+        //Paint image solid with the new color
         g2d.setPaint(newColor);
         g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
         colorIcon = new ImageIcon(img);
+        //Set image as the color button's icon
         color.setIcon(colorIcon);
     }
     
     private class ButtonController implements ActionListener, ChangeListener{
-        public void actionPerformed(ActionEvent e){
-            if (e.getSource().equals(brush)){
+        /*----- Overriden methods from ActionListener -----*/
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(brush)){ //Brush button
                 System.out.println("brush");
                 boardPanel.switchTool(Const.BRUSH);
-            } else if(e.getSource().equals(eraser)){
+            } else if(e.getSource().equals(eraser)){ //Eraser button
                 System.out.println("eraser");
                 boardPanel.switchTool(Const.ERASER);
-            } else if(e.getSource().equals(color)){
+            } else if(e.getSource().equals(color)){ //Color button
                 System.out.println("color");
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
+                //Check if newColor is null (meaning color dialog box was canceled)
                 if (newColor!=null) {
                     boardPanel.setColor(newColor);
                     updateColorIcon(newColor);
                 }
-            } else if (e.getSource().equals(colorPicker)) {
+            } else if (e.getSource().equals(colorPicker)) { //Color Picker button
                 System.out.println("color picker");
                 boardPanel.switchTool(Const.COLOR_PICKER);
-            } else if(e.getSource().equals(text)){
+            } else if(e.getSource().equals(text)){ //Text button
                 System.out.println("text");
                 boardPanel.switchTool(Const.TEXT);
-            } else if(e.getSource().equals(chat)) {
+            } else if(e.getSource().equals(chat)) { //Chat button
                 System.out.println("chat");
                 boardPanel.openChat();
-            } else if(e.getSource().equals(undo)){
+            } else if(e.getSource().equals(undo)){ //Undo button
                 System.out.println("undo");
                 boardPanel.undo();
-            } else if(e.getSource().equals(redo)){
+            } else if(e.getSource().equals(redo)){ //Redo button
                 boardPanel.redo();
-            } else if(e.getSource().equals(clear)){
+            } else if(e.getSource().equals(clear)){ //Clear button
                 boardPanel.clear();
                 boardPanel.clearServer();
-            } else if(e.getSource().equals(fill)){
+            } else if(e.getSource().equals(fill)){ //Fill button
                 boardPanel.switchTool(Const.FILL);
             }
         }
 
+        /*----- Overriden methods from ChangeListener -----*/
+        @Override
         public void stateChanged(ChangeEvent e) {
             if (e.getSource().equals(thickness)){
                 int newThickness = thickness.getValue();
