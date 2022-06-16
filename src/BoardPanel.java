@@ -1,3 +1,11 @@
+/** 
+ * BoardPanel.Java
+ * @version 1.0
+ * @author Edward, Christopher, Kyle, Andrew
+ * June 2022
+ * Panel that is used to draw things
+ */
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Stack;
@@ -42,6 +50,13 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     BufferedImage image;
     private LinkedHashSet<Object> elements;
     
+    /**
+     * Constructs and initializes a BoardPanel
+     * @param user The person associated with the BoardPanel
+     * @param serverIP The IP address that the user joins and if it's empty that means it's offline
+     * @param frame The frame that the BoardPanel is part of
+     * @param online A boolean that determines if the user wants to be online or offline
+     */
     BoardPanel(User user, String serverIP, BoardFrame frame, boolean online) throws Exception {
         this.user = user;
         this.frame = frame;
@@ -73,7 +88,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
         }
     }
-
+    
+    /**
+     * Exits BoardPanel and leaves the server
+     */
     public void quit() throws Exception {
         if (online) {
             client.quit();
@@ -81,31 +99,53 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
         frame.quit();
     }
-
+    
+    /**
+     * References the ToolBar Panel to this Panel
+     * @param toolBar The ToolBar Panel to be associated with this Panel
+     */
     public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
         this.toolBar = toolBar;
     }
-
+    
+    /**
+     * Opens the ServerChat
+     */
     public void openChat() {
         serverChat.setVisible(true);
     }
     
-    //----- Networking Methods -----*/
+    /**
+     * Receives the elements from the server in order to sync the drawings
+     * @param elements The server elements
+     */
     public void syncBoard(LinkedHashSet<Object> elements) {
         this.elements = elements;
         repaint();
     }
     
+    /**
+     * Adds an element from the Server to the BoardPanel's elements LinkedHashSet
+     * @param element Element to be added
+     */
     public void addElement(Object element) {
         elements.add(element);
         this.repaint();
     }
     
+    /**
+     * Removes an element of the BoardPanel's elements LinkedHashSet
+     * @param element Element to be removed
+     */
     public void removeElement(Object element) {
         elements.remove(element);
         repaint();
     }
-    /*----- Tool Bar actions -----*/
+    
+    /**
+     * Undo's an action by the user
+     * @return if there is nothing to undo
+     */
     public void undo() {
         if (undo.size()==0) {
             return;
@@ -121,6 +161,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         repaint();
     }
     
+    /**
+     * Redo's an action by the user
+     * @return if there is nothing to redo
+     */
     public void redo() {
         if (redo.size()==0) {
             return;
@@ -136,6 +180,9 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         repaint();
     }
     
+    /**
+     * Clears the BoardPanel
+     */
     public void clear() {
         this.setBackground(Color.WHITE);
         undo.clear();
@@ -144,7 +191,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         repaint();
     }
     
-    public void clearServer() { //Tell other clients to clear their board
+    /**
+     * Clears the BoardPanel of other clients in the Server
+     */
+    public void clearServer() {
         if (online && !client.getClosed()) {
             try {
                 client.clear();
@@ -152,19 +202,34 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
     
+    /**
+     * Switches the tool of the BoardPanel
+     * @param newTool The Integer associated with the tool to be switched
+     */
     public void switchTool(int newTool) {
         tool = newTool;
     }
     
+    /**
+     * Sets the color used by tools
+     * @param newColor The new Color selected
+     */
     public void setColor(Color newColor) {
         color = newColor;
     }
     
+    /**
+     * Sets the thickness used by the paint tool
+     * @param newThickness The new thickness of the paint tool
+     */
     public void setThickness(int newThickness) {
         thickness = newThickness;
     }
 
-    /*----- Menu Bar actions -----*/
+    /**
+     * Saves the current drawing to a specified location in the user's computer
+     * @throws Exception
+     */
     public void saveBoard() throws Exception {
         BufferedImage temp = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = temp.createGraphics();
@@ -176,6 +241,10 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         ImageIO.write(temp, "png", new File(dialog.getDirectory()+dialog.getFile()));
     }
     
+    /**
+     * Opens a drawing from a specified location in the user's computer
+     * @throws Exception
+     */
     public void openBoard() throws Exception {
         FileDialog dialog = new FileDialog(frame, "Select File to Open");
         dialog.setFile("*.jpg;*.png;*.jpeg;");
@@ -217,6 +286,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
         }
     }
+    
     /*----- Overriden methods from MouseMotionListener -----*/
     @Override
     public void mouseDragged(MouseEvent e) { //drawing
