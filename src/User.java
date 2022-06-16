@@ -5,23 +5,35 @@ public class User {
     private BoardFrame boardFrame;
     private String name;
     
-    User(boolean hasServer, String name, boolean online) throws Exception{ //host
+    User(boolean hasServer, String name, boolean online) { //host
         this.hasServer = hasServer;
-        if(hasServer){
-            this.server = new Server();
-        }
         this.online = online;
         this.name = name;
-        this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
+        try {
+            if(hasServer) {
+                this.server = new Server();
+            }
+            this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
+        } catch(Exception e){
+            System.out.println("Failed to create a user");
+        }
     }
     
-    User(String serverIP, String name, boolean online) throws Exception{ //client
+    User(String serverIP, String name, boolean online) { //client
         this.name = name;
-        this.boardFrame = new BoardFrame(this, serverIP, online);
+        try {
+            this.boardFrame = new BoardFrame(this, serverIP, online);
+        } catch(Exception e){
+            System.out.println("Failed to create a user");
+        }
     }
     
-    User() throws Exception{ //offline
-        this.boardFrame = new BoardFrame(this, "", online);
+    User() { //offline
+        try {
+            this.boardFrame = new BoardFrame(this, "", online);
+        } catch(Exception e){
+            System.out.println("Failed to create a user");
+        }
     }
     
     public void quit() throws Exception{
