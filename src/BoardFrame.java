@@ -3,7 +3,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -32,9 +34,8 @@ public class BoardFrame extends JFrame implements ActionListener {
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
         if (online) {
-	        getIP = new JMenuItem("ServerIP");
-	        getIP.addActionListener(this);
-	        fileMenu.add(getIP);
+            menuBar.add(Box.createHorizontalGlue());
+	        menuBar.add(new JLabel("Server IP:  "+serverIP+" "));
         }
         save = new JMenuItem("Save");
         save.addActionListener(this);
@@ -70,11 +71,7 @@ public class BoardFrame extends JFrame implements ActionListener {
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}
-    	} else if (e.getSource() == getIP) {
-    		try {
-    			JOptionPane.showMessageDialog(this, serverIP);
-    		} catch (Exception ex) {}
-    	}
+    	} 
     }
     
     public void quit(){
