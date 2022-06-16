@@ -48,7 +48,7 @@ public class ServerChat extends JFrame implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
+        if (e.getSource().equals(button)) {
             message = txtInput.getText();
             txaDisplay.append(user.getName()+": "+message+"\n");
             try {

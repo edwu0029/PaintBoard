@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 public class JoinServerPanel extends JFrame implements ActionListener {
-    
     private boolean buttonPressed = false;
     private boolean host;
     private String ipAddress;
@@ -38,11 +37,9 @@ public class JoinServerPanel extends JFrame implements ActionListener {
             this.add(ipField);
             this.setSize(850, 170);
         }
-        
         this.add(button);
         this.setVisible(true);  
     }
-    
     
     public String getServerIPAdress(){
         return ipAddress;
@@ -57,7 +54,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == button) {
+        if (e.getSource().equals(button)) {
             if (!host) {
                 ipAddress = ipField.getText();
             }

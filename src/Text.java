@@ -2,32 +2,38 @@ import java.awt.Font;
 import java.io.Serializable;
 import java.awt.Color;
 
-public class Text implements Serializable{
+public class Text implements Serializable {
     private int x;
     private int y;
     private String textString;
     private Font font;
     private Color color;
-    Text(int x, int y, String textString, Font font, Color color){
+
+    Text(int x, int y, String textString, Font font, Color color) {
         this.x = x;
         this.y = y;
         this.textString = textString;
         this.font = font;
         this.color = color;
     }
-    public int getX(){
+
+    public int getX() {
         return x;
     }
-    public int getY(){
+
+    public int getY() {
         return y;
     }
-    public String getTextString(){
+
+    public String getTextString() {
         return textString;
     }
-    public Font getFont(){
+
+    public Font getFont() {
         return font;
     }
-    public Color getColor(){
+    
+    public Color getColor() {
         return color;
     }
 }

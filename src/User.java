@@ -10,11 +10,11 @@ public class User {
         this.online = online;
         this.name = name;
         try {
-            if(hasServer) {
+            if (hasServer) {
                 this.server = new Server();
             }
             this.boardFrame = new BoardFrame(this, server.getServerIP(), online);
-        } catch(Exception e){
+        } catch(Exception e) {
             System.out.println("Failed to create a user");
         }
     }
@@ -23,7 +23,7 @@ public class User {
         this.name = name;
         try {
             this.boardFrame = new BoardFrame(this, serverIP, online);
-        } catch(Exception e){
+        } catch(Exception e) {
             System.out.println("Failed to create a user");
         }
     }
@@ -31,13 +31,13 @@ public class User {
     User() { //offline
         try {
             this.boardFrame = new BoardFrame(this, "", online);
-        } catch(Exception e){
+        } catch(Exception e) {
             System.out.println("Failed to create a user");
         }
     }
     
     public void quit() throws Exception{
-        if(hasServer){
+        if (hasServer) {
             server.quit();
         }
     }

@@ -88,26 +88,20 @@ public class Menu extends JFrame implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
         String key = e.getActionCommand();
-
-        if (key == "Offline") {
+        if (key.equals("Offline")) {
             buttonPressed = true;
             single = true;
             frame.dispose();
         }
-        
-        else if (key == "Create Server") {
+        else if (key.equals("Create Server")) {
             buttonPressed = true;
             serverCreate = true;
             frame.dispose();
-        }
-
-        else if (key == "Join Server") {
+        } else if (key.equals("Join Server")) {
             buttonPressed = true;
             serverJoin = true;
             frame.dispose();
-        }
-
-        else if (key == "Quit") {
+        } else if (key.equals("Quit")) {
             buttonPressed = true;
             exit = true;
             frame.dispose();

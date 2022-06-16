@@ -2,28 +2,34 @@ import java.util.ArrayList;
 import java.io.Serializable;
 import java.awt.Color;
 
-public class Stroke implements Serializable{
+public class Stroke implements Serializable {
     private ArrayList<int[]>lines;
     private int thickness;
     private Color color;
-    Stroke(int thickness){
+    
+    Stroke(int thickness) {
         this.lines = new ArrayList<int[]>();
         this.thickness = thickness;
     }
-    public void addLine(int startX, int startY, int endX, int endY){
+
+    public void addLine(int startX, int startY, int endX, int endY) {
         int[]x = {startX, startY, endX, endY};
         lines.add(x);
     }
-    public ArrayList<int[]> getLines(){
+
+    public ArrayList<int[]> getLines() {
         return lines;
     }
-    public void setColor(Color newColor){
+
+    public void setColor(Color newColor) {
         color = newColor;
     }
-    public Color getColor(){
+
+    public Color getColor() {
         return color;
     }
-    public int getThickness(){
+
+    public int getThickness() {
         return thickness;
     }
 }

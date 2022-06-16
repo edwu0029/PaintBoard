@@ -17,7 +17,7 @@ public class Server {
     private LinkedHashSet<Object> elements = new LinkedHashSet<Object>();
     final int PORT = 5000;
     
-    Server() throws Exception{
+    Server() throws Exception {
         String localHost = InetAddress.getLocalHost().toString();
         ip = localHost.substring(localHost.indexOf('/')+1);
         System.out.println(ip);
@@ -28,32 +28,32 @@ public class Server {
         serverThread.start();
     }
     
-    public String getServerIP(){
+    public String getServerIP() {
         return ip;
     }
     
-    public void quit() throws Exception{
+    public void quit() throws Exception {
         System.out.println("Server quit");
         running = false;
         serverThread.interrupt();
-        for(ConnectionHandler connectionHandler: connections){
+        for (ConnectionHandler connectionHandler: connections) {
             connectionHandler.quit();
             connectionHandler.interrupt();
         }
         serverSocket.close();
     }
     
-    class ServerThread extends Thread{
-        public void run(){
-            while(running){
-                try{
+    class ServerThread extends Thread {
+        public void run() {
+            while (running) {
+                try {
                     Socket clientSocket = serverSocket.accept();
                     System.out.println("New Connection");
                     ConnectionHandler t = new ConnectionHandler(clientSocket);
                     Thread connectionThread = new Thread(t);
                     connections.add(t);
                     connectionThread.start();
-                }catch(Exception e){
+                } catch(Exception e) {
                     running = false;
                 }
             }
@@ -66,17 +66,17 @@ public class Server {
         private ObjectOutputStream output;
         private boolean running = true;
  
-        ConnectionHandler(Socket socket) throws Exception{
+        ConnectionHandler(Socket socket) throws Exception {
             this.socket = socket;
             this.output = new ObjectOutputStream(socket.getOutputStream());
             this.input = new ObjectInputStream(socket.getInputStream());
         }
         
-        public boolean getRunning(){
+        public boolean getRunning() {
             return running;
         }
         
-        public void quit() throws Exception{
+        public void quit() throws Exception {
             System.out.println("intiated server connection quit");
             running = false;
             input.close();
@@ -84,50 +84,50 @@ public class Server {
             socket.close();
         }
         
-        public void run(){
-            while(running){
-                try{
+        public void run() {
+            while (running) {
+                try {
                     int command = input.readInt();
-                    if(command==Const.ADD_ELEMENT){
+                    if (command==Const.ADD_ELEMENT) {
                         Object element = input.readObject();
                         elements.add(element);
                         //Update in other clients
-                        for(ConnectionHandler i: connections){
-                            if(i!=this&&i.getRunning()){
+                        for (ConnectionHandler i: connections) {
+                            if (i!=this && i.getRunning()) {
                                 i.addElement(element);
                             }
                         }
-                    }else if(command==Const.REMOVE_ELEMENT){
+                    } else if (command==Const.REMOVE_ELEMENT) {
                         Object element = input.readObject();
                         elements.remove(element);
                         //Update in other clients
-                        for(ConnectionHandler i: connections){
-                            if(i!=this&&i.getRunning()){
+                        for (ConnectionHandler i: connections) {
+                            if (i!=this && i.getRunning()) {
                                 i.removeElement(element);
                             }
                         }
-                    }else if(command==Const.CLEAR) {
+                    } else if (command==Const.CLEAR) {
                         elements.clear();
-                        for(ConnectionHandler i: connections){
-                            if(i!=this&&i.getRunning()){
+                        for (ConnectionHandler i: connections) {
+                            if (i!=this && i.getRunning()) {
                                 i.clear();
                             }
                         }
-                    }else if(command==Const.GET_ELEMENTS) {
+                    } else if(command==Const.GET_ELEMENTS) {
                         for(ConnectionHandler i: connections) {
                             if (i==this&&i.getRunning()) {
                                 i.sendElements();
                             }
                         }
-                    }else if(command==Const.SEND_MESSAGE) {
+                    } else if(command==Const.SEND_MESSAGE) {
                         String message = (String)input.readObject();
-                        for(ConnectionHandler i: connections) {
-                            if (i!=this&&i.getRunning()) {
+                        for (ConnectionHandler i: connections) {
+                            if (i!=this && i.getRunning()) {
                                 i.sendMessage(message);
                             }
                         }
                     }
-                }catch(Exception e){
+                } catch(Exception e) {
                     System.out.println("Error inputing from socket. Socket thread stopped");
                     running = false;
                 }
@@ -139,42 +139,38 @@ public class Server {
                 output.writeInt(Const.SEND_ELEMENTS);
                 output.writeObject(elements);
                 output.flush();
-            }catch(Exception e) {}
+            } catch(Exception e) {}
         }
         
         public void addElement(Object element){
-            try{
+            try {
                 output.writeInt(Const.ADD_ELEMENT);
                 output.writeObject(element);
                 output.flush();
-            }catch(Exception exp){}
+            } catch(Exception exp) {}
         }
         
         public void removeElement(Object element){
-            try{
+            try {
                 output.writeInt(Const.REMOVE_ELEMENT);
                 output.writeObject(element);
                 output.flush();
-            }catch(Exception exp) {}
+            } catch(Exception exp) {}
         }
         
         public void clear() {
-            try{
+            try {
                 output.writeInt(Const.CLEAR);
                 output.flush();
-            }catch(Exception exp){
-
-            }
+            } catch(Exception exp) {}
         }
         
         public void sendMessage(String message) {
-            try{
+            try {
                 output.writeInt(Const.SEND_MESSAGE);
                 output.writeObject(message);
                 output.flush();
-            }catch(Exception exp){
-
-            }
+            } catch(Exception exp) {}
         }
     }
     

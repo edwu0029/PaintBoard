@@ -53,7 +53,7 @@ public class ToolBar extends JToolBar {
     private JButton chat;
     private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
     
-    ToolBar(BoardPanel boardPanel, boolean online){
+    ToolBar (BoardPanel boardPanel, boolean online) {
         this.boardPanel = boardPanel;
         //Set up tool menu variables
         if (online) {
@@ -156,42 +156,42 @@ public class ToolBar extends JToolBar {
     
     private class ButtonController implements ActionListener, ChangeListener{
         public void actionPerformed(ActionEvent e){
-            if(e.getSource()==brush){
+            if (e.getSource().equals(brush)){
                 System.out.println("brush");
                 boardPanel.switchTool(Const.BRUSH);
-            }else if(e.getSource()==eraser){
+            } else if(e.getSource().equals(eraser)){
                 System.out.println("eraser");
                 boardPanel.switchTool(Const.ERASER);
-            }else if(e.getSource()==color){
+            } else if(e.getSource().equals(color)){
                 System.out.println("color");
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
                 boardPanel.setColor(newColor);
                 updateColorIcon(newColor);
-            }else if (e.getSource()==colorPicker) {
+            } else if (e.getSource().equals(colorPicker)) {
                 System.out.println("color picker");
                 boardPanel.switchTool(Const.COLOR_PICKER);
-            }else if(e.getSource()==text){
+            } else if(e.getSource().equals(text)){
                 System.out.println("text");
                 boardPanel.switchTool(Const.TEXT);
-            }else if(e.getSource()==chat) {
+            } else if(e.getSource().equals(chat)) {
                 System.out.println("chat");
                 boardPanel.openChat();
-            }else if(e.getSource()==undo){
+            } else if(e.getSource().equals(undo)){
                 System.out.println("undo");
                 boardPanel.undo();
-            }else if(e.getSource()==redo){
+            } else if(e.getSource().equals(redo)){
                 boardPanel.redo();
-            }else if(e.getSource()==clear){
+            } else if(e.getSource().equals(clear)){
                 boardPanel.clear();
                 boardPanel.clearServer();
-            }else if(e.getSource()==fill){
+            } else if(e.getSource().equals(fill)){
                 boardPanel.switchTool(Const.FILL);
             }
         }
 
         public void stateChanged(ChangeEvent e) {
-            if(e.getSource()==thickness){
+            if (e.getSource().equals(thickness)){
                 int newThickness = thickness.getValue();
                 boardPanel.setThickness(newThickness);
                 thicknessLabel.setText("Brush Thickness: "+Integer.toString(newThickness));

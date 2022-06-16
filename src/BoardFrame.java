@@ -22,7 +22,7 @@ public class BoardFrame extends JFrame implements ActionListener {
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
-    BoardFrame(User user, String serverIP, boolean online) throws Exception{
+    BoardFrame(User user, String serverIP, boolean online) throws Exception {
     	this.boardPanel = new BoardPanel(user, serverIP, this, online);
         toolBar = new ToolBar(boardPanel, online);
         boardPanel.addToolBarReference(toolBar);
@@ -55,23 +55,23 @@ public class BoardFrame extends JFrame implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-    	if (e.getSource() == exit) {
+    	if (e.getSource().equals(exit)) {
     		try {
 				boardPanel.quit();
                 System.exit(0);
 			} catch (Exception e1) {}
-    	} else if (e.getSource() == save) {
+    	} else if (e.getSource().equals(save)) {
     		try {
 				boardPanel.saveBoard();
 			} catch (Exception e1) {}
-    	} else if (e.getSource() == open) {
+    	} else if (e.getSource().equals(open)) {
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}
     	} 
     }
     
-    public void quit(){
+    public void quit() {
         this.removeAll();
         this.dispose();
     }

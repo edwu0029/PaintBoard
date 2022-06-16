@@ -42,7 +42,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     BufferedImage image;
     private LinkedHashSet<Object> elements;
     
-    BoardPanel(User user, String serverIP, BoardFrame frame, boolean online) throws Exception{
+    BoardPanel(User user, String serverIP, BoardFrame frame, boolean online) throws Exception {
         this.user = user;
         this.frame = frame;
         this.online = online;
@@ -61,7 +61,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         color = new Color(0, 0, 0);
         textDialog = new TextDialog(frame);
 
-        if(online){
+        if (online) {
             client = new Client(serverIP, this);
             client.start();
             serverChat = new ServerChat(client, user);
@@ -73,8 +73,8 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             }
         }
     }
-    public void quit() throws Exception{
-        if(online){
+    public void quit() throws Exception {
+        if (online) {
             client.quit();
             user.quit();
         }
@@ -104,37 +104,37 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         repaint();
     }
     
-    public void undo(){
-        if(undo.size()==0){
+    public void undo() {
+        if (undo.size()==0) {
             return;
         }
         Object previous = undo.pop();
         elements.remove(previous);
-        if(online&&!client.getClosed()){
-            try{
+        if (online && !client.getClosed()) {
+            try {
                 client.removeElement(previous);
-            }catch(Exception e){}
+            } catch(Exception e) {}
         }
         redo.push(previous);     
         repaint();
     }
     
-    public void redo(){
-        if(redo.size()==0){
+    public void redo() {
+        if (redo.size()==0) {
             return;
         }
         Object future = redo.pop();
         elements.add(future);
-        if(online&&!client.getClosed()){
-            try{
+        if (online && !client.getClosed()) {
+            try {
                 client.addElement(future);
-            }catch(Exception e){}
+            } catch(Exception e){}
         }
         undo.push(future);
         repaint();
     }
     
-    public void clear(){
+    public void clear() {
         this.setBackground(Color.WHITE);
         undo.clear();
         redo.clear();
@@ -143,28 +143,26 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     }
     
     public void clearServer() { //Tell other clients to clear their board
-        if(online&&!client.getClosed()){
-            try{
+        if (online && !client.getClosed()) {
+            try {
                 client.clear();
-            }catch(Exception ex){
-                ex.printStackTrace();
-            }
+            } catch(Exception ex) {}
         }
     }
     
-    public void switchTool(int newTool){
+    public void switchTool(int newTool) {
         tool = newTool;
     }
     
-    public void setColor(Color newColor){
+    public void setColor(Color newColor) {
         color = newColor;
     }
     
-    public void setThickness(int newThickness){
+    public void setThickness(int newThickness) {
         thickness = newThickness;
     }
     
-    public void saveBoard() throws Exception{
+    public void saveBoard() throws Exception {
         BufferedImage temp = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = temp.createGraphics();
         this.paint(g);
@@ -175,7 +173,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         ImageIO.write(temp, "png", new File(dialog.getDirectory()+dialog.getFile()));
     }
     
-    public void openBoard() throws Exception{
+    public void openBoard() throws Exception {
         FileDialog dialog = new FileDialog(frame, "Select File to Open");
         dialog.setFile("*.jpg;*.png;*.jpeg;");
         dialog.setMode(FileDialog.LOAD);
@@ -183,7 +181,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         image = ImageIO.read(new File(dialog.getDirectory()+dialog.getFile()));
         clear();
         elements.add(new ImageIcon(image));
-        if (online&&!client.getClosed()) {
+        if (online && !client.getClosed()) {
             client.clear();
             client.addElement(new ImageIcon(image));
         }
@@ -235,15 +233,13 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         //Reset
         start = null;
         end = null;
-        if(tool==Const.BRUSH||tool==Const.ERASER){
+        if (tool==Const.BRUSH || tool==Const.ERASER) {
             redo.clear();
             undo.push(currentStroke);
-            if(online&&!client.getClosed()){
-                try{
+            if (online && !client.getClosed()) {
+                try {
                     client.addElement(currentStroke);
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
+                } catch(Exception ex) {}
             }
             currentStroke = null;
         } else if (tool==Const.COLOR_PICKER) {
@@ -259,7 +255,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             clear();
             clearServer();
             elements.add(color);
-            if (online&&!client.getClosed()) {
+            if (online && !client.getClosed()) {
                 try {
                     client.addElement(color);
                 }catch(Exception ex) {}
@@ -269,28 +265,28 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if((tool==Const.BRUSH||tool==Const.ERASER)&&currentStroke==null){
+        if ((tool==Const.BRUSH || tool==Const.ERASER) && currentStroke==null) {
             System.out.println("New stroke");
             currentStroke = new Stroke(thickness);
             elements.add(currentStroke);
-            if(tool==Const.BRUSH){ //Brush
+            if (tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);
-            }else if(tool==Const.ERASER){ //Eraser
+            } else if(tool==Const.ERASER){ //Eraser
                 currentStroke.setColor(Color.WHITE);
             }
         }
         end = e.getPoint();
-        if(tool==Const.TEXT){
+        if (tool==Const.TEXT) {
             int result = textDialog.showTextDialog();
-            if(result==Const.SUCCESS){
+            if (result==Const.SUCCESS) {
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 elements.add(newText);
                 redo.clear();
                 undo.push(newText);
-                if(online&&!client.getClosed()){
-                    try{
+                if (online && !client.getClosed()) {
+                    try {
                         client.addElement(newText);
-                    }catch(Exception ex){}
+                    } catch(Exception ex) {}
                 }
             }
         }

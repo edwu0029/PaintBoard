@@ -16,7 +16,7 @@ import javax.swing.plaf.DimensionUIResource;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class TextDialog extends JDialog implements ActionListener{
+public class TextDialog extends JDialog implements ActionListener {
     private int result;
     private String inputtedText;
     private Font inputtedFont;
@@ -28,7 +28,7 @@ public class TextDialog extends JDialog implements ActionListener{
     private JButton ok;
     private JButton cancel;
 
-    TextDialog(BoardFrame frame){
+    TextDialog(BoardFrame frame) {
         super(frame, "Create Text", true); //True makes the JDialog modal
 
         this.text = new JTextField("Example");
@@ -79,25 +79,24 @@ public class TextDialog extends JDialog implements ActionListener{
         this.setSize(new DimensionUIResource(500, 400));
         this.setVisible(false);
     }
-    public int showTextDialog(){
+    public int showTextDialog() {
         this.setVisible(true);
         return result;
     }
-    public String getInputtedText(){
+    public String getInputtedText() {
         return inputtedText;
     }
-    public Font getInputtedFont(){
+    public Font getInputtedFont() {
         return inputtedFont;
     }
-    public void actionPerformed(ActionEvent e){
-        if(e.getSource()==ok){
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(ok)) {
             result = Const.SUCCESS;
             inputtedText = text.getText();
             int inputtedSize = Integer.parseInt((String)sizes.getSelectedItem());
             inputtedFont = new Font((String)fonts.getSelectedItem(), Font.PLAIN, inputtedSize);
             this.setVisible(false);
-            
-        }else if(e.getSource()==cancel){
+        } else if(e.getSource().equals(cancel)) {
             result = Const.FAILURE;
             this.setVisible(false);
         }
