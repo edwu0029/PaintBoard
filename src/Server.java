@@ -107,25 +107,25 @@ public class Server {
                             }
                         }
                     }else if(command==Const.CLEAR) {
-                    	elements.clear();
-                    	for(ConnectionHandler i: connections){
+                        elements.clear();
+                        for(ConnectionHandler i: connections){
                             if(i!=this&&i.getRunning()){
                                 i.clear();
                             }
                         }
                     }else if(command==Const.GET_ELEMENTS) {
-                    	for(ConnectionHandler i: connections) {
-                    		if (i==this&&i.getRunning()) {
-                    			i.sendElements();
-                    		}
-                    	}
+                        for(ConnectionHandler i: connections) {
+                            if (i==this&&i.getRunning()) {
+                                i.sendElements();
+                            }
+                        }
                     }else if(command==Const.SEND_MESSAGE) {
-                    	String message = (String)input.readObject();
-                    	for(ConnectionHandler i: connections) {
-                    		if (i!=this&&i.getRunning()) {
-                    			i.sendMessage(message);
-                    		}
-                    	}
+                        String message = (String)input.readObject();
+                        for(ConnectionHandler i: connections) {
+                            if (i!=this&&i.getRunning()) {
+                                i.sendMessage(message);
+                            }
+                        }
                     }
                 }catch(Exception e){
                     System.out.println("Error inputing from socket. Socket thread stopped");
@@ -135,11 +135,11 @@ public class Server {
         }
         
         public void sendElements() {
-        	try {
-        		output.writeInt(Const.SEND_ELEMENTS);
-        		output.writeObject(elements);
-        		output.flush();
-        	}catch(Exception e) {}
+            try {
+                output.writeInt(Const.SEND_ELEMENTS);
+                output.writeObject(elements);
+                output.flush();
+            }catch(Exception e) {}
         }
         
         public void addElement(Object element){

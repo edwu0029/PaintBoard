@@ -30,7 +30,7 @@ public class Client {
         return closed;
     }
     public void addChatReference(ServerChat serverChat) {
-    	this.serverChat = serverChat;
+        this.serverChat = serverChat;
     }
     public void quit() throws Exception{
         connectionHandler.quit();
@@ -42,11 +42,11 @@ public class Client {
         closed = true;
     }
     public void addElement(Object element) {
-    	try {
-	        output.writeInt(Const.ADD_ELEMENT);
-	        output.writeObject(element);
-	        output.flush();
-    	} catch (Exception e) {e.printStackTrace();}
+        try {
+            output.writeInt(Const.ADD_ELEMENT);
+            output.writeObject(element);
+            output.flush();
+        } catch (Exception e) {e.printStackTrace();}
         System.out.println("Sent element");
     }
     public void removeElement(Object element) throws Exception{
@@ -56,17 +56,17 @@ public class Client {
         System.out.println("Sent element");
     }
     public void clear() throws Exception{
-    	output.writeInt(Const.CLEAR);
-    	output.flush();
+        output.writeInt(Const.CLEAR);
+        output.flush();
     }
     public void requestElements() throws Exception{
-    	output.writeInt(Const.GET_ELEMENTS);
-    	output.flush();
+        output.writeInt(Const.GET_ELEMENTS);
+        output.flush();
     }
     public void sendMessage(String message) throws Exception{
-    	output.writeInt(Const.SEND_MESSAGE);
-    	output.writeObject(message);
-    	output.flush();
+        output.writeInt(Const.SEND_MESSAGE);
+        output.writeObject(message);
+        output.flush();
     }
 
     class ConnectionHandler extends Thread{
@@ -92,16 +92,16 @@ public class Client {
                         boardPanel.removeElement(element);
                         System.out.println("Recevied element to be removed");
                     }else if (command==Const.CLEAR) {
-                    	boardPanel.clear();
+                        boardPanel.clear();
                     }else if (command==Const.SEND_ELEMENTS) {
-                    	LinkedHashSet<Object> elements = (LinkedHashSet<Object>)input.readObject();
-                    	boardPanel.syncBoard(elements);
+                        LinkedHashSet<Object> elements = (LinkedHashSet<Object>)input.readObject();
+                        boardPanel.syncBoard(elements);
                     }else if (command==Const.SEND_MESSAGE) {
-                    	String message = (String)input.readObject();
-                    	serverChat.sendMessage(message);
+                        String message = (String)input.readObject();
+                        serverChat.sendMessage(message);
                     }
                 }catch(Exception e){
-                	System.out.println("server disconnected");
+                    System.out.println("server disconnected");
                     running = false;
                     closed = true;
                 }

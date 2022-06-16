@@ -67,23 +67,23 @@ public class Menu extends JFrame implements ActionListener {
     }
     
     public boolean buttonPressed() {
-    	return buttonPressed;
+        return buttonPressed;
     }
     
     public boolean offline() {
-    	return single;
+        return single;
     }
     
     public boolean createServer() {
-    	return serverCreate;
+        return serverCreate;
     }
     
     public boolean joinServer() {
-    	return serverJoin;
+        return serverJoin;
     }
     
     public boolean exit() {
-    	return exit;
+        return exit;
     }
     
     public void actionPerformed(ActionEvent e) {

@@ -57,7 +57,7 @@ public class ToolBar extends JToolBar {
         this.boardPanel = boardPanel;
         //Set up tool menu variables
         if (online) {
-        	this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
+            this.setLayout(new GridLayout(11, 0)); //Make each button in tool bar smaller
         } else {
             this.setLayout(new GridLayout(10, 0)); //Make each button in tool bar smaller
         }
@@ -114,10 +114,10 @@ public class ToolBar extends JToolBar {
 
         //Chat button
         if (online) {
-	        chat = new JButton("Chat");
-	        chat.setIcon(new ImageIcon(chatIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
-	        chat.addActionListener(buttonController);
-	        this.add(chat);
+            chat = new JButton("Chat");
+            chat.setIcon(new ImageIcon(chatIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+            chat.addActionListener(buttonController);
+            this.add(chat);
         }
         //Clear button
         clear = new JButton("Clear");
@@ -175,7 +175,7 @@ public class ToolBar extends JToolBar {
                 System.out.println("text");
                 boardPanel.switchTool(Const.TEXT);
             }else if(e.getSource()==chat) {
-            	System.out.println("chat");
+                System.out.println("chat");
                 boardPanel.openChat();
             }else if(e.getSource()==undo){
                 System.out.println("undo");

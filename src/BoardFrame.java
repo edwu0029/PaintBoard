@@ -19,13 +19,10 @@ public class BoardFrame extends JFrame implements ActionListener {
     private JMenuItem save;
     private JMenuItem open;
     private JMenuItem exit;
-    private JMenuItem getIP;
-    private String serverIP;
     final int MAX_X = 1500;
     final int MAX_Y = 850;
 
     BoardFrame(User user, String serverIP, boolean online) throws Exception{
-        this.serverIP = serverIP;
     	this.boardPanel = new BoardPanel(user, serverIP, this, online);
         toolBar = new ToolBar(boardPanel, online);
         boardPanel.addToolBarReference(toolBar);

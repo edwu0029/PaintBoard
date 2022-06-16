@@ -16,7 +16,7 @@ public class User {
     }
     
     User(String serverIP, String name, boolean online) throws Exception{ //client
-    	this.name = name;
+        this.name = name;
         this.boardFrame = new BoardFrame(this, serverIP, online);
     }
     
@@ -31,10 +31,10 @@ public class User {
     }
     
     public boolean isHost() {
-    	return hasServer;
+        return hasServer;
     }
     
     public String getName() {
-    	return name;
+        return name;
     }
 }

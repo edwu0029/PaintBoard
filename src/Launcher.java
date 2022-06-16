@@ -12,14 +12,14 @@ public class Launcher {
         if (menu.offline() == true) {
             new User();
         } else if (menu.createServer() == true) {
-        	JoinServerPanel joinServerPanel = new JoinServerPanel(true);
+            JoinServerPanel joinServerPanel = new JoinServerPanel(true);
             // stalls until the user inputs nickname
-        	while (joinServerPanel.buttonPressed() == false) {
-        		try {
-        			Thread.sleep(200);
-        		} catch (InterruptedException e) {}
-        	}
-        	new User(true, joinServerPanel.getName(), true);
+            while (joinServerPanel.buttonPressed() == false) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {}
+            }
+            new User(true, joinServerPanel.getName(), true);
         } else if (menu.joinServer() == true) {
             JoinServerPanel joinServerPanel = new JoinServerPanel(false);
             // stalls until the user inputs ID Address

@@ -18,7 +18,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     private JTextField nameField;
     
     JoinServerPanel(boolean host) {
-    	this.host = host;
+        this.host = host;
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -32,11 +32,11 @@ public class JoinServerPanel extends JFrame implements ActionListener {
 
         if (!host) {
             button.setText("Enter Server");
-  	        ipField = new JTextField();
-	        ipField.setPreferredSize(new Dimension(800, 40)); 
-	        ipField.setText("Input Server IP Address");
-	        this.add(ipField);
-	        this.setSize(850, 170);
+              ipField = new JTextField();
+            ipField.setPreferredSize(new Dimension(800, 40)); 
+            ipField.setText("Input Server IP Address");
+            this.add(ipField);
+            this.setSize(850, 170);
         }
         
         this.add(button);
@@ -49,18 +49,18 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     }
     
     public String getName() {
-    	return name;
+        return name;
     }
     
     public boolean buttonPressed() {
-    	return buttonPressed;
+        return buttonPressed;
     }
     
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
-        	if (!host) {
-	            ipAddress = ipField.getText();
-        	}
+            if (!host) {
+                ipAddress = ipField.getText();
+            }
             name = nameField.getText();    
             buttonPressed = true;
             dispose();
