@@ -1,5 +1,5 @@
 /** 
- * ServerChat.Java
+ * Launcher.Java
  * @version 1.0
  * @author Edward, Christopher
  * June 2022
