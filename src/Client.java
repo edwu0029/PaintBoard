@@ -1,7 +1,7 @@
 /** 
  * Client.Java
  * @version 1.0
- * @author Edward, Christopher, Kyle
+ * @author Edward, Christopher, Kyle, Andrew
  * June 2022
  * Client that handles sending and receiving information from the Server
  */
