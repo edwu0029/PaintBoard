@@ -41,18 +41,18 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         //Create Submit button (Displayed as "Create Server:)
         button = new JButton("Create Server");
         button.addActionListener(this);  
-        this.add(button);
 
         //If online, set up server IP address text field
         if (!host) {
             button.setText("Enter Server");
             ipField = new JTextField();
-            ipField.setPreferredSize(new Dimension(800, 60)); 
+            ipField.setPreferredSize(new Dimension(800, 40)); 
             ipField.setText("Input Server IP Address");
             this.add(ipField);
             this.setSize(850, 180);
         }
 
+        this.add(button);
         this.setVisible(true);  
         this.setResizable(false);
     }
