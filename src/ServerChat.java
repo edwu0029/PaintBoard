@@ -1,3 +1,11 @@
+/** 
+ * ServerChat.Java
+ * @version 1.0
+ * @author Kyle, Christopher
+ * June 2022
+ * Frame that contains the server chat
+ */
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
