@@ -57,14 +57,23 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         this.setResizable(false);
     }
     
+    /**
+     * Getter method for server IP address
+     */
     public String getServerIPAdress(){
         return ipAddress;
     }
     
+    /**
+     * Getter method for name
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * Getter method for button status
+     */
     public boolean buttonPressed() {
         return buttonPressed;
     }
