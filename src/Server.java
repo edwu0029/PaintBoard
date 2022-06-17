@@ -1,3 +1,11 @@
+/** 
+ * ServerChat.Java
+ * @version 1.0
+ * @author Edward, Christopher, Kyle
+ * June 2022
+ * Manages server functions
+ */
+
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
