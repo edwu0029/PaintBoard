@@ -1,5 +1,5 @@
 /** 
- * BoardFrame.Java
+ * BoardFrame.java
  * @version 1.0
  * @author Edward, Christopher, Kyle
  * June 2022

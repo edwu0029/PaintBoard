@@ -1,5 +1,5 @@
 /** 
- * BoardPanel.Java
+ * BoardPanel.java
  * @version 1.0
  * @author Edward, Christopher, Kyle, Andrew
  * June 2022

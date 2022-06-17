@@ -1,5 +1,5 @@
 /** 
- * Const.Java
+ * Const.java
  * @version 1.0
  * @author Edward, Christopher
  * June 2022

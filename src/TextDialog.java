@@ -1,3 +1,11 @@
+/**
+ * TextDialog.java
+ * @version 1.0
+ * @author Edward, Christopher, Kyle
+ * June 2022
+ * A dialog box that prompts the user to select properties for text creation
+ */
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,6 +36,10 @@ public class TextDialog extends JDialog implements ActionListener {
     private JButton ok;
     private JButton cancel;
 
+    /**
+     * Constructs a TextDialog for a specified BoardFrame
+     * @param frame The BoardFrame this TextDialog is to be constructed for
+     */
     TextDialog(BoardFrame frame) {
         super(frame, "Create Text", true); //True makes the JDialog modal
 
@@ -82,16 +94,33 @@ public class TextDialog extends JDialog implements ActionListener {
         this.setSize(new Dimension(500, 400));
         this.setVisible(false);
     }
+
+    /**
+     * Makes this TextDialog visible and returns the result of the user's response (Success or failure)
+     * @return An integer, Const.SUCCESS for a success response or Const.FAILURE for a failed response
+     */
     public int showTextDialog() {
         this.setVisible(true);
         return result; //Return result of this response, either Const.SUCCESS or Const.FAILURE
     }
+
+    /**
+     * Gets the text that was inputted by the user
+     * @return A string of the text that was inputted by the user
+     */
     public String getInputtedText() {
         return inputtedText;
     }
+
+    /**
+     * Gets the font that was inputted by the user
+     * @return The inputted font by the user
+     */
     public Font getInputtedFont() {
         return inputtedFont;
     }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(ok)) { //Ok button
             result = Const.SUCCESS;

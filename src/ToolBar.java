@@ -1,3 +1,11 @@
+/**
+ * ToolBar.java
+ * @version 1.0
+ * @author Edward, Christopher, Kyle, Andrew
+ * June 2022
+ * ToolBar that holds all the tools avaliable for a user to change the board.
+ */
+ 
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -53,6 +61,11 @@ public class ToolBar extends JToolBar {
     private JButton chat;
     private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
     
+    /**
+     * Constructs a ToolBar for a specific BoardPanel
+     * @param boardPanel The BoardPanel this ToolBar is to be constructed for
+     * @param online A boolean that determiens whether the boardPanel is online or not
+     */
     ToolBar (BoardPanel boardPanel, boolean online) {
         this.boardPanel = boardPanel;
         //Set up tool menu variables
@@ -144,7 +157,10 @@ public class ToolBar extends JToolBar {
         this.add(redo);
     }
     
-    //update color icon function
+    /**
+     * Changes the color icon of this Toolbar to a new color
+     * @param newColor The new color that is to be changed to
+     */
     public void updateColorIcon(Color newColor) {
         //Create 50 by 50 image
         BufferedImage img = new BufferedImage(50, 50, BufferedImage.TYPE_INT_RGB);
