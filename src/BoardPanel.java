@@ -69,13 +69,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         redo = new Stack<Object>();
         elements = new LinkedHashSet<Object>();
 
-        //Intial setup
+        //Initial setup
         start = null;
         end = null;
         color = new Color(0, 0, 0); //Default color is black
-        textDialog = new TextDialog(frame); //Create text dialog
+        textDialog = new TextDialog(frame);
 
-        //If online, set up client
         if (online) {
             client = new Client(serverIP, this);
             client.start();
@@ -104,7 +103,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
      * References the ToolBar Panel to this Panel
      * @param toolBar The ToolBar Panel to be associated with this Panel
      */
-    public void addToolBarReference(ToolBar toolBar) { //Method to reference the toolbar panel from this panel
+    public void addToolBarReference(ToolBar toolBar) {
         this.toolBar = toolBar;
     }
     
@@ -228,7 +227,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
 
     /**
      * Saves the current drawing to a specified location in the user's computer
-     * @throws Exception
      */
     public void saveBoard() throws Exception {
         BufferedImage temp = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -243,7 +241,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     
     /**
      * Opens a drawing from a specified location in the user's computer
-     * @throws Exception
      */
     public void openBoard() throws Exception {
         FileDialog dialog = new FileDialog(frame, "Select File to Open");
@@ -264,7 +261,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Anti-aliasing
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for (Object element: elements) {
             if (element instanceof Stroke) {
                 Stroke stroke = (Stroke)element;
@@ -313,7 +310,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         if (tool==Const.BRUSH || tool==Const.ERASER) {
             redo.clear(); //Reset redo when new stroke is made
             undo.push(currentStroke);
-            //If online, send new stroke to the server
             if (online && !client.getClosed()) {
                 try {
                     client.addElement(currentStroke);
@@ -335,7 +331,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             clear();
             clearServer();
             elements.add(color);
-            //If online, send change to the server
             if (online && !client.getClosed()) {
                 try {
                     client.addElement(color);
@@ -351,7 +346,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
             currentStroke = new Stroke(thickness);
             elements.add(currentStroke);
 
-            //Set stroke color based on brush or eraser
             if (tool==Const.BRUSH){ //Brush
                 currentStroke.setColor(color);
             } else if(tool==Const.ERASER){ //Eraser
@@ -360,14 +354,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
         }
         end = e.getPoint();
         if (tool==Const.TEXT) {
-            //Get result from text dialog
             int result = textDialog.showTextDialog();
-            if (result==Const.SUCCESS) { //If successful, display new text
+            if (result==Const.SUCCESS) {
                 Text newText = new Text(e.getX(), e.getY(), textDialog.getInputtedText(), textDialog.getInputtedFont(), color);
                 elements.add(newText);
                 redo.clear();
                 undo.push(newText);
-                //If online, send the new text to the server
                 if (online && !client.getClosed()) {
                     try {
                         client.addElement(newText);

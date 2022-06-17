@@ -1,3 +1,11 @@
+/** 
+ * Const.Java
+ * @version 1.0
+ * @author Edward, Christopher
+ * June 2022
+ * All the constants used in the program to help make code more readable
+ */
+
 public class Const {
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;

@@ -1,3 +1,11 @@
+/** 
+ * BoardFrame.Java
+ * @version 1.0
+ * @author Edward, Christopher, Kyle
+ * June 2022
+ * Frame that contains the BoardPanel, menu bar, and tool bar
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -18,9 +26,15 @@ public class BoardFrame extends JFrame implements ActionListener {
     private JMenuItem save;
     private JMenuItem open;
     private JMenuItem exit;
-    final int MAX_X = 1500;
-    final int MAX_Y = 850;
-
+    private final int MAX_X = 1500;
+    private final int MAX_Y = 850;
+    
+    /**
+     * Constructs and initializes the BoardFrame
+     * @param user The person associated with the BoardPanel
+     * @param serverIP The IP address that the user joins and if it's empty that means it's offline
+     * @param online Determines if the user wants to be online or offline
+     */
     BoardFrame(User user, String serverIP, boolean online) throws Exception {
     	this.boardPanel = new BoardPanel(user, serverIP, this, online);
 
@@ -58,6 +72,7 @@ public class BoardFrame extends JFrame implements ActionListener {
         this.setVisible(true);
     }
     
+    @Override
     public void actionPerformed(ActionEvent e) {
     	if (e.getSource().equals(exit)) { //Exit
     		try {
@@ -75,7 +90,10 @@ public class BoardFrame extends JFrame implements ActionListener {
     	} 
     }
     
-    public void quit() { //Quit BoardFrame
+    /**
+     * Destroys the BoardFrame
+     */
+    public void quit() {
         this.removeAll();
         this.dispose();
     }
