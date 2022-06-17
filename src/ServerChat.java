@@ -66,6 +66,10 @@ public class ServerChat extends JFrame implements ActionListener {
         return message;
     }
     
+    /**
+     * Displays message onto textfield, and displays it below previous messages
+     * @param text message
+     */
     public void sendMessage(String message) {
         txaDisplay.append(message+"\n");
     }
@@ -77,6 +81,7 @@ public class ServerChat extends JFrame implements ActionListener {
             message = txtInput.getText();
             txaDisplay.append(user.getName()+": "+message+"\n");
             try {
+                //Send message to client
                 client.sendMessage(user.getName()+": "+message);
             } catch (Exception ex) {}
         } 
