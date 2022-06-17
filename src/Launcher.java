@@ -1,3 +1,11 @@
+/** 
+ * ServerChat.Java
+ * @version 1.0
+ * @author Edward, Christopher
+ * June 2022
+ * Frame that displays the menu screen
+ */
+
 public class Launcher {
     public static void main(String[] args) {
         Menu menu = new Menu();
