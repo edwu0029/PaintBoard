@@ -25,6 +25,9 @@ public class Server {
     private LinkedHashSet<Object> elements = new LinkedHashSet<Object>();
     final int PORT = 5000;
     
+    /**
+     * Constructs a server for the computer currently running on port 5000 and its current network.
+     */
     Server() throws Exception {
         //Get server IP address
         String localHost = InetAddress.getLocalHost().toString();
@@ -39,10 +42,17 @@ public class Server {
         serverThread.start();
     }
     
+    /**
+     * Gets the server's IP address.
+     * @return A String of the server's IP address
+     */
     public String getServerIP() {
         return ip;
     }
     
+    /**
+     * Quits this server and closes all threads, sockets, and input streams associated with this server.
+     */
     public void quit() throws Exception {
         System.out.println("Server quit");
         //Stop server thread
@@ -81,17 +91,28 @@ public class Server {
         private ObjectInputStream input;
         private ObjectOutputStream output;
         private boolean running = true;
- 
+
+        /**
+         * Constructs a ConnectionHandler thread to handle the input and output functions for a specified socket.
+         * @param socket The socket that this ConnectionHandler is to be constructed for
+         */
         ConnectionHandler(Socket socket) throws Exception {
             this.socket = socket;
             this.output = new ObjectOutputStream(socket.getOutputStream());
             this.input = new ObjectInputStream(socket.getInputStream());
         }
         
+        /**
+         * Returns whehter this ConnectionHandler thread is currently running or not
+         * @return A boolean, whether this thread is running or not
+         */
         public boolean getRunning() {
             return running;
         }
         
+        /**
+         * Quits this ConnectionHandler thread and closes the socket and all input and output streams.
+         */
         public void quit() throws Exception {
             System.out.println("intiated server connection quit");
             running = false;
@@ -153,6 +174,9 @@ public class Server {
             }
         }
         
+        /**
+         * Sends all PaintBoard elements(Text, Stroke) stored in this Server to all Clients
+         */
         public void sendElements() {
             try {
                 output.writeInt(Const.SEND_ELEMENTS);
@@ -161,6 +185,10 @@ public class Server {
             } catch(Exception e) {}
         }
         
+        /**
+         * Adds a PaintBoard element to this Server
+         * @param element The new PaintBoard element that is to be added.
+         */
         public void addElement(Object element){
             try {
                 output.writeInt(Const.ADD_ELEMENT);
@@ -169,6 +197,10 @@ public class Server {
             } catch(Exception exp) {}
         }
         
+        /**
+         * Removes a PaintBoard element from this Server
+         * @param element The PaintBoard element that is to be removed from this Server
+         */
         public void removeElement(Object element){
             try {
                 output.writeInt(Const.REMOVE_ELEMENT);
@@ -177,6 +209,9 @@ public class Server {
             } catch(Exception exp) {}
         }
         
+        /**
+         * Sends a clear command to all Clients connected to this Server
+         */
         public void clear() {
             try {
                 output.writeInt(Const.CLEAR);
@@ -184,6 +219,10 @@ public class Server {
             } catch(Exception exp) {}
         }
         
+        /**
+         * Sends a specified message to all Clients connected to this Server
+         * @param message A String containing the message that is to be sent
+         */
         public void sendMessage(String message) {
             try {
                 output.writeInt(Const.SEND_MESSAGE);
