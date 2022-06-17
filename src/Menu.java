@@ -1,5 +1,5 @@
 /** 
- * ServerChat.Java
+ * Menu.Java
  * @version 1.0
  * @author Kyle
  * June 2022
