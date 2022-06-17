@@ -23,8 +23,6 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         this.setLayout(new FlowLayout());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(850, 130);
-        this.setVisible(true);  
-        this.setResizable(false);
         
         //Create name text field
         nameField = new JTextField();
@@ -41,11 +39,14 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         if (!host) {
             button.setText("Enter Server");
             ipField = new JTextField();
-            ipField.setPreferredSize(new Dimension(800, 40)); 
+            ipField.setPreferredSize(new Dimension(800, 60)); 
             ipField.setText("Input Server IP Address");
             this.add(ipField);
             this.setSize(850, 180);
         }
+
+        this.setVisible(true);  
+        this.setResizable(false);
     }
     
     public String getServerIPAdress(){
