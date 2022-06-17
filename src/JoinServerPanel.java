@@ -1,5 +1,5 @@
 /** 
- * ServerChat.Java
+ * JoinServerPanel.Java
  * @version 1.0
  * @author Christopher, Kyle
  * June 2022
