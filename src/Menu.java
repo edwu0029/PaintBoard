@@ -1,3 +1,11 @@
+/** 
+ * ServerChat.Java
+ * @version 1.0
+ * @author Kyle
+ * June 2022
+ * Frame that displays the menu screen
+ */
+
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
