@@ -1,7 +1,7 @@
 /** 
  * Server.Java
  * @version 1.0
- * @author Edward, Christopher, Kyle
+ * @author Edward, Christopher, Kyle, Andrew
  * June 2022
  * Manages server functions
  */
