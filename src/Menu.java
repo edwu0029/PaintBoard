@@ -18,6 +18,7 @@ import javax.swing.JButton;
 
 public class Menu extends JFrame implements ActionListener {
     
+    //Button status (if pressed or not)
     private static boolean buttonPressed = false;
     private static boolean single = false;
     private static boolean serverCreate = false;
@@ -47,7 +48,9 @@ public class Menu extends JFrame implements ActionListener {
         createServer = new JButton("Create Server");
         joinServer = new JButton("Join Server");
         quit = new JButton("Quit");
-
+        
+        //Display buttons
+        
         mainP.add(title);
         title.setFont(new Font("Arial", Font.BOLD, 50));
         title.setBounds(WIDTH/2 - 111, HEIGHT/2 - 375, 500, 50);
@@ -74,22 +77,37 @@ public class Menu extends JFrame implements ActionListener {
         quit.addActionListener(this);
     }
     
+    /**
+     * Getter method for button status
+     */
     public boolean buttonPressed() {
         return buttonPressed;
     }
     
+    /**
+     * Getter method for offline button status
+     */
     public boolean offline() {
         return single;
     }
     
+    /**
+     * Getter method for create server button status
+     */
     public boolean createServer() {
         return serverCreate;
     }
     
+    /**
+     * Getter method for join server button status
+     */
     public boolean joinServer() {
         return serverJoin;
     }
     
+    /**
+     * Method to exit frame
+     */
     public boolean exit() {
         return exit;
     }
