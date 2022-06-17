@@ -59,6 +59,9 @@ public class ServerChat extends JFrame implements ActionListener {
         this.add(button);
     }
 
+    /**
+     * Getter method for text message
+     */
     public String getMessage() {
         return message;
     }
