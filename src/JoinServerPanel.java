@@ -1,3 +1,11 @@
+/** 
+ * ServerChat.Java
+ * @version 1.0
+ * @author Christopher, Kyle
+ * June 2022
+ * Frame that contains the server join inputs
+ */
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
