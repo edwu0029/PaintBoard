@@ -27,6 +27,11 @@ public class ServerChat extends JFrame implements ActionListener {
     private JButton button;
     private String message;
     
+    /**
+     * Creates and initializes a ServerChat
+     * @param client The client associated with this ServerChat JFrame
+     * @param user The user associated with this Serverchat JFrame
+     */
     ServerChat(Client client, User user) {    
         this.client = client;
         this.user = user;
@@ -61,6 +66,7 @@ public class ServerChat extends JFrame implements ActionListener {
 
     /**
      * Getter method for text message
+     * @return The message
      */
     public String getMessage() {
         return message;
@@ -68,7 +74,7 @@ public class ServerChat extends JFrame implements ActionListener {
     
     /**
      * Displays message onto textfield, and displays it below previous messages
-     * @param text message
+     * @param message The message that the user entered
      */
     public void sendMessage(String message) {
         txaDisplay.append(message+"\n");
@@ -81,7 +87,6 @@ public class ServerChat extends JFrame implements ActionListener {
             message = txtInput.getText();
             txaDisplay.append(user.getName()+": "+message+"\n");
             try {
-                //Send message to client
                 client.sendMessage(user.getName()+": "+message);
             } catch (Exception ex) {}
         } 

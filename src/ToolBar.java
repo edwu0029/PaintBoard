@@ -177,14 +177,11 @@ public class ToolBar extends JToolBar {
         /*----- Overriden methods from ActionListener -----*/
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(brush)){ //Brush button
-                System.out.println("brush");
+            if (e.getSource().equals(brush)){
                 boardPanel.switchTool(Const.BRUSH);
-            } else if(e.getSource().equals(eraser)){ //Eraser button
-                System.out.println("eraser");
+            } else if(e.getSource().equals(eraser)){ 
                 boardPanel.switchTool(Const.ERASER);
             } else if(e.getSource().equals(color)){ //Color button
-                System.out.println("color");
                 JColorChooser colorChooser = new JColorChooser();
                 Color newColor = colorChooser.showDialog(null, "Select a color", Color.BLACK);
                 //Check if newColor is null (meaning color dialog box was canceled)
@@ -192,24 +189,20 @@ public class ToolBar extends JToolBar {
                     boardPanel.setColor(newColor);
                     updateColorIcon(newColor);
                 }
-            } else if (e.getSource().equals(colorPicker)) { //Color Picker button
-                System.out.println("color picker");
+            } else if (e.getSource().equals(colorPicker)) {
                 boardPanel.switchTool(Const.COLOR_PICKER);
-            } else if(e.getSource().equals(text)){ //Text button
-                System.out.println("text");
+            } else if(e.getSource().equals(text)){
                 boardPanel.switchTool(Const.TEXT);
-            } else if(e.getSource().equals(chat)) { //Chat button
-                System.out.println("chat");
+            } else if(e.getSource().equals(chat)) {
                 boardPanel.openChat();
-            } else if(e.getSource().equals(undo)){ //Undo button
-                System.out.println("undo");
+            } else if(e.getSource().equals(undo)){
                 boardPanel.undo();
-            } else if(e.getSource().equals(redo)){ //Redo button
+            } else if(e.getSource().equals(redo)){
                 boardPanel.redo();
-            } else if(e.getSource().equals(clear)){ //Clear button
+            } else if(e.getSource().equals(clear)){
                 boardPanel.clear();
                 boardPanel.clearServer();
-            } else if(e.getSource().equals(fill)){ //Fill button
+            } else if(e.getSource().equals(fill)){
                 boardPanel.switchTool(Const.FILL);
             }
         }
@@ -220,7 +213,6 @@ public class ToolBar extends JToolBar {
             if (e.getSource().equals(thickness)){
                 int newThickness = thickness.getValue();
                 boardPanel.setThickness(newThickness);
-                thicknessLabel.setText("Brush Thickness: "+Integer.toString(newThickness));
             }
         }
     }

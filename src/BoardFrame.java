@@ -74,16 +74,16 @@ public class BoardFrame extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    	if (e.getSource().equals(exit)) { //Exit
+    	if (e.getSource().equals(exit)) {
     		try {
 				boardPanel.quit();
                 System.exit(0);
 			} catch (Exception e1) {}
-    	} else if (e.getSource().equals(save)) { //Save to image
+    	} else if (e.getSource().equals(save)) {
     		try {
 				boardPanel.saveBoard();
 			} catch (Exception e1) {}
-    	} else if (e.getSource().equals(open)) { //Open image
+    	} else if (e.getSource().equals(open)) {
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}

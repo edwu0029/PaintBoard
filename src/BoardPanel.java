@@ -286,7 +286,7 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     
     /*----- Overriden methods from MouseMotionListener -----*/
     @Override
-    public void mouseDragged(MouseEvent e) { //drawing
+    public void mouseDragged(MouseEvent e) {
         start = end;
         end = e.getPoint();
         
@@ -302,7 +302,6 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     /*----- Overriden methods from MouseListener -----*/
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("released");
         //Reset coordinates
         start = null;
         end = null;
@@ -342,13 +341,12 @@ public class BoardPanel extends JPanel implements MouseMotionListener, MouseList
     @Override
     public void mousePressed(MouseEvent e) {
         if ((tool==Const.BRUSH || tool==Const.ERASER) && currentStroke==null) {
-            System.out.println("New stroke");
             currentStroke = new Stroke(thickness);
             elements.add(currentStroke);
 
-            if (tool==Const.BRUSH){ //Brush
+            if (tool==Const.BRUSH){
                 currentStroke.setColor(color);
-            } else if(tool==Const.ERASER){ //Eraser
+            } else if(tool==Const.ERASER){ 
                 currentStroke.setColor(Color.WHITE);
             }
         }

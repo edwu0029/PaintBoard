@@ -3,7 +3,7 @@
  * @version 1.0
  * @author Christopher, Kyle
  * June 2022
- * Frame that contains the server join inputs
+ * Frame that contains the server join or host inputs
  */
 
 import java.awt.Dimension;
@@ -24,6 +24,10 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     private JTextField ipField;
     private JTextField nameField;
     
+    /**
+     * Creates and initializes a JoinServerPanel
+     * @param host Boolean for whether the window is for hosting or joining a server
+     */
     JoinServerPanel(boolean host) {
         this.host = host;
         
@@ -42,7 +46,6 @@ public class JoinServerPanel extends JFrame implements ActionListener {
         button = new JButton("Create Server");
         button.addActionListener(this);  
 
-        //If online, set up server IP address text field
         if (!host) {
             button.setText("Enter Server");
             ipField = new JTextField();

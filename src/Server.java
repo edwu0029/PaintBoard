@@ -63,11 +63,13 @@ public class Server {
             connectionHandler.quit();
             connectionHandler.interrupt();
         }
-        //Close the server socket
         serverSocket.close();
     }
     
     class ServerThread extends Thread {
+    	/**
+    	 * Runs ServerThread
+    	 */
         public void run() {
             while (running) {
                 try {
@@ -121,6 +123,9 @@ public class Server {
             socket.close();
         }
         
+        /**
+         * Runs the connectionhandler thread
+         */
         public void run() {
             while (running) {
                 try {
@@ -175,7 +180,7 @@ public class Server {
         }
         
         /**
-         * Sends all PaintBoard elements(Text, Stroke) stored in this Server to all Clients
+         * Sends all PaintBoard elements(Text, Stroke, Image) stored in this Server to a client
          */
         public void sendElements() {
             try {
@@ -186,7 +191,7 @@ public class Server {
         }
         
         /**
-         * Adds a PaintBoard element to this Server
+         * Adds a PaintBoard element to clients connected to this server
          * @param element The new PaintBoard element that is to be added.
          */
         public void addElement(Object element){
@@ -198,7 +203,7 @@ public class Server {
         }
         
         /**
-         * Removes a PaintBoard element from this Server
+         * Removes a PaintBoard element to clients connected to this server
          * @param element The PaintBoard element that is to be removed from this Server
          */
         public void removeElement(Object element){

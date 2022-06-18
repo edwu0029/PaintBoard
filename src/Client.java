@@ -144,6 +144,10 @@ public class Client {
             running = false;
             closed = true;
         }
+        
+        /**
+         * Runs the connection handler thread
+         */
         public void run() {
             while (running) {
                 try {
@@ -151,11 +155,9 @@ public class Client {
                     if (command==Const.ADD_ELEMENT) {
                         Object element = input.readObject();
                         boardPanel.addElement(element);
-                        System.out.println("Recevied element to be added");
                     } else if(command==Const.REMOVE_ELEMENT) {
                         Object element = input.readObject();
                         boardPanel.removeElement(element);
-                        System.out.println("Recevied element to be removed");
                     } else if (command==Const.CLEAR) {
                         boardPanel.clear();
                     } else if (command==Const.SEND_ELEMENTS) {

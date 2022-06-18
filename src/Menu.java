@@ -32,7 +32,10 @@ public class Menu extends JFrame implements ActionListener {
     private JButton offline, createServer, joinServer, quit;
 
     static JFrame frame = new JFrame();
-
+    
+    /**
+     * Creates and initializes a Menu
+     */
     public Menu() {
         //Set up Menu Frame properties
         Container mainP = frame.getContentPane();
@@ -79,6 +82,7 @@ public class Menu extends JFrame implements ActionListener {
     
     /**
      * Getter method for button status
+     * @return Status of the whether the button has been pressed or not
      */
     public boolean buttonPressed() {
         return buttonPressed;
@@ -86,6 +90,7 @@ public class Menu extends JFrame implements ActionListener {
     
     /**
      * Getter method for offline button status
+     * @return Status of the user clicking offline
      */
     public boolean offline() {
         return single;
@@ -93,6 +98,7 @@ public class Menu extends JFrame implements ActionListener {
     
     /**
      * Getter method for create server button status
+     * @return Status of user clicking create server
      */
     public boolean createServer() {
         return serverCreate;
@@ -100,13 +106,15 @@ public class Menu extends JFrame implements ActionListener {
     
     /**
      * Getter method for join server button status
+     * @return Status of user clicking join server
      */
     public boolean joinServer() {
         return serverJoin;
     }
     
     /**
-     * Method to exit frame
+     * Getter method for the exit status of menu
+     * @return Status of the menu being exited
      */
     public boolean exit() {
         return exit;
@@ -116,20 +124,20 @@ public class Menu extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String key = e.getActionCommand();
-        if (key.equals("Offline")) { //Offline button
+        if (key.equals("Offline")) { 
             buttonPressed = true;
             single = true;
             frame.dispose();
         }
-        else if (key.equals("Create Server")) { //Create Server button
+        else if (key.equals("Create Server")) {
             buttonPressed = true;
             serverCreate = true;
             frame.dispose();
-        } else if (key.equals("Join Server")) { //Join Server button
+        } else if (key.equals("Join Server")) {
             buttonPressed = true;
             serverJoin = true;
             frame.dispose();
-        } else if (key.equals("Quit")) { //Quit button
+        } else if (key.equals("Quit")) {
             buttonPressed = true;
             exit = true;
             frame.dispose();
