@@ -62,6 +62,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     
     /**
      * Getter method for server IP address
+     * @return the IP Address the user entered
      */
     public String getServerIPAdress(){
         return ipAddress;
@@ -69,6 +70,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     
     /**
      * Getter method for name
+     * @return The name entered by the user
      */
     public String getName() {
         return name;
@@ -76,6 +78,7 @@ public class JoinServerPanel extends JFrame implements ActionListener {
     
     /**
      * Getter method for button status
+     * @return The status of the being pressed
      */
     public boolean buttonPressed() {
         return buttonPressed;
