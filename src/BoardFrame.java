@@ -1,7 +1,7 @@
 /** 
  * BoardFrame.java
  * @version 1.0
- * @author Edward, Christopher, Kyle
+ * @author Edward, Christopher, Kyle, Andrew
  * June 2022
  * Frame that contains the BoardPanel, menu bar, and tool bar
  */
