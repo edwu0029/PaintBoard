@@ -1,7 +1,7 @@
 /**
  * TextDialog.java
  * @version 1.0
- * @author Edward, Christopher, Kyle
+ * @author Edward, Christopher, Kyle, Andrew
  * June 2022
  * A dialog box that prompts the user to select properties for text creation
  */
