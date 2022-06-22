@@ -1,7 +1,7 @@
 /** 
  * Menu.Java
  * @version 1.0
- * @author Kyle
+ * @author Kyle, Andrew
  * June 2022
  * Frame that displays the menu screen
  */
