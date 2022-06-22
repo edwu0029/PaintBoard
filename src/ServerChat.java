@@ -1,7 +1,7 @@
 /** 
  * ServerChat.Java
  * @version 1.0
- * @author Kyle, Christopher, Edward
+ * @author Kyle, Christopher, Edward, Andrew
  * June 2022
  * Frame that contains the server chat
  */
