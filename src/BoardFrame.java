@@ -12,16 +12,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class BoardFrame extends JFrame implements ActionListener {
     private BoardPanel boardPanel;
+    private String serverIP;
     private ToolBar toolBar;
     private JMenuBar menuBar;
+    private JButton serverIPButton;
     private JMenu fileMenu;
     private JMenuItem save;
     private JMenuItem open;
@@ -36,6 +39,7 @@ public class BoardFrame extends JFrame implements ActionListener {
      * @param online Determines if the user wants to be online or offline
      */
     BoardFrame(User user, String serverIP, boolean online) throws Exception {
+        this.serverIP = serverIP;
     	this.boardPanel = new BoardPanel(user, serverIP, this, online);
 
         //Set up Tool Bar
@@ -47,8 +51,10 @@ public class BoardFrame extends JFrame implements ActionListener {
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
         if (online) {
+            serverIPButton = new JButton("Server IP");
+            serverIPButton.addActionListener(this);
             menuBar.add(Box.createHorizontalGlue());
-	        menuBar.add(new JLabel("Server IP:  "+serverIP+" "));
+            menuBar.add(serverIPButton);
         }
         //Set up Menu Bar items
         save = new JMenuItem("Save");
@@ -87,7 +93,11 @@ public class BoardFrame extends JFrame implements ActionListener {
     		try {
     			boardPanel.openBoard();
     		} catch (Exception e1) {}
-    	} 
+    	} else if (e.getSource().equals(serverIPButton)){
+            try {
+                JOptionPane.showMessageDialog(this, serverIP);
+            } catch (Exception e1) {}
+        }
     }
     
     /**
