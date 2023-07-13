@@ -28,38 +28,38 @@ public class ToolBar extends JToolBar {
     private BoardPanel boardPanel;
     //Brush button
     private JButton brush;
-    private ImageIcon brushIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/brushicon.png"));
+    private ImageIcon brushIcon = new ImageIcon(getClass().getClassLoader().getResource("brushicon.png"));
     //Eraser button
     private JButton eraser;
-    private ImageIcon eraserIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/erasericon.png"));
+    private ImageIcon eraserIcon = new ImageIcon(getClass().getClassLoader().getResource("erasericon.png"));
     //Color button
     private JButton color;
     private ImageIcon colorIcon;
     //Color Picker button
     private JButton colorPicker;
-    private ImageIcon colorPickerIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/colorpickericon.png"));
+    private ImageIcon colorPickerIcon = new ImageIcon(getClass().getClassLoader().getResource("colorpickericon.png"));
     //Text button
     private JButton text;
-    private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/texticon.png"));
+    private ImageIcon textIcon = new ImageIcon(getClass().getClassLoader().getResource("texticon.png"));
     //Thickness Slider
     private JSlider thickness;
     private JPanel thicknessPanel;
     private JLabel thicknessLabel;
     //Clear button
     private JButton clear;
-    private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/clearicon.jpg"));
+    private ImageIcon clearIcon = new ImageIcon(getClass().getClassLoader().getResource("clearicon.jpg"));
     //Undo button
     private JButton undo;
-    private ImageIcon undoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/undoicon.png"));
+    private ImageIcon undoIcon = new ImageIcon(getClass().getClassLoader().getResource("undoicon.png"));
     //Redo button
     private JButton redo;
-    private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/redoicon.png"));
+    private ImageIcon redoIcon = new ImageIcon(getClass().getClassLoader().getResource("redoicon.png"));
     //Fill button
     private JButton fill;
-    private ImageIcon fillIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/fillicon.jpg"));
+    private ImageIcon fillIcon = new ImageIcon(getClass().getClassLoader().getResource("fillicon.jpg"));
     //Chat button
     private JButton chat;
-    private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("icons/chaticon.png"));
+    private ImageIcon chatIcon = new ImageIcon(getClass().getClassLoader().getResource("chaticon.png"));
     
     /**
      * Constructs a ToolBar for a specific BoardPanel
