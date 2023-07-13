@@ -19,7 +19,7 @@ public class Client {
     private ObjectOutputStream output;
     private ConnectionHandler connectionHandler;
     private boolean closed;
-    private final int PORT = 5000;
+    private final int PORT = Const.PORT;
     
     /**
      * Constructs and initializes the client

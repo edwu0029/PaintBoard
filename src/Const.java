@@ -11,6 +11,7 @@ public class Const {
     public static final int FAILURE = 1;
     
     //Network Constants
+    public static final int PORT = 3000;
     public static final int SEND_ELEMENTS = 1;
     public static final int GET_ELEMENTS = 2;
     public static final int ADD_ELEMENT = 3;

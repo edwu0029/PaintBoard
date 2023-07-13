@@ -23,7 +23,7 @@ public class Server {
     private ServerThread serverThread;
     private boolean running = true;
     private LinkedHashSet<Object> elements = new LinkedHashSet<Object>();
-    final int PORT = 5000;
+    private final int PORT = Const.PORT;
     
     /**
      * Constructs a server for the computer currently running on port 5000 and its current network.
@@ -33,13 +33,13 @@ public class Server {
         String localHost = InetAddress.getLocalHost().toString();
         ip = localHost.substring(localHost.indexOf('/')+1);
         System.out.println(ip);
-
         this.serverSocket = new ServerSocket(PORT);
         this.connections = new ArrayList<ConnectionHandler>();
 
         //Create and start server thread
         this.serverThread = new ServerThread();
         serverThread.start();
+        System.out.println("Server started");
     }
     
     /**
